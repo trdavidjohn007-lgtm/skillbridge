@@ -1,0 +1,49 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/competencies"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/learning"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/assessments"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/analytics"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/credits"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/gamification"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/sparrow"
+  to = "/index.html"
+  status = 200

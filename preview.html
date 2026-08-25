@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skill Intelligence Platform — India's Official Statistical System</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --primary:#f97316;--primary-dark:#ea580c;--primary-light:#fff7ed;
+    --navy:#1e3a5f;--navy-light:#2563eb;
+    --green:#10b981;--green-light:#ecfdf5;
+    --red:#ef4444;--red-light:#fef2f2;
+    --yellow:#eab308;--yellow-light:#fefce8;
+    --purple:#8b5cf6;--purple-light:#f5f3ff;
+    --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+    --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;
+    --gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;
+    --radius:8px;--shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+  }
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.5;overflow-x:hidden}
+  a{color:var(--navy-light);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Layout */
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:30}
+  .sidebar-brand{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--gray-100)}
+  .sidebar-brand .logo{width:36px;height:36px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+  .sidebar-brand span{font-weight:700;font-size:16px;color:var(--gray-900)}
+  .sidebar-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:2px}
+  .sidebar-nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius);font-size:14px;color:var(--gray-600);transition:all .15s}
+  .sidebar-nav a:hover{background:var(--gray-100);color:var(--gray-900);text-decoration:none}
+  .sidebar-nav a.active{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+  .sidebar-nav a .icon{width:20px;text-align:center;font-size:16px}
+  .sidebar-user{padding:16px 20px;border-top:1px solid var(--gray-100);display:flex;align-items:center;gap:10px}
+  .sidebar-user .avatar{width:36px;height:36px;border-radius:50%;background:var(--gray-400);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
+  .sidebar-user .info{font-size:13px}
+  .sidebar-user .info .name{font-weight:600;color:var(--gray-800)}
+  .sidebar-user .info .email{color:var(--gray-500)}
+
+  .main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:20}
+  .topbar .page-title{font-size:14px;font-weight:500;color:var(--gray-600)}
+  .topbar .signout{font-size:13px;color:var(--gray-500);cursor:pointer}
+  .topbar .signout:hover{color:var(--gray-700)}
+  .content{flex:1;padding:24px;max-width:1280px;width:100%;margin:0 auto}
+
+  /* Cards */
+  .card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--gray-100)}
+  .card-header h2{font-size:16px;font-weight:600;color:var(--gray-900)}
+  .card-header a{font-size:13px}
+  .card-body{padding:20px}
+
+  /* Stat Cards */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat-card .top{display:flex;align-items:center;justify-content:space-between}
+  .stat-card .label{font-size:13px;color:var(--gray-500)}
+  .stat-card .value{font-size:28px;font-weight:700;color:var(--gray-900);margin-top:4px}
+  .stat-card .icon-box{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .stat-card .trend{font-size:12px;margin-top:10px;color:var(--gray-500)}
+
+  /* AI Banner */
+  .ai-banner{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1px solid #bfdbfe;border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start}
+  .ai-badge{width:32px;height:32px;border-radius:50%;background:var(--navy-light);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+  .ai-banner h3{font-size:13px;font-weight:600;color:#1e40af}
+  .ai-banner p{font-size:13px;color:#1e3a8a;margin-top:4px}
+
+  /* Two-col grid */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+
+  /* Radar Chart */
+  .radar-wrap{display:flex;justify-content:center;padding:20px 0}
+  .radar-svg{max-width:320px}
+
+  /* Skill Gap List */
+  .gap-list{display:flex;flex-direction:column;gap:10px}
+  .gap-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:12px 16px;transition:box-shadow .15s}
+  .gap-item:hover{box-shadow:var(--shadow-md)}
+  .gap-left{display:flex;align-items:center;gap:12px}
+  .gap-icon{font-size:18px}
+  .gap-name{font-weight:600;font-size:14px;color:var(--gray-900)}
+  .gap-meta{font-size:12px;color:var(--gray-500);margin-top:2px;display:flex;gap:6px;align-items:center}
+  .gap-meta svg{width:12px;height:12px}
+  .gap-right{display:flex;align-items:center;gap:12px}
+  .gap-hours{font-size:13px;color:var(--gray-500);display:flex;align-items:center;gap:4px}
+  .badge{display:inline-flex;align-items:center;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;border:1px solid}
+  .badge-critical{background:#fef2f2;color:#dc2626;border-color:#fecaca}
+  .badge-high{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
+  .badge-medium{background:#fefce8;color:#ca8a04;border-color:#fef08a}
+  .badge-low{background:#ecfdf5;color:#059669;border-color:#a7f3d0}
+
+  /* Learning Path */
+  .path-card{border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;transition:box-shadow .15s}
+  .path-card:hover{box-shadow:var(--shadow-md)}
+  .path-top{display:flex;align-items:flex-start;justify-content:space-between}
+  .path-info{display:flex;align-items:center;gap:12px}
+  .path-icon{width:44px;height:44px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:20px}
+  .path-title{font-weight:600;color:var(--gray-900)}
+  .path-sub{font-size:13px;color:var(--gray-500)}
+  .path-link{font-size:13px;color:var(--primary);font-weight:500;cursor:pointer}
+  .path-link:hover{text-decoration:underline}
+  .progress-bar{margin-top:14px}
+  .progress-header{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .progress-track{height:8px;background:var(--gray-200);border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:999px;background:var(--primary);transition:width .6s ease}
+  .path-stats{display:flex;gap:24px;margin-top:14px;font-size:13px;color:var(--gray-500)}
+  .path-stats .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+
+  /* Progress Cards */
+  .progress-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+  /* Tabs */
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--gray-200);margin-bottom:20px}
+  .tab{padding:10px 16px;font-size:14px;font-weight:500;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+  .tab:hover{color:var(--gray-700)}
+  .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+  /* Page: Competencies */
+  .search-bar{display:flex;gap:12px;margin-bottom:20px}
+  .search-bar input,.search-bar select{border:1px solid var(--gray-300);border-radius:var(--radius);padding:8px 12px;font-size:14px;background:#fff;outline:none}
+  .search-bar input:focus,.search-bar select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+  .search-bar input{flex:1}
+  .domain-group{border:1px solid var(--gray-200);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;background:#fff}
+  .domain-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--gray-50);cursor:pointer;font-weight:600;font-size:14px;user-select:none}
+  .domain-header:hover{background:var(--gray-100)}
+  .domain-count{background:var(--gray-200);border-radius:999px;padding:1px 8px;font-size:12px;font-weight:500;color:var(--gray-600)}
+  .comp-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--gray-100)}
+  .comp-item:hover{background:var(--gray-50)}
+  .comp-name{font-weight:500;font-size:14px;color:var(--gray-900)}
+  .comp-desc{font-size:12px;color:var(--gray-500);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:500px}
+  .level-badge{padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600}
+  .level-beginner{background:#fef3c7;color:#92400e}
+  .level-intermediate{background:#dbeafe;color:#1e40af}
+  .level-advanced{background:#ede9fe;color:#5b21b6}
+  .level-expert{background:#d1fae5;color:#065f46}
+
+  /* Page: Learning */
+  .course-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .course-card{border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px;transition:box-shadow .15s}
+  .course-card:hover{box-shadow:var(--shadow-md)}
+  .course-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+  .course-title{font-weight:600;font-size:14px;color:var(--gray-900)}
+  .course-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+  .course-badge.igot{background:#d1fae5;color:#065f46}
+  .course-badge.tpac{background:#ede9fe;color:#5b21b6}
+  .course-desc{font-size:13px;color:var(--gray-500);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .course-footer{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--gray-500)}
+  .course-meta{display:flex;gap:12px;align-items:center}
+  .course-enroll{color:var(--primary);font-weight:600;font-size:13px;cursor:pointer}
+  .course-enroll:hover{text-decoration:underline}
+  .ai-rec{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1px solid #bfdbfe;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:#1e40af}
+
+  /* Page: Assessments */
+  .assess-hero{text-align:center;padding:48px 24px;border:1px solid var(--gray-200);border-radius:var(--radius);background:#fff}
+  .assess-hero .big-icon{font-size:48px;margin-bottom:16px}
+  .assess-hero h2{font-size:20px;font-weight:700;color:var(--gray-900)}
+  .assess-hero p{font-size:14px;color:var(--gray-500);max-width:500px;margin:12px auto 0}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .15s}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover{background:var(--primary-dark)}
+  .btn-outline{background:#fff;border:1px solid var(--gray-300);color:var(--gray-700)}
+  .btn-outline:hover{background:var(--gray-50)}
+  .assess-hero .meta{display:flex;justify-content:center;gap:24px;margin-top:20px;font-size:13px;color:var(--gray-400)}
+
+  /* Question Card */
+  .q-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;max-width:700px;margin:0 auto}
+  .q-progress{display:flex;justify-content:space-between;font-size:13px;color:var(--gray-500);margin-bottom:8px}
+  .q-bar{height:6px;background:var(--gray-200);border-radius:999px;margin-bottom:24px;overflow:hidden}
+  .q-bar-fill{height:100%;background:var(--primary);border-radius:999px;transition:width .4s}
+  .q-text{font-size:16px;font-weight:600;color:var(--gray-900);margin-bottom:16px}
+  .q-options{display:flex;flex-direction:column;gap:8px}
+  .q-option{border:1px solid var(--gray-200);border-radius:var(--radius);padding:12px 16px;cursor:pointer;transition:all .15s;font-size:14px}
+  .q-option:hover{border-color:var(--gray-400);background:var(--gray-50)}
+  .q-option.selected{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);font-weight:500}
+  .q-nav{display:flex;justify-content:space-between;margin-top:24px}
+
+  /* Page: Analytics */
+  .admin-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+  .admin-stat{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px}
+  .admin-stat .icon{font-size:18px;margin-bottom:8px}
+  .admin-stat .val{font-size:24px;font-weight:700;color:var(--gray-900)}
+  .admin-stat .lbl{font-size:12px;color:var(--gray-500)}
+  .dept-card{border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px;margin-bottom:12px;background:var(--gray-50)}
+  .dept-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .dept-name{font-weight:600;font-size:14px;color:var(--gray-900)}
+  .dept-sub{font-size:13px;color:var(--gray-500)}
+  .dept-score{text-align:right}
+  .dept-score .num{font-size:28px;font-weight:700;color:var(--gray-900)}
+  .dept-score .lbl{font-size:11px;color:var(--gray-500)}
+  .dept-bar{margin-top:12px}
+  .dept-bar-header{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-500);margin-bottom:4px}
+  .predict-card{border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px;background:linear-gradient(135deg,var(--purple-light) 0%,#eff6ff 100%)}
+  .predict-header{display:flex;justify-content:space-between;align-items:flex-start}
+  .predict-title{font-weight:600;font-size:14px;color:var(--gray-900)}
+  .predict-sub{font-size:13px;color:var(--gray-600);margin-top:4px}
+  .predict-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:#ede9fe;color:#5b21b6}
+  .predict-bar{margin-top:12px}
+  .predict-rec{margin-top:12px;font-size:13px;color:var(--purple)}
+  .effectiveness-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .eff-card{border-radius:var(--radius);padding:16px;text-align:center}
+  .eff-card .num{font-size:32px;font-weight:700}
+  .eff-card .lbl{font-size:13px;color:var(--gray-600);margin-top:4px}
+  .eff-green{background:var(--green-light)}
+  .eff-green .num{color:var(--green)}
+  .eff-blue{background:#eff6ff}
+  .eff-blue .num{color:var(--navy-light)}
+  .eff-purple{background:var(--purple-light)}
+  .eff-purple .num{color:var(--purple)}
+
+  /* Login Page */
+  .login-page{display:flex;min-height:100vh}
+  .login-left{flex:1;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);display:flex;align-items:center;justify-content:center;padding:40px}
+  .login-left .inner{max-width:440px;color:#fff}
+  .login-left .icon-lg{width:72px;height:72px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:24px}
+  .login-left h1{font-size:32px;font-weight:700}
+  .login-left .subtitle{font-size:16px;color:rgba(255,255,255,.8);margin-top:12px}
+  .login-left .features{margin-top:32px;display:flex;flex-direction:column;gap:14px}
+  .login-left .feat{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.9)}
+  .login-left .feat-icon{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px}
+  .login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:#fff}
+  .login-form{width:100%;max-width:380px}
+  .login-form h2{font-size:24px;font-weight:700;color:var(--gray-900)}
+  .login-form .sub{font-size:14px;color:var(--gray-500);margin-top:4px}
+  .sso-btn{width:100%;padding:12px;border:1px solid var(--gray-300);border-radius:var(--radius);background:#fff;font-size:14px;font-weight:500;color:var(--gray-700);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:24px;transition:all .15s}
+  .sso-btn:hover{background:var(--gray-50);border-color:var(--gray-400)}
+  .divider{display:flex;align-items:center;gap:12px;margin:24px 0;font-size:13px;color:var(--gray-400)}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gray-200)}
+  .form-group{margin-bottom:16px}
+  .form-group label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:4px}
+  .form-group input{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius);padding:10px 12px;font-size:14px;outline:none}
+  .form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+  .login-btn{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .login-btn:hover{background:var(--primary-dark)}
+  .login-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--gray-500)}
+
+  /* Hidden pages */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* Upload zone */
+  .upload-zone{border:2px dashed var(--gray-300);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .15s}
+  .upload-zone:hover{border-color:var(--primary)}
+  .upload-zone .icon{font-size:40px;color:var(--gray-400)}
+  .upload-zone p{color:var(--gray-600);margin-top:12px}
+  .upload-zone .hint{font-size:12px;color:var(--gray-400);margin-top:8px}
+
+  /* History */
+  .history-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:12px 16px;background:var(--gray-50);margin-bottom:8px}
+  .history-left{display:flex;align-items:center;gap:12px}
+  .history-score{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .history-score.good{background:#d1fae5;color:#065f46}
+  .history-score.ok{background:#fed7aa;color:#9a3412}
+
+  /* Gap count */
+  .gap-count{font-size:24px;font-weight:700;color:var(--red)}
+  .gap-dept{font-size:11px;color:var(--gray-500)}
+
+  @media(max-width:1024px){
+    .sidebar{display:none}
+    .main{margin-left:0}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .grid-2{grid-template-columns:1fr}
+    .admin-stats{grid-template-columns:repeat(2,1fr)}
+    .course-grid{grid-template-columns:1fr}
+    .login-left{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN PAGE ============ -->
+<div class="page active" id="page-login">
+  <div class="login-page">
+    <div class="login-left">
+      <div class="inner">
+        <div class="icon-lg">🎯</div>
+        <h1>Skill Intelligence Platform</h1>
+        <p class="subtitle">AI-enabled competency assessment and personalized learning for India's Official Statistical System</p>
+        <div class="features">
+          <div class="feat"><div class="feat-icon">🎯</div> AI-based competency assessment</div>
+          <div class="feat"><div class="feat-icon">📊</div> Automated skill-gap analysis</div>
+          <div class="feat"><div class="feat-icon">📚</div> Personalized iGOT Karmayogi recommendations</div>
+          <div class="feat"><div class="feat-icon">🤖</div> AI-powered quiz generation</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-form">
+        <h2>Sign in</h2>
+        <p class="sub">Access your competency dashboard and learning paths</p>
+        <button class="sso-btn" onclick="goToDashboard()">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          Sign in with Government SSO
+        </button>
+        <div class="divider">Or continue with email</div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" placeholder="you@gov.in" id="login-email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" id="login-pass" />
+        </div>
+        <button class="login-btn" onclick="goToDashboard()">Sign in →</button>
+        <p class="login-footer">Don't have an account? <a href="#">Contact your administrator</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div class="page" id="page-app">
+  <div class="app">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-brand"><div class="logo">SI</div><span>Skill Intelligence</span></div>
+      <div class="sidebar-nav">
+        <a href="#" class="active" data-page="dashboard"><span class="icon">🏠</span> Dashboard</a>
+        <a href="#" data-page="competencies"><span class="icon">🎯</span> Competencies</a>
+        <a href="#" data-page="learning"><span class="icon">📚</span> Learning Paths</a>
+        <a href="#" data-page="assessments"><span class="icon">📋</span> Assessments</a>
+        <a href="#" data-page="analytics"><span class="icon">📊</span> Analytics</a>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar">RK</div>
+        <div class="info"><div class="name">Rajesh Kumar</div><div class="email">rajesh@gov.in</div></div>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="topbar">
+        <div class="page-title" id="topbar-title">Employee Dashboard</div>
+        <div class="signout" onclick="goToLogin()">Sign out</div>
+      </div>
+      <div class="content">
+
+        <!-- ====== DASHBOARD ====== -->
+        <div class="page active" id="dash-dashboard">
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Welcome back, Rajesh Kumar</h1>
+          <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">Senior Statistician • National Statistical Office</p>
+
+          <div class="ai-banner">
+            <div class="ai-badge">AI</div>
+            <div><h3>AI Summary</h3><p>Your statistical foundations are strong (78%). Focus on Python to unlock Data Viz and AI/ML pathways. ~12 hours to close your top 2 gaps. You're 40% through your learning path.</p></div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card"><div class="top"><div><div class="label">Overall Score</div><div class="value">68%</div></div><div class="icon-box" style="background:var(--primary-light);color:var(--primary)">🎯</div></div><div class="trend">+5% from last month</div></div>
+            <div class="stat-card"><div class="top"><div><div class="label">Competencies Assessed</div><div class="value">16/24</div></div><div class="icon-box" style="background:var(--green-light);color:var(--green)">📈</div></div><div class="trend">67% complete</div></div>
+            <div class="stat-card"><div class="top"><div><div class="label">Learning Hours</div><div class="value">12.5</div></div><div class="icon-box" style="background:#eff6ff;color:var(--navy-light)">⏱️</div></div><div class="trend">This month</div></div>
+            <div class="stat-card"><div class="top"><div><div class="label">Active Paths</div><div class="value">1</div></div><div class="icon-box" style="background:var(--purple-light);color:var(--purple)">📖</div></div><div class="trend">40% complete</div></div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Radar -->
+            <div class="card">
+              <div class="card-header"><h2>Competency Overview</h2><a href="#" onclick="switchPage('competencies');return false">View all →</a></div>
+              <div class="card-body">
+                <div class="radar-wrap">
+                  <svg class="radar-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Grid -->
+                    <polygon points="150,30 255,90 255,210 150,270 45,210 45,90" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                    <polygon points="150,60 225,105 225,195 150,240 75,195 75,105" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                    <polygon points="150,90 195,120 195,180 150,210 105,180 105,120" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                    <polygon points="150,120 165,135 165,165 150,180 135,165 135,135" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                    <!-- Labels -->
+                    <text x="150" y="20" text-anchor="middle" font-size="11" fill="#374151">Statistical</text>
+                    <text x="270" y="90" text-anchor="start" font-size="11" fill="#374151">Technical</text>
+                    <text x="270" y="215" text-anchor="start" font-size="11" fill="#374151">Digital Gov</text>
+                    <text x="150" y="288" text-anchor="middle" font-size="11" fill="#374151">Behavioural</text>
+                    <text x="30" y="215" text-anchor="end" font-size="11" fill="#374151">Data Quality</text>
+                    <text x="30" y="90" text-anchor="end" font-size="11" fill="#374151">Leadership</text>
+                    <!-- Data polygon -->
+                    <polygon points="150,46 238,108 222,201 150,249 78,186 66,102" fill="rgba(249,115,22,0.2)" stroke="#f97316" stroke-width="2"/>
+                    <!-- Data points -->
+                    <circle cx="150" cy="46" r="4" fill="#f97316"/>
+                    <circle cx="238" cy="108" r="4" fill="#f97316"/>
+                    <circle cx="222" cy="201" r="4" fill="#f97316"/>
+                    <circle cx="150" cy="249" r="4" fill="#f97316"/>
+                    <circle cx="78" cy="186" r="4" fill="#f97316"/>
+                    <circle cx="66" cy="102" r="4" fill="#f97316"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Gaps -->
+            <div class="card">
+              <div class="card-header"><h2>Top Skill Gaps</h2><a href="#" onclick="switchPage('competencies');return false">View all →</a></div>
+              <div class="card-body">
+                <div class="gap-list">
+                  <div class="gap-item"><div class="gap-left"><span class="gap-icon">⚠️</span><div><div class="gap-name">Python</div><div class="gap-meta"><span>Beginner → Intermediate</span><span>•</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 12h</div><span class="badge badge-high">high</span></div></div>
+                  <div class="gap-item"><div class="gap-left"><span class="gap-icon">🔴</span><div><div class="gap-name">Data Visualization</div><div class="gap-meta"><span>None → Beginner</span><span>•</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 6h</div><span class="badge badge-critical">critical</span></div></div>
+                  <div class="gap-item"><div class="gap-left"><span class="gap-icon">🟡</span><div><div class="gap-name">SDG Indicators</div><div class="gap-meta"><span>Intermediate → Advanced</span><span>•</span><span>Statistical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 8h</div><span class="badge badge-medium">medium</span></div></div>
+                  <div class="gap-item"><div class="gap-left"><span class="gap-icon">🟢</span><div><div class="gap-name">Cloud Computing</div><div class="gap-meta"><span>None → Beginner</span><span>•</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 4h</div><span class="badge badge-low">low</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning Path -->
+          <div class="card" style="margin-bottom:24px">
+            <div class="card-header"><h2>Your Learning Path</h2><a href="#" onclick="switchPage('learning');return false">View all →</a></div>
+            <div class="card-body">
+              <div class="path-card">
+                <div class="path-top">
+                  <div class="path-info"><div class="path-icon">📖</div><div><div class="path-title">Personalized Learning Path — 2025</div><div class="path-sub">5 courses • 34 hours</div></div></div>
+                  <div class="path-link" onclick="switchPage('learning')">View details →</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-header"><span>2/5 courses completed</span><span style="font-weight:600">40%</span></div>
+                  <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+                </div>
+                <div class="path-stats">
+                  <span>✅ 2 completed</span>
+                  <span>⏱ 14/34 hours</span>
+                  <span><span class="dot" style="background:var(--yellow)"></span>1 in progress</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div class="card">
+            <div class="card-header"><h2>Learning Progress</h2></div>
+            <div class="card-body">
+              <div class="progress-cards">
+                <div style="border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:500;color:var(--gray-500)">This Month</span><span style="font-weight:600;color:var(--gray-900)">12.5 hours</span></div><div style="margin-top:10px"><div class="progress-track"><div class="progress-fill" style="width:62.5%"></div></div><div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">62% of 20 hours</div></div></div>
+                <div style="border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:500;color:var(--gray-500)">This Quarter</span><span style="font-weight:600;color:var(--gray-900)">34 hours</span></div><div style="margin-top:10px"><div class="progress-track"><div class="progress-fill" style="width:56.7%"></div></div><div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">57% of 60 hours</div></div></div>
+                <div style="border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:500;color:var(--gray-500)">This Year</span><span style="font-weight:600;color:var(--gray-900)">89 hours</span></div><div style="margin-top:10px"><div class="progress-track"><div class="progress-fill" style="width:44.5%"></div></div><div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">45% of 200 hours</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== COMPETENCIES ====== -->
+        <div class="page" id="dash-competencies">
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Competency Framework</h1>
+          <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">India's Official Statistical System competency matrix</p>
+          <div class="search-bar">
+            <input type="text" placeholder="Search competencies..." id="comp-search" />
+            <select id="comp-filter"><option value="">All Domains</option><option value="statistical">Statistical Methods</option><option value="technical">Technical Skills</option><option value="digital">Digital Governance</option><option value="behavioural">Behavioural & Managerial</option></select>
+          </div>
+          <div class="domain-group" data-domain="statistical">
+            <div class="domain-header" onclick="toggleDomain(this)">▼ Statistical Methods <span class="domain-count">6</span></div>
+            <div class="domain-comps">
+              <div class="comp-item"><div><div class="comp-name">Survey Design</div><div class="comp-desc">Designing statistical surveys including sampling frames, questionnaire design, and data collection methodologies</div></div><span class="level-badge level-advanced">advanced</span></div>
+              <div class="comp-item"><div><div class="comp-name">Sampling Methods</div><div class="comp-desc">Probability and non-probability sampling techniques, sample size determination, stratification, and clustering</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">National Accounts</div><div class="comp-desc">GDP estimation, input-output tables, national income accounting, and SNA methodology</div></div><span class="level-badge level-advanced">advanced</span></div>
+              <div class="comp-item"><div><div class="comp-name">Price Statistics</div><div class="comp-desc">Consumer Price Index, Wholesale Price Index, price deflators, and basket revision methodologies</div></div><span class="level-badge level-advanced">advanced</span></div>
+              <div class="comp-item"><div><div class="comp-name">SDG Indicators</div><div class="comp-desc">UN Sustainable Development Goals indicator framework, data sources, and reporting requirements</div></div><span class="level-badge level-advanced">advanced</span></div>
+              <div class="comp-item"><div><div class="comp-name">Data Quality Frameworks</div><div class="comp-desc">Statistical quality dimensions, quality indicators, ESS quality assurance framework</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+            </div>
+          </div>
+          <div class="domain-group" data-domain="technical">
+            <div class="domain-header" onclick="toggleDomain(this)">▼ Technical Skills <span class="domain-count">5</span></div>
+            <div class="domain-comps">
+              <div class="comp-item"><div><div class="comp-name">Python</div><div class="comp-desc">Python programming for data analysis, pandas, numpy, scipy, and statistical computing</div></div><span class="level-badge level-beginner">beginner</span></div>
+              <div class="comp-item"><div><div class="comp-name">R Programming</div><div class="comp-desc">R statistical computing, tidyverse, ggplot2, and statistical modeling in R</div></div><span class="level-badge level-beginner">beginner</span></div>
+              <div class="comp-item"><div><div class="comp-name">SQL</div><div class="comp-desc">Database querying, data manipulation, joins, aggregations, and query optimization</div></div><span class="level-badge level-beginner">beginner</span></div>
+              <div class="comp-item"><div><div class="comp-name">Data Visualization</div><div class="comp-desc">Creating effective statistical graphics, dashboards, interactive visualizations</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">AI/ML for Statistics</div><div class="comp-desc">Machine learning applications in official statistics, automated data processing</div></div><span class="level-badge level-advanced">advanced</span></div>
+            </div>
+          </div>
+          <div class="domain-group" data-domain="digital">
+            <div class="domain-header" onclick="toggleDomain(this)">▼ Digital Governance <span class="domain-count">3</span></div>
+            <div class="domain-comps">
+              <div class="comp-item"><div><div class="comp-name">Cybersecurity</div><div class="comp-desc">Information security management, data protection, threat assessment</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">Data Privacy</div><div class="comp-desc">Personal data protection, DPDP Act compliance, anonymization techniques</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">Digital Public Infrastructure</div><div class="comp-desc">India Stack, UPI, Aadhaar integration, DigiLocker</div></div><span class="level-badge level-beginner">beginner</span></div>
+            </div>
+          </div>
+          <div class="domain-group" data-domain="behavioural">
+            <div class="domain-header" onclick="toggleDomain(this)">▼ Behavioural & Managerial <span class="domain-count">4</span></div>
+            <div class="domain-comps">
+              <div class="comp-item"><div><div class="comp-name">Leadership</div><div class="comp-desc">Organizational leadership, team management, strategic planning</div></div><span class="level-badge level-advanced">advanced</span></div>
+              <div class="comp-item"><div><div class="comp-name">Communication</div><div class="comp-desc">Technical writing, data presentation, stakeholder communication</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">Project Management</div><div class="comp-desc">Statistical project planning, resource allocation, timeline management</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+              <div class="comp-item"><div><div class="comp-name">Statistics Ethics</div><div class="comp-desc">Professional ethics, data confidentiality, integrity in statistical practices</div></div><span class="level-badge level-intermediate">intermediate</span></div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:16px;font-size:13px;color:var(--gray-500)">Showing 18 competencies across 4 domains</div>
+        </div>
+
+        <!-- ====== LEARNING ====== -->
+        <div class="page" id="dash-learning">
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Learning Paths</h1>
+          <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">Your personalized learning journey for skill development</p>
+          <div class="tabs">
+            <div class="tab active" onclick="switchLearnTab(this,'paths')">My Learning Paths</div>
+            <div class="tab" onclick="switchLearnTab(this,'courses')">Recommended Courses</div>
+          </div>
+          <div id="learn-paths">
+            <div class="path-card">
+              <div class="path-top"><div class="path-info"><div class="path-icon">📖</div><div><div class="path-title">Personalized Learning Path — 2025</div><div class="path-sub">5 courses • 34 hours</div></div></div><div class="path-link">View details →</div></div>
+              <div class="progress-bar"><div class="progress-header"><span>2/5 courses completed</span><span style="font-weight:600">40%</span></div><div class="progress-track"><div class="progress-fill" style="width:40%"></div></div></div>
+              <div class="path-stats"><span>✅ 2 completed</span><span>⏱ 14/34 hours</span><span><span class="dot" style="background:var(--yellow)"></span>1 in progress</span></div>
+            </div>
+          </div>
+          <div id="learn-courses" style="display:none">
+            <div class="ai-rec">✨ <strong>AI Recommended:</strong> Based on your skill gaps, these courses are prioritized for your role as Senior Statistician.</div>
+            <div class="course-grid">
+              <div class="course-card"><div class="course-top"><div><div class="course-title">Python for Statistical Analysis</div></div><span class="course-badge igot">iGOT</span></div><div class="course-desc">Learn Python programming with focus on pandas, numpy, and scipy for statistical data analysis</div><div class="course-footer"><div class="course-meta"><span>⏱ 12h</span><span>Beginner</span><span>Technology</span></div><span class="course-enroll">Enroll →</span></div></div>
+              <div class="course-card"><div class="course-top"><div><div class="course-title">Data Visualization with Python</div></div><span class="course-badge igot">iGOT</span></div><div class="course-desc">Create effective statistical visualizations using matplotlib, seaborn, and plotly</div><div class="course-footer"><div class="course-meta"><span>⏱ 6h</span><span>Intermediate</span><span>Technology</span></div><span class="course-enroll">Enroll →</span></div></div>
+              <div class="course-card"><div class="course-top"><div><div class="course-title">SDG Indicators and Reporting</div></div><span class="course-badge igot">iGOT</span></div><div class="course-desc">Understanding UN SDG indicator framework, data collection for SDG reporting, and India's progress</div><div class="course-footer"><div class="course-meta"><span>⏱ 8h</span><span>Intermediate</span><span>Statistical</span></div><span class="course-enroll">Enroll →</span></div></div>
+              <div class="course-card"><div class="course-top"><div><div class="course-title">Advanced Survey Methods Workshop</div></div><span class="course-badge tpac">TPAC</span></div><div class="course-desc">Intensive workshop on advanced sampling techniques, non-response adjustment for NSO</div><div class="course-footer"><div class="course-meta"><span>⏱ 40h</span><span>Advanced</span><span>Statistical</span></div><span class="course-enroll">Details</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== ASSESSMENTS ====== -->
+        <div class="page" id="dash-assessments">
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Assessments</h1>
+          <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">Test your knowledge and track your competency progress</p>
+          <div class="tabs">
+            <div class="tab active" onclick="switchAssessTab(this,'self')">Self Assessment</div>
+            <div class="tab" onclick="switchAssessTab(this,'ai')">AI Generated Quiz</div>
+            <div class="tab" onclick="switchAssessTab(this,'history')">Assessment History</div>
+          </div>
+          <div id="assess-self">
+            <div id="assess-hero" class="assess-hero">
+              <div class="big-icon">🎯</div>
+              <h2>Start Self Assessment</h2>
+              <p>Test your knowledge across statistical, technical, and behavioural competencies. This assessment will help identify your skill gaps and recommend personalized learning paths.</p>
+              <button class="btn btn-primary" style="margin-top:20px" onclick="startQuiz()">▶ Start Assessment</button>
+              <div class="meta"><span>• 3 questions</span><span>• ~5 minutes</span><span>• Results update your profile</span></div>
+            </div>
+            <div id="assess-quiz" style="display:none">
+              <div class="q-card">
+                <div class="q-progress"><span id="q-counter">Question 1 of 3</span><span id="q-pct">33% Complete</span></div>
+                <div class="q-bar"><div class="q-bar-fill" id="q-bar-fill" style="width:33%"></div></div>
+                <div class="q-text" id="q-text">What is the primary purpose of stratified sampling?</div>
+                <div class="q-options" id="q-options"></div>
+                <div class="q-nav"><button class="btn btn-outline" id="q-prev" onclick="prevQuestion()" disabled>← Previous</button><button class="btn btn-primary" id="q-next" onclick="nextQuestion()">Next →</button></div>
+              </div>
+            </div>
+            <div id="assess-result" style="display:none">
+              <div class="assess-hero">
+                <div class="big-icon" id="result-icon">✅</div>
+                <h2>Assessment Complete!</h2>
+                <div style="font-size:40px;font-weight:700;color:var(--primary);margin:12px 0" id="result-score">67%</div>
+                <p id="result-msg">Keep learning! Your recommended path has been updated.</p>
+                <button class="btn btn-primary" style="margin-top:16px" onclick="resetQuiz()">Take Again</button>
+              </div>
+            </div>
+          </div>
+          <div id="assess-ai" style="display:none">
+            <div class="card"><div class="card-body">
+              <h2 style="font-size:18px;font-weight:600;margin-bottom:8px">AI-Powered Quiz Generator</h2>
+              <p style="color:var(--gray-500);font-size:14px">Upload learning materials and let AI generate personalized assessment questions.</p>
+              <div class="upload-zone" style="margin-top:24px" id="upload-zone">
+                <div class="icon">📤</div>
+                <p>Drag and drop files here, or <span style="color:var(--primary);cursor:pointer">browse</span></p>
+                <div class="hint">Supports PDF, PPTX, DOCX, TXT (max 10MB)</div>
+              </div>
+            </div></div>
+          </div>
+          <div id="assess-history" style="display:none">
+            <div class="card"><div class="card-body">
+              <h2 style="font-size:18px;font-weight:600;margin-bottom:16px">Assessment History</h2>
+              <div class="history-item"><div class="history-left"><div class="history-score good">85%</div><div><div style="font-weight:500;font-size:14px">Self Assessment</div><div style="font-size:13px;color:var(--gray-500)">2025-01-15</div></div></div><div style="font-size:13px;color:var(--gray-500)">⏱ 8 min</div></div>
+              <div class="history-item"><div class="history-left"><div class="history-score good">72%</div><div><div style="font-weight:500;font-size:14px">AI Generated Quiz</div><div style="font-size:13px;color:var(--gray-500)">2025-01-10</div></div></div><div style="font-size:13px;color:var(--gray-500)">⏱ 12 min</div></div>
+              <div class="history-item"><div class="history-left"><div class="history-score good">90%</div><div><div style="font-weight:500;font-size:14px">Self Assessment</div><div style="font-size:13px;color:var(--gray-500)">2025-01-05</div></div></div><div style="font-size:13px;color:var(--gray-500)">⏱ 10 min</div></div>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- ====== ANALYTICS ====== -->
+        <div class="page" id="dash-analytics">
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Analytics Dashboard</h1>
+          <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">Organization-wide insights and training effectiveness</p>
+
+          <div class="ai-banner" style="margin-bottom:20px">
+            <div class="ai-badge">✨</div>
+            <div><h3>AI Insights Summary</h3><p>The organization has <strong>2,450 officials</strong> with <strong>1,820 active learners</strong>. Average competency score is <strong>68%</strong>. <strong>AI/ML for Statistics</strong> is the most critical gap (45 officials affected). Training effectiveness: +23% average score improvement.</p></div>
+          </div>
+
+          <div class="admin-stats">
+            <div class="admin-stat"><div class="icon">👥</div><div class="val">2,450</div><div class="lbl">Total Officials</div></div>
+            <div class="admin-stat"><div class="icon">🎯</div><div class="val">1,820</div><div class="lbl">Active Learners</div></div>
+            <div class="admin-stat"><div class="icon">📊</div><div class="val">68%</div><div class="lbl">Avg Score</div></div>
+            <div class="admin-stat"><div class="icon">📈</div><div class="val">12.4K</div><div class="lbl">Training Hours</div></div>
+            <div class="admin-stat"><div class="icon">📚</div><div class="val">45</div><div class="lbl">Courses</div></div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h2>Department Performance</h2></div>
+              <div class="card-body">
+                <div class="dept-card"><div class="dept-top"><div><div class="dept-name">National Statistical Office</div><div class="dept-sub">850 officials • 620 active</div></div><div class="dept-score"><div class="num">72%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-header"><span>Top gap: AI/ML for Statistics</span><span>78% completion</span></div><div class="progress-track"><div class="progress-fill" style="width:78%"></div></div></div></div>
+                <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Price Statistics Division</div><div class="dept-sub">320 officials • 245 active</div></div><div class="dept-score"><div class="num">65%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-header"><span>Top gap: Python</span><span>71% completion</span></div><div class="progress-track"><div class="progress-fill" style="width:71%"></div></div></div></div>
+                <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Labour Statistics Bureau</div><div class="dept-sub">280 officials • 210 active</div></div><div class="dept-score"><div class="num">63%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-header"><span>Top gap: SDG Indicators</span><span>69% completion</span></div><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div></div></div>
+                <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Agricultural Statistics Wing</div><div class="dept-sub">420 officials • 310 active</div></div><div class="dept-score"><div class="num">58%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-header"><span>Top gap: Data Visualization</span><span>64% completion</span></div><div class="progress-track"><div class="progress-fill" style="width:64%"></div></div></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h2>Critical Skill Gaps</h2></div>
+              <div class="card-body">
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;background:var(--gray-50)"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px;font-weight:700;color:var(--gray-400)">1</span><div><div style="font-weight:600;font-size:14px">SDG Indicators</div><span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">statistical</span></div></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;color:var(--red)">52</div><div style="font-size:11px;color:var(--gray-500)">officials</div></div></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;background:var(--gray-50)"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px;font-weight:700;color:var(--gray-400)">2</span><div><div style="font-weight:600;font-size:14px">AI/ML for Statistics</div><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">technical</span></div></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;color:var(--red)">45</div><div style="font-size:11px;color:var(--gray-500)">officials</div></div></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;background:var(--gray-50)"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px;font-weight:700;color:var(--gray-400)">3</span><div><div style="font-weight:600;font-size:14px">Python</div><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">technical</span></div></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;color:var(--red)">38</div><div style="font-size:11px;color:var(--gray-500)">officials</div></div></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;background:var(--gray-50)"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px;font-weight:700;color:var(--gray-400)">4</span><div><div style="font-weight:600;font-size:14px">Data Visualization</div><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">technical</span></div></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;color:var(--red)">34</div><div style="font-size:11px;color:var(--gray-500)">officials</div></div></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;background:var(--gray-50)"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px;font-weight:700;color:var(--gray-400)">5</span><div><div style="font-weight:600;font-size:14px">Cloud Computing</div><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">technical</span></div></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;color:var(--red)">28</div><div style="font-size:11px;color:var(--gray-500)">officials</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Predictive -->
+          <div class="card" style="margin-bottom:24px">
+            <div class="card-header"><h2>🔮 Predictive Insights</h2></div>
+            <div class="card-body">
+              <div class="grid-2">
+                <div class="predict-card"><div class="predict-header"><div><div class="predict-title">AI/ML Skills Demand</div><div class="predict-sub">35% → 60% by Q3 2026</div></div><span class="predict-badge">85% confidence</span></div><div class="predict-bar"><div class="progress-track"><div class="progress-fill" style="width:60%;background:var(--purple)"></div></div></div><div class="predict-rec">💡 Pre-emptive AI/ML training cohort recommended</div></div>
+                <div class="predict-card"><div class="predict-header"><div><div class="predict-title">Python Proficiency</div><div class="predict-sub">45% → 70% by Q4 2026</div></div><span class="predict-badge">78% confidence</span></div><div class="predict-bar"><div class="progress-track"><div class="progress-fill" style="width:70%;background:var(--purple)"></div></div></div><div class="predict-rec">💡 Scale up Python course capacity</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Effectiveness -->
+          <div class="card">
+            <div class="card-header"><h2>📈 Training Effectiveness</h2></div>
+            <div class="card-body">
+              <div class="effectiveness-grid">
+                <div class="eff-card eff-green"><div class="num">+23%</div><div class="lbl">Avg Score Improvement</div></div>
+                <div class="eff-card eff-blue"><div class="num">74%</div><div class="lbl">Course Completion Rate</div></div>
+                <div class="eff-card eff-purple"><div class="num">8.5h</div><div class="lbl">Avg Time to Complete</div></div>
+              </div>
+              <div style="margin-top:16px;padding:12px 16px;border-radius:var(--radius);background:var(--gray-50);font-size:13px;color:var(--gray-600)"><strong>Most Effective Course:</strong> Python for Statistics (92% satisfaction)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- Navigation ----
+function goToLogin(){document.getElementById('page-login').classList.add('active');document.getElementById('page-app').classList.remove('active')}
+function goToDashboard(){document.getElementById('page-login').classList.remove('active');document.getElementById('page-app').classList.add('active');switchPage('dashboard')}
+function switchPage(page){
+  document.querySelectorAll('#page-app .sidebar-nav a').forEach(a=>{a.classList.toggle('active',a.dataset.page===page)});
+  document.querySelectorAll('#page-app .content .page').forEach(p=>{p.classList.remove('active')});
+  const el=document.getElementById('dash-'+page);if(el)el.classList.add('active');
+  const titles={dashboard:'Employee Dashboard',competencies:'Competency Framework',learning:'Learning Paths',assessments:'Assessments',analytics:'Analytics Dashboard'};
+  document.getElementById('topbar-title').textContent=titles[page]||page;
+}
+document.querySelectorAll('#page-app .sidebar-nav a').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();switchPage(a.dataset.page)})});
+
+// ---- Competency toggle ----
+function toggleDomain(header){const comps=header.nextElementSibling;comps.style.display=comps.style.display==='none'?'block':'none';header.textContent=(comps.style.display==='none'?'▶':'▼')+' '+header.textContent.slice(2)}
+
+// ---- Learning tabs ----
+function switchLearnTab(tab,section){tab.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');document.getElementById('learn-paths').style.display=section==='paths'?'block':'none';document.getElementById('learn-courses').style.display=section==='courses'?'block':'none'}
+
+// ---- Assessment tabs ----
+function switchAssessTab(tab,section){tab.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');['self','ai','history'].forEach(s=>{const el=document.getElementById('assess-'+s);if(el)el.style.display=s===section?'block':'none'})
+  if(section==='self'){resetQuiz()}}
+
+// ---- Quiz engine ----
+const questions=[
+  {q:"What is the primary purpose of stratified sampling?",opts:["To reduce sampling error","To ensure representation of subgroups","To simplify data collection","To eliminate bias entirely"],ans:1,expl:"Stratified sampling divides the population into subgroups (strata) and samples from each, ensuring representation of all subgroups."},
+  {q:"Which Python library is commonly used for data manipulation in official statistics?",opts:["NumPy","Pandas","Matplotlib","Scikit-learn"],ans:1,expl:"Pandas provides DataFrames for structured data manipulation, making it ideal for statistical data processing."},
+  {q:"The Consumer Price Index (CPI) measures changes in prices of a basket of goods and services over time.",opts:["True","False"],ans:0,expl:"CPI is a measure of the average change over time in the prices paid by urban consumers for a market basket of consumer goods and services."}
+];
+let qIdx=0,qAnswers={};
+function startQuiz(){document.getElementById('assess-hero').style.display='none';document.getElementById('assess-result').style.display='none';document.getElementById('assess-quiz').style.display='block';renderQuestion()}
+function renderQuestion(){
+  const q=questions[qIdx];document.getElementById('q-counter').textContent='Question '+(qIdx+1)+' of '+questions.length;
+  document.getElementById('q-pct').textContent=Math.round((qIdx+1)/questions.length*100)+'% Complete';
+  document.getElementById('q-bar-fill').style.width=Math.round((qIdx+1)/questions.length*100)+'%';
+  document.getElementById('q-text').textContent=q.q;
+  const opts=document.getElementById('q-options');opts.innerHTML='';
+  q.opts.forEach((o,i)=>{const d=document.createElement('div');d.className='q-option'+(qAnswers[qIdx]===i?' selected':'');d.textContent=o;d.onclick=()=>{qAnswers[qIdx]=i;renderQuestion()};opts.appendChild(d)});
+  document.getElementById('q-prev').disabled=qIdx===0;
+  document.getElementById('q-next').textContent=qIdx===questions.length-1?'Submit':'Next →';
+}
+function nextQuestion(){if(qIdx<questions.length-1){qIdx++;renderQuestion()}else showResult()}
+function prevQuestion(){if(qIdx>0){qIdx--;renderQuestion()}}
+function showResult(){
+  let correct=0;questions.forEach((q,i)=>{if(qAnswers[i]===q.ans)correct++});
+  const pct=Math.round(correct/questions.length*100);
+  document.getElementById('assess-quiz').style.display='none';document.getElementById('assess-result').style.display='block';
+  document.getElementById('result-score').textContent=pct+'%';
+  document.getElementById('result-icon').textContent=pct>=70?'✅':'📝';
+  document.getElementById('result-msg').textContent=pct>=70?'Great job! You\'ve demonstrated strong knowledge.':'Keep learning! Your recommended path has been updated.';
+}
+function resetQuiz(){qIdx=0;qAnswers={};document.getElementById('assess-hero').style.display='block';document.getElementById('assess-quiz').style.display='none';document.getElementById('assess-result').style.display='none'}
+</script>
+</body>
+</html>

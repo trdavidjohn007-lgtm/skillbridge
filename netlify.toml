@@ -1,0 +1,64 @@
+[build]
+  publish = "."
+  command = "echo 'Static site — no build needed'"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    disabled = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/competencies"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/learning"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/assessments"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/analytics"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/credits"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/gamification"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/sparrow"
+  to = "/index.html"
+  status = 200

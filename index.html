@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tunnel — AI Skill Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --o-50:#fff8f0;--o-100:#ffeddb;--o-200:#ffd9b0;--o-300:#ffc07a;
+  --o-400:#ffa040;--o-500:#ff6b00;--o-600:#e85d00;--o-700:#c44d00;
+  --o-800:#9e3d00;--o-900:#7a2e00;
+  --w:#ffffff;--g-25:#fcfcfd;--g-50:#f9fafb;--g-100:#f2f4f7;
+  --g-200:#eaecf0;--g-300:#d0d5dd;--g-400:#98a2b3;--g-500:#667085;
+  --g-600:#475467;--g-700:#344054;--g-800:#1d2939;--g-900:#101828;
+  --g-950:#0c111d;
+  --r:#ef4444;--r-bg:#fef2f2;--g-c:#10b981;--g-bg:#ecfdf5;
+  --b:#3b82f6;--b-bg:#eff6ff;--p:#8b5cf6;--p-bg:#f5f3ff;
+  --radius:12px;--radius-lg:16px;--radius-xl:20px;--radius-full:9999px;
+  --shadow-xs:0 1px 2px rgba(16,24,40,.05);
+  --shadow-sm:0 1px 3px rgba(16,24,40,.1),0 1px 2px rgba(16,24,40,.06);
+  --shadow-md:0 4px 8px -2px rgba(16,24,40,.1),0 2px 4px -2px rgba(16,24,40,.06);
+  --shadow-lg:0 12px 16px -4px rgba(16,24,40,.08),0 4px 6px -2px rgba(16,24,40,.03);
+  --shadow-xl:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03);
+  --transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--g-50);color:var(--g-900);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:var(--o-600);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ========== PAGES ========== */
+.page{display:none;animation:fadeUp .4s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== BUTTONS ========== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius);font-family:inherit;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-o{background:var(--o-500);color:#fff;padding:12px 24px;font-size:14px;box-shadow:0 1px 2px rgba(255,107,0,.3)}
+.btn-o:hover{background:var(--o-600);box-shadow:0 4px 12px rgba(255,107,0,.35)}
+.btn-o-lg{padding:14px 32px;font-size:15px;border-radius:var(--radius-lg)}
+.btn-ghost{background:transparent;color:var(--g-700);padding:10px 16px;font-size:14px;border:1px solid var(--g-200)}
+.btn-ghost:hover{background:var(--g-100);border-color:var(--g-300)}
+.btn-sm{padding:8px 14px;font-size:13px}
+
+/* ========== INPUTS ========== */
+.input{width:100%;border:1.5px solid var(--g-200);border-radius:var(--radius);padding:12px 16px;font-family:inherit;font-size:14px;color:var(--g-900);background:var(--w);transition:var(--transition);outline:none}
+.input:focus{border-color:var(--o-500);box-shadow:0 0 0 4px rgba(255,107,0,.1)}
+.input::placeholder{color:var(--g-400)}
+.select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23667085' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+
+/* ========== BADGES ========== */
+.badge{display:inline-flex;align-items:center;border-radius:var(--radius-full);padding:3px 10px;font-size:11px;font-weight:600;letter-spacing:.02em}
+.badge-o{background:var(--o-50);color:var(--o-700)}
+.badge-r{background:var(--r-bg);color:#dc2626}
+.badge-g{background:var(--g-bg);color:#059669}
+.badge-b{background:var(--b-bg);color:#2563eb}
+.badge-p{background:var(--p-bg);color:#7c3aed}
+.badge-w{background:var(--g-100);color:var(--g-600)}
+
+/* ========== CARDS ========== */
+.card{background:var(--w);border:1px solid var(--g-200);border-radius:var(--radius-lg);box-shadow:var(--shadow-xs);transition:var(--transition)}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--g-100)}
+.card-header h2{font-size:16px;font-weight:600;color:var(--g-900)}
+.card-body{padding:24px}
+
+/* ========== LOGIN ========== */
+.login-wrap{min-height:100vh;display:flex;background:var(--w)}
+.login-left{flex:1.1;background:linear-gradient(160deg,var(--o-500) 0%,var(--o-700) 50%,var(--o-900) 100%);display:flex;align-items:center;justify-content:center;padding:48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;top:-30%;right:-20%;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.06)}
+.login-left::after{content:'';position:absolute;bottom:-20%;left:-10%;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.04)}
+.login-left .inner{position:relative;z-index:1;max-width:440px;color:#fff}
+.login-left .logo-mark{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;margin-bottom:32px;border:1px solid rgba(255,255,255,.2)}
+.login-left h1{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.login-left .sub{font-size:17px;color:rgba(255,255,255,.8);margin-top:12px;line-height:1.6}
+.login-left .feats{margin-top:40px;display:flex;flex-direction:column;gap:16px}
+.login-left .feat{display:flex;align-items:center;gap:14px;font-size:14px;color:rgba(255,255,255,.9)}
+.login-left .feat-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0}
+.login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:48px}
+.login-form{width:100%;max-width:400px}
+.login-form h2{font-size:28px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.login-form .sub{font-size:15px;color:var(--g-500);margin-top:6px}
+.login-form .divider{display:flex;align-items:center;gap:16px;margin:28px 0;font-size:13px;color:var(--g-400)}
+.login-form .divider::before,.login-form .divider::after{content:'';flex:1;height:1px;background:var(--g-200)}
+.login-form .field{margin-bottom:20px}
+.login-form .field label{display:block;font-size:13px;font-weight:500;color:var(--g-700);margin-bottom:6px}
+.login-form .sso-btn{width:100%;padding:14px;border:1.5px solid var(--g-200);border-radius:var(--radius);background:var(--w);font-family:inherit;font-size:14px;font-weight:500;color:var(--g-700);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--transition)}
+.login-form .sso-btn:hover{border-color:var(--g-300);background:var(--g-50)}
+.login-form .login-btn{width:100%;margin-top:8px}
+.login-form .footer{text-align:center;margin-top:24px;font-size:13px;color:var(--g-400)}
+.login-form .footer a{color:var(--o-600);font-weight:500}
+
+/* ========== APP SHELL ========== */
+.app-shell{display:flex;min-height:100vh;background:var(--g-50)}
+.sidebar{width:264px;background:var(--w);border-right:1px solid var(--g-200);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40;transition:var(--transition)}
+.sidebar-brand{padding:20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--g-100)}
+.sidebar-brand .mark{width:36px;height:36px;border-radius:10px;background:var(--o-500);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;box-shadow:0 2px 8px rgba(255,107,0,.3)}
+.sidebar-brand .name{font-weight:700;font-size:17px;color:var(--g-900);letter-spacing:-.01em}
+.sidebar-nav{flex:1;padding:12px;display:flex;flex-direction:column;gap:2px}
+.sidebar-nav .section-label{font-size:11px;font-weight:600;color:var(--g-400);text-transform:uppercase;letter-spacing:.06em;padding:16px 14px 6px}
+.sidebar-nav a{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius);font-size:14px;font-weight:500;color:var(--g-500);transition:var(--transition);position:relative}
+.sidebar-nav a:hover{background:var(--g-50);color:var(--g-700);text-decoration:none}
+.sidebar-nav a.active{background:var(--o-50);color:var(--o-700);font-weight:600}
+.sidebar-nav a.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--o-500);border-radius:0 3px 3px 0}
+.sidebar-nav a .ico{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.sidebar-footer{padding:16px;border-top:1px solid var(--g-100)}
+.sidebar-user{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius);transition:var(--transition);cursor:pointer}
+.sidebar-user:hover{background:var(--g-50)}
+.sidebar-user .av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--o-400),var(--o-600));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+.sidebar-user .info .nm{font-size:13px;font-weight:600;color:var(--g-800)}
+.sidebar-user .info .em{font-size:12px;color:var(--g-400)}
+.main-area{margin-left:264px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:64px;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--g-100);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:30}
+.topbar-title{font-size:15px;font-weight:600;color:var(--g-700)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:var(--radius);border:1px solid var(--g-200);background:var(--w);color:var(--g-500);font-size:12px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:inherit}
+.back-btn:hover{border-color:var(--o-300);color:var(--o-600);background:var(--o-50)}
+.back-btn:disabled{opacity:.3;cursor:not-allowed;border-color:var(--g-200);color:var(--g-300);background:var(--w)}
+.back-btn svg{width:14px;height:14px}
+.topbar-right .signout{font-size:13px;font-weight:500;color:var(--g-400);cursor:pointer;padding:6px 12px;border-radius:var(--radius);transition:var(--transition)}
+.topbar-right .signout:hover{color:var(--g-700);background:var(--g-100)}
+
+/* ========== HOME PROGRESS ==========
+.home-hero{padding:32px;border-radius:var(--radius-xl);background:linear-gradient(135deg,#ff6b00,#ff8c40);color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+.home-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.home-hero::before{content:'';position:absolute;bottom:-60px;right:60px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,250,.05)}
+.home-hero h1{font-size:26px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
+.home-hero p{font-size:14px;opacity:.85;position:relative;z-index:1}
+.home-hero .hero-stats{display:flex;gap:24px;margin-top:20px;position:relative;z-index:1}
+.home-hero .hero-stat{text-align:center}
+.home-hero .hero-stat .val{font-size:32px;font-weight:900;line-height:1}
+.home-hero .hero-stat .lbl{font-size:11px;opacity:.7;margin-top:4px}
+.home-progress-ring{position:relative;width:80px;height:80px;margin:0 auto 8px}
+.home-progress-ring svg{transform:rotate(-90deg)}
+.home-progress-ring .ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:var(--g-900)}
+.quick-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.quick-nav-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:var(--radius-lg);border:1.5px solid var(--g-200);background:var(--w);cursor:pointer;transition:var(--transition);text-align:center;text-decoration:none;color:inherit}
+.quick-nav-item:hover{border-color:var(--o-300);background:var(--o-50);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.quick-nav-item .q-icon{font-size:24px}
+.quick-nav-item .q-label{font-size:12px;font-weight:600;color:var(--g-700)}
+.quick-nav-item .q-count{font-size:10px;color:var(--g-400)}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--g-50)}
+.activity-item:last-child{border-bottom:none}
+.activity-item .a-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.activity-item .a-text{flex:1}
+.activity-item .a-title{font-size:13px;font-weight:600;color:var(--g-800)}
+.activity-item .a-sub{font-size:11px;color:var(--g-400);margin-top:2px}
+.activity-item .a-time{font-size:11px;color:var(--g-400);white-space:nowrap}
+.domain-progress-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--g-50)}
+.domain-progress-row:last-child{border-bottom:none}
+.domain-progress-row .dp-icon{font-size:20px;width:36px;text-align:center}
+.domain-progress-row .dp-info{flex:1}
+.domain-progress-row .dp-name{font-size:13px;font-weight:600;color:var(--g-800)}
+.domain-progress-row .dp-sub{font-size:11px;color:var(--g-400)}
+.domain-progress-row .dp-bar{width:100px;height:6px;border-radius:3px;background:var(--g-100);overflow:hidden}
+.domain-progress-row .dp-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.domain-progress-row .dp-pct{font-size:13px;font-weight:700;min-width:40px;text-align:right}
+.content{flex:1;padding:28px 32px;max-width:1320px;width:100%}
+
+/* ========== PAGE HEADER ========== */
+.page-header{margin-bottom:28px}
+.page-header h1{font-size:24px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.page-header p{font-size:14px;color:var(--g-500);margin-top:4px}
+
+/* ========== STAT CARDS ========== */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:var(--w);border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px 24px;transition:var(--transition);position:relative;overflow:hidden}
+.stat:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.stat .stat-top{display:flex;align-items:flex-start;justify-content:space-between}
+.stat .stat-label{font-size:13px;font-weight:500;color:var(--g-500)}
+.stat .stat-val{font-size:32px;font-weight:800;color:var(--g-900);margin-top:4px;letter-spacing:-.02em;animation:countUp .5s ease}
+.stat .stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.stat .stat-trend{font-size:12px;font-weight:500;margin-top:12px;color:var(--g-400)}
+.stat .stat-trend span{color:var(--g-c)}
+.stat::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;opacity:.04}
+
+/* ========== AI BANNER ========== */
+.ai-banner{background:linear-gradient(135deg,var(--o-50) 0%,#fff7ed 50%,var(--o-100) 100%);border:1px solid var(--o-200);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start}
+.ai-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--o-500),var(--o-600));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;box-shadow:0 2px 8px rgba(255,107,0,.25)}
+.ai-banner h3{font-size:14px;font-weight:700;color:var(--o-800);margin-bottom:4px}
+.ai-banner p{font-size:13px;color:var(--o-700);line-height:1.6}
+.ai-banner strong{color:var(--o-900)}
+
+/* ========== GRID ========== */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+/* ========== COMPETENCY RADAR ========== */
+.radar-wrap{display:flex;justify-content:center;padding:16px 0}
+
+/* ========== SKILL GAPS ========== */
+.gap-list{display:flex;flex-direction:column;gap:10px}
+.gap-item{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid var(--g-200);border-radius:var(--radius);transition:var(--transition);background:var(--w)}
+.gap-item:hover{border-color:var(--o-200);box-shadow:var(--shadow-sm)}
+.gap-left{display:flex;align-items:center;gap:14px}
+.gap-dot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.gap-name{font-weight:600;font-size:14px;color:var(--g-900)}
+.gap-meta{font-size:12px;color:var(--g-500);margin-top:2px;display:flex;align-items:center;gap:6px}
+.gap-right{display:flex;align-items:center;gap:12px}
+.gap-hours{font-size:13px;color:var(--g-400);display:flex;align-items:center;gap:4px}
+
+/* ========== PROGRESS ========== */
+.progress-track{height:6px;background:var(--g-100);border-radius:var(--radius-full);overflow:hidden}
+.progress-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--o-400),var(--o-500));transition:width .8s cubic-bezier(.4,0,.2,1)}
+.progress-fill.green{background:linear-gradient(90deg,#34d399,var(--g-c))}
+.progress-fill.blue{background:linear-gradient(90deg,#60a5fa,var(--b))}
+.progress-fill.purple{background:linear-gradient(90deg,#a78bfa,var(--p))}
+
+/* ========== LEARNING PATH ========== */
+.path-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:24px;transition:var(--transition);background:var(--w)}
+.path-card:hover{box-shadow:var(--shadow-md)}
+.path-top{display:flex;align-items:flex-start;justify-content:space-between}
+.path-info{display:flex;align-items:center;gap:14px}
+.path-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--o-50),var(--o-100));display:flex;align-items:center;justify-content:center;font-size:22px}
+.path-title{font-weight:700;font-size:16px;color:var(--g-900)}
+.path-sub{font-size:13px;color:var(--g-500);margin-top:2px}
+.path-link{font-size:13px;font-weight:600;color:var(--o-600);cursor:pointer;padding:6px 12px;border-radius:var(--radius);transition:var(--transition)}
+.path-link:hover{background:var(--o-50)}
+.progress-info{display:flex;justify-content:space-between;font-size:13px;color:var(--g-500);margin-bottom:6px}
+.progress-info .pct{font-weight:700;color:var(--g-900)}
+.path-stats{display:flex;gap:20px;margin-top:16px;font-size:13px;color:var(--g-500)}
+.path-stats .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+
+/* ========== COURSES ========== */
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.course-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px;transition:var(--transition);background:var(--w)}
+.course-card:hover{box-shadow:var(--shadow-md);border-color:var(--o-200)}
+.course-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.course-title{font-weight:700;font-size:15px;color:var(--g-900)}
+.course-desc{font-size:13px;color:var(--g-500);line-height:1.6;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.course-footer{display:flex;align-items:center;justify-content:space-between}
+.course-meta{display:flex;gap:12px;font-size:12px;color:var(--g-400)}
+.course-enroll{font-size:13px;font-weight:600;color:var(--o-600);cursor:pointer;padding:6px 14px;border-radius:var(--radius);transition:var(--transition)}
+.course-enroll:hover{background:var(--o-50)}
+
+/* ========== TABS ========== */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--g-100);margin-bottom:24px}
+.tab{padding:12px 20px;font-size:14px;font-weight:500;color:var(--g-400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--transition);border-radius:var(--radius) var(--radius) 0 0}
+.tab:hover{color:var(--g-600)}
+.tab.active{color:var(--o-600);border-bottom-color:var(--o-500);font-weight:600}
+
+/* ========== COMPETENCY PAGE ========== */
+.search-row{display:flex;gap:12px;margin-bottom:20px}
+.search-row .input{flex:1}
+.domain-group{border:1px solid var(--g-200);border-radius:var(--radius-lg);margin-bottom:12px;overflow:hidden;background:var(--w);transition:var(--transition)}
+.domain-group:hover{box-shadow:var(--shadow-sm)}
+.domain-header{display:flex;align-items:center;gap:10px;padding:14px 20px;background:var(--g-50);cursor:pointer;font-weight:600;font-size:14px;user-select:none;transition:var(--transition)}
+.domain-header:hover{background:var(--g-100)}
+.domain-chevron{transition:transform .2s;color:var(--g-400)}
+.domain-count{background:var(--g-200);border-radius:var(--radius-full);padding:2px 10px;font-size:12px;font-weight:500;color:var(--g-600)}
+.comp-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--g-100);transition:var(--transition)}
+.comp-row:hover{background:var(--g-50)}
+.comp-name{font-weight:600;font-size:14px;color:var(--g-900)}
+.comp-desc{font-size:12px;color:var(--g-400);margin-top:2px;max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.level-pill{padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600}
+.level-beginner{background:#fef3c7;color:#92400e}
+.level-intermediate{background:#dbeafe;color:#1e40af}
+.level-advanced{background:#ede9fe;color:#5b21b6}
+.level-expert{background:#d1fae5;color:#065f46}
+
+/* ========== ASSESSMENTS ========== */
+.assess-hero{text-align:center;padding:56px 32px;border:1px solid var(--g-200);border-radius:var(--radius-xl);background:var(--w);box-shadow:var(--shadow-xs)}
+.assess-hero .big-ico{font-size:56px;margin-bottom:20px}
+.assess-hero h2{font-size:24px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.assess-hero p{font-size:15px;color:var(--g-500);max-width:520px;margin:12px auto 0;line-height:1.6}
+.assess-hero .meta-row{display:flex;justify-content:center;gap:28px;margin-top:24px;font-size:13px;color:var(--g-400)}
+
+/* Quiz */
+.q-card{background:var(--w);border:1px solid var(--g-200);border-radius:var(--radius-xl);padding:32px;max-width:720px;margin:0 auto;box-shadow:var(--shadow-sm)}
+.q-progress{display:flex;justify-content:space-between;font-size:13px;color:var(--g-500);margin-bottom:8px}
+.q-text{font-size:18px;font-weight:700;color:var(--g-900);margin:20px 0;line-height:1.5;letter-spacing:-.01em}
+.q-options{display:flex;flex-direction:column;gap:10px}
+.q-opt{border:1.5px solid var(--g-200);border-radius:var(--radius);padding:14px 18px;cursor:pointer;transition:var(--transition);font-size:14px;font-weight:500;color:var(--g-700);background:var(--w)}
+.q-opt:hover{border-color:var(--o-300);background:var(--o-50)}
+.q-opt.sel{border-color:var(--o-500);background:var(--o-50);color:var(--o-700);font-weight:600;box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.q-nav{display:flex;justify-content:space-between;margin-top:28px}
+
+/* Result */
+.result-card{text-align:center;padding:48px;border:1px solid var(--g-200);border-radius:var(--radius-xl);background:var(--w)}
+.result-card .ico{width:72px;height:72px;border-radius:20px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.result-card .score{font-size:56px;font-weight:900;letter-spacing:-.03em;margin:8px 0}
+.result-card .msg{font-size:15px;color:var(--g-500);max-width:400px;margin:0 auto 24px}
+
+/* ========== ANALYTICS ========== */
+.admin-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+.admin-stat{background:var(--w);border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:18px 20px;transition:var(--transition)}
+.admin-stat:hover{box-shadow:var(--shadow-sm)}
+.admin-stat .ico{font-size:20px;margin-bottom:10px}
+.admin-stat .val{font-size:28px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.admin-stat .lbl{font-size:12px;color:var(--g-500);margin-top:2px}
+.dept-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px;background:var(--w);transition:var(--transition)}
+.dept-card:hover{box-shadow:var(--shadow-sm)}
+.dept-top{display:flex;justify-content:space-between;align-items:flex-start}
+.dept-name{font-weight:700;font-size:15px;color:var(--g-900)}
+.dept-sub{font-size:13px;color:var(--g-500);margin-top:2px}
+.dept-score{text-align:right}
+.dept-score .num{font-size:32px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.dept-score .lbl{font-size:11px;color:var(--g-500)}
+.dept-bar{margin-top:14px}
+.dept-bar-hdr{display:flex;justify-content:space-between;font-size:12px;color:var(--g-500);margin-bottom:6px}
+.gap-rank{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:16px 20px;background:var(--w);transition:var(--transition)}
+.gap-rank:hover{box-shadow:var(--shadow-sm)}
+.gap-rank .rank{font-size:20px;font-weight:800;color:var(--g-300);width:32px}
+.gap-rank .cnt{font-size:28px;font-weight:800;color:var(--r);letter-spacing:-.02em}
+.gap-rank .cnt-lbl{font-size:11px;color:var(--g-500)}
+.predict-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px;background:linear-gradient(135deg,var(--p-bg) 0%,var(--b-bg) 100%);transition:var(--transition)}
+.predict-card:hover{box-shadow:var(--shadow-md)}
+.predict-title{font-weight:700;font-size:15px;color:var(--g-900)}
+.predict-sub{font-size:13px;color:var(--g-600);margin-top:4px}
+.predict-rec{margin-top:14px;font-size:13px;color:var(--p);font-weight:500}
+.eff-card{border-radius:var(--radius-lg);padding:24px;text-align:center;transition:var(--transition)}
+.eff-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.eff-card .num{font-size:36px;font-weight:900;letter-spacing:-.03em}
+.eff-card .lbl{font-size:13px;color:var(--g-600);margin-top:4px}
+
+/* ========== AI REC BANNER ========== */
+.ai-rec{background:linear-gradient(135deg,var(--o-50) 0%,var(--o-100) 100%);border:1px solid var(--o-200);border-radius:var(--radius-lg);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--o-800);font-weight:500}
+
+/* ========== UPLOAD ZONE ========== */
+.upload-zone{border:2px dashed var(--g-300);border-radius:var(--radius-xl);padding:56px 32px;text-align:center;cursor:pointer;transition:var(--transition)}
+.upload-zone:hover{border-color:var(--o-400);background:var(--o-50)}
+.upload-zone .ico{font-size:44px;color:var(--g-300);margin-bottom:12px}
+.upload-zone p{font-size:14px;color:var(--g-600)}
+.upload-zone .hint{font-size:12px;color:var(--g-400);margin-top:8px}
+
+/* ========== HISTORY ========== */
+.hist-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:16px 20px;background:var(--w);margin-bottom:10px;transition:var(--transition)}
+.hist-item:hover{box-shadow:var(--shadow-sm)}
+.hist-left{display:flex;align-items:center;gap:14px}
+.hist-score{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.hist-score.good{background:var(--g-bg);color:#059669}
+.hist-score.ok{background:var(--o-50);color:var(--o-700)}
+
+/* ========== STREAK ========== */
+.streak-badge{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-full);background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;font-size:12px;font-weight:700;color:#92400e}
+.streak-badge .fire{font-size:16px}
+.streak-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px;background:var(--w)}
+.streak-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.streak-day{width:100%;aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--g-400)}
+.streak-day.active{background:linear-gradient(135deg,var(--o-400),var(--o-500));color:#fff;font-weight:700}
+.streak-day.today{border:2px solid var(--o-500);font-weight:700}
+.streak-day.future{background:var(--g-50);color:var(--g-300)}
+
+/* ========== CREDITS ========== */
+.credits-badge{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-full);background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #10b981;font-size:12px;font-weight:700;color:#065f46}
+.credits-badge .coin{font-size:14px}
+.credit-card{border:1px solid var(--g-200);border-radius:var(--radius-xl);padding:24px;background:linear-gradient(135deg,var(--o-50) 0%,#fff 100%);position:relative;overflow:hidden}
+.credit-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,107,0,.08)}
+.credit-balance{font-size:48px;font-weight:900;color:var(--o-600);letter-spacing:-.03em;line-height:1}
+.credit-label{font-size:13px;color:var(--g-500);margin-top:4px}
+.credit-progress{margin-top:16px}
+.credit-level{display:flex;justify-content:space-between;font-size:12px;color:var(--g-500);margin-bottom:6px}
+.credit-level .current{font-weight:700;color:var(--o-600)}
+.credit-history{border:1px solid var(--g-200);border-radius:var(--radius-lg);overflow:hidden}
+.credit-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--g-100)}
+.credit-row:last-child{border-bottom:none}
+.credit-row .left{display:flex;align-items:center;gap:10px}
+.credit-row .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.credit-row .desc{font-size:13px;font-weight:500;color:var(--g-800)}
+.credit-row .time{font-size:11px;color:var(--g-400)}
+.credit-row .amount{font-size:14px;font-weight:700;color:var(--g-c)}
+
+/* ========== COMPANY BRIDGE ========== */
+.bridge-card{border:2px solid var(--g-200);border-radius:var(--radius-xl);padding:24px;position:relative;overflow:hidden;transition:var(--transition)}
+.bridge-card.qualified{border-color:var(--o-300);background:linear-gradient(135deg,var(--o-50) 0%,#fff 100%)}
+.bridge-card.locked{opacity:.6;filter:grayscale(.3)}
+.bridge-card .lock-overlay{position:absolute;inset:0;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.bridge-card .lock-overlay .lock{font-size:32px}
+.bridge-card .lock-overlay .msg{font-size:13px;color:var(--g-500);font-weight:500;text-align:center}
+.bridge-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.bridge-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--g-50)}
+.bridge-name{font-weight:700;font-size:16px;color:var(--g-900)}
+.bridge-type{font-size:12px;color:var(--g-500)}
+.bridge-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.bridge-tag{padding:4px 10px;border-radius:var(--radius-full);background:var(--g-100);font-size:11px;font-weight:500;color:var(--g-600)}
+.bridge-req{margin-top:16px;padding:12px 16px;border-radius:var(--radius);background:var(--g-50);font-size:13px;color:var(--g-600)}
+.bridge-req strong{color:var(--g-800)}
+.bridge-apply{margin-top:16px}
+
+/* ========== SPARROW/APAR ========== */
+.sparrow-header{display:flex;align-items:center;gap:16px;padding:24px;border:1px solid var(--g-200);border-radius:var(--radius-xl);background:linear-gradient(135deg,var(--b-bg) 0%,var(--w) 100%);margin-bottom:24px}
+.sparrow-header .govt{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#1e3a5f,#2563eb);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px}
+.sparrow-header h2{font-size:20px;font-weight:800;color:var(--g-900);letter-spacing:-.02em}
+.sparrow-header p{font-size:13px;color:var(--g-500);margin-top:2px}
+.export-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:20px;background:var(--w);transition:var(--transition);cursor:pointer}
+.export-card:hover{box-shadow:var(--shadow-md);border-color:var(--o-200)}
+.export-card .ico{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:12px}
+.export-card h3{font-weight:700;font-size:15px;color:var(--g-900)}
+.export-card p{font-size:13px;color:var(--g-500);margin-top:4px;line-height:1.5}
+.competency-table{width:100%;border-collapse:collapse;font-size:13px}
+.competency-table th{text-align:left;padding:10px 16px;background:var(--g-50);font-weight:600;color:var(--g-700);border-bottom:2px solid var(--g-200);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.competency-table td{padding:10px 16px;border-bottom:1px solid var(--g-100);color:var(--g-800)}
+.competency-table tr:hover td{background:var(--g-50)}
+.competency-table .domain-col{font-weight:600;color:var(--g-900)}
+.competency-table .level-col{font-weight:500}
+.competency-table .score-col{font-weight:700;color:var(--o-600)}
+.report-preview{border:2px solid var(--g-200);border-radius:var(--radius-xl);background:var(--w);overflow:hidden}
+.report-preview .rp-header{padding:20px 24px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;display:flex;align-items:center;justify-content:space-between}
+.report-preview .rp-header h3{font-size:16px;font-weight:700}
+.report-preview .rp-body{padding:24px}
+.report-preview .rp-section{margin-bottom:20px}
+.report-preview .rp-section h4{font-size:13px;font-weight:700;color:var(--g-900);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--g-200)}
+.report-preview .rp-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+.report-preview .rp-row .label{color:var(--g-500)}
+.report-preview .rp-row .value{font-weight:600;color:var(--g-900)}
+.report-preview .rp-training{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--g-100)}
+.report-preview .rp-training .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.report-preview .rp-training .t-title{font-weight:500;color:var(--g-800);font-size:13px}
+.report-preview .rp-training .t-meta{font-size:11px;color:var(--g-400)}
+.report-preview .rp-stamp{text-align:center;padding:16px;border-top:1px solid var(--g-200);background:var(--g-50);font-size:11px;color:var(--g-400)}
+.report-preview .rp-stamp .qr{font-size:32px;margin-bottom:4px}
+.toast-msg{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--g-900);color:#fff;padding:12px 24px;border-radius:var(--radius);font-size:13px;font-weight:500;z-index:200;animation:fadeUp .3s ease;box-shadow:var(--shadow-lg)}
+
+/* ========== AI CHATBOT ========== */
+.chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--o-500),var(--o-600));color:#fff;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,0,.35);display:flex;align-items:center;justify-content:center;z-index:100;transition:var(--transition)}
+.chat-fab:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(255,107,0,.45)}
+.chat-fab .fab-icon{font-size:24px}
+.chat-fab .fab-badge{position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--r);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.chat-panel{position:fixed;bottom:0;right:0;width:400px;height:100vh;background:var(--w);border-left:1px solid var(--g-200);box-shadow:-8px 0 32px rgba(0,0,0,.1);z-index:99;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.chat-panel.open{transform:translateX(0)}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--g-100);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--o-50),#fff)}
+.chat-header .left{display:flex;align-items:center;gap:10px}
+.chat-header .avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--o-500),var(--o-600));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+.chat-header .name{font-weight:700;font-size:14px;color:var(--g-900)}
+.chat-header .status{font-size:11px;color:var(--g-c);display:flex;align-items:center;gap:4px}
+.chat-header .status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--g-c)}
+.chat-close{width:32px;height:32px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--g-400);transition:var(--transition)}
+.chat-close:hover{background:var(--g-100);color:var(--g-700)}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.chat-msg{display:flex;gap:10px;animation:fadeUp .3s ease}
+.chat-msg.bot{align-self:flex-start}
+.chat-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.chat-msg .msg-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.chat-msg.bot .msg-avatar{background:linear-gradient(135deg,var(--o-500),var(--o-600));color:#fff}
+.chat-msg.user .msg-avatar{background:var(--g-100);color:var(--g-600)}
+.chat-msg .bubble{max-width:280px;padding:12px 16px;border-radius:14px;font-size:13px;line-height:1.6}
+.chat-msg.bot .bubble{background:var(--g-50);color:var(--g-800);border-bottom-left-radius:4px}
+.chat-msg.user .bubble{background:var(--o-500);color:#fff;border-bottom-right-radius:4px}
+.chat-msg .bubble strong{color:var(--o-600)}
+.chat-msg.user .bubble strong{color:#fff}
+.chat-quick-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chat-quick-btn{padding:6px 12px;border-radius:var(--radius-full);border:1px solid var(--o-200);background:var(--w);font-size:12px;font-weight:500;color:var(--o-700);cursor:pointer;transition:var(--transition);font-family:inherit}
+.chat-quick-btn:hover{background:var(--o-50);border-color:var(--o-400)}
+.chat-course-card{border:1px solid var(--g-200);border-radius:var(--radius);padding:12px;margin-top:8px;background:var(--w);transition:var(--transition)}
+.chat-course-card:hover{box-shadow:var(--shadow-sm);border-color:var(--o-200)}
+.chat-course-card .title{font-weight:600;font-size:13px;color:var(--g-900)}
+.chat-course-card .meta{font-size:11px;color:var(--g-400);margin-top:4px;display:flex;gap:8px}
+.chat-course-card .enroll{display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--o-600);text-decoration:none}
+.chat-course-card .enroll:hover{text-decoration:underline}
+.chat-typing{display:flex;gap:4px;padding:8px 16px;align-items:center}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--g-300);animation:pulse 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+.chat-input-area{padding:12px 16px;border-top:1px solid var(--g-100);display:flex;gap:8px;align-items:center;background:var(--w)}
+.chat-input{flex:1;border:1.5px solid var(--g-200);border-radius:var(--radius);padding:10px 14px;font-family:inherit;font-size:13px;color:var(--g-900);outline:none;transition:var(--transition)}
+.chat-input:focus{border-color:var(--o-500);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.chat-input::placeholder{color:var(--g-400)}
+.chat-send{width:36px;height:36px;border-radius:var(--radius);background:var(--o-500);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.chat-send:hover{background:var(--o-600)}
+.chat-send:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:480px){.chat-panel{width:100%}}
+
+/* ========== GAMIFICATION: BADGES ==========
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.ach-badge{padding:18px 14px;border-radius:var(--radius-lg);border:1.5px solid var(--g-200);background:var(--w);text-align:center;transition:var(--transition);position:relative;overflow:hidden}
+.ach-badge:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.ach-badge.unlocked{border-color:var(--o-300);background:linear-gradient(135deg,#fff7ed,#fff)}
+.ach-badge.locked{opacity:.5;filter:grayscale(.6)}
+.ach-badge .badge-icon{font-size:36px;margin-bottom:8px;display:block}
+.ach-badge .badge-name{font-size:13px;font-weight:700;color:var(--g-900);margin-bottom:4px}
+.ach-badge .badge-desc{font-size:11px;color:var(--g-400);line-height:1.4}
+.ach-badge .badge-date{font-size:10px;color:var(--o-600);font-weight:600;margin-top:8px}
+.ach-badge .lock-icon{position:absolute;top:8px;right:8px;font-size:14px;color:var(--g-300)}
+.ach-badge .unlocked-check{position:absolute;top:8px;right:8px;font-size:14px;color:var(--g-c);font-weight:700}
+.category-header{font-size:13px;font-weight:700;color:var(--g-700);text-transform:uppercase;letter-spacing:.04em;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--g-100)}
+
+/* ========== GAMIFICATION: LEADERBOARD ==========
+.lb-card{border:1px solid var(--g-200);border-radius:var(--radius-lg);overflow:hidden;background:var(--w)}
+.lb-row{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--g-50);transition:var(--transition)}
+.lb-row:hover{background:var(--g-bg)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:12px;flex-shrink:0}
+.lb-rank.gold{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e}
+.lb-rank.silver{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);color:#475569}
+.lb-rank.bronze{background:linear-gradient(135deg,#fed7aa,#fdba74);color:#9a3412}
+.lb-rank.normal{background:var(--g-50);color:var(--g-500)}
+.lb-dept{flex:1}
+.lb-dept .dept-name{font-size:14px;font-weight:600;color:var(--g-900)}
+.lb-dept .dept-members{font-size:11px;color:var(--g-400)}
+.lb-score{text-align:right;min-width:60px}
+.lb-score .score-val{font-size:16px;font-weight:800;color:var(--g-900)}
+.lb-score .score-label{font-size:10px;color:var(--g-400)}
+.lb-bar-wrap{width:80px;margin:0 12px}
+.lb-bar{height:6px;border-radius:3px;background:var(--g-100);overflow:hidden}
+.lb-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.lb-my-row{background:linear-gradient(135deg,#fff7ed,#fff);border:1.5px solid var(--o-200);border-radius:var(--radius);margin:0 8px}
+.lb-my-row .lb-rank{background:linear-gradient(135deg,var(--o-400),var(--o-500));color:#fff}
+
+/* ========== STREAK MILESTONES ==========
+.milestone-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.milestone{padding:6px 12px;border-radius:var(--radius-full);font-size:11px;font-weight:600;border:1px solid var(--g-200);background:var(--g-50);color:var(--g-500);transition:var(--transition)}
+.milestone.achieved{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#f59e0b;color:#92400e}
+.milestone.achieved::before{content:'✓ '}
+
+/* ========== XP BAR ==========
+.xp-wrap{margin-top:12px}
+.xp-label{display:flex;justify-content:space-between;font-size:12px;color:var(--g-500);margin-bottom:4px}
+.xp-bar{height:8px;border-radius:4px;background:var(--g-100);overflow:hidden}
+.xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--o-400),var(--o-500));transition:width 1s ease}
+
+/* ========== COMPETENCY GRAPH ==========
+.graph-container{position:relative;border:1px solid var(--g-200);border-radius:var(--radius-lg);background:linear-gradient(135deg,#fafafa 0%,#fff 100%);overflow:hidden}
+.graph-toolbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--g-100);background:var(--w);flex-wrap:wrap}
+.graph-toolbar .view-toggle{display:flex;border:1px solid var(--g-200);border-radius:var(--radius);overflow:hidden}
+.graph-toolbar .view-btn{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:var(--w);color:var(--g-500);cursor:pointer;transition:var(--transition);font-family:inherit}
+.graph-toolbar .view-btn.active{background:var(--o-500);color:#fff}
+.graph-toolbar .view-btn:hover:not(.active){background:var(--g-50);color:var(--g-700)}
+.graph-toolbar .legend{display:flex;gap:12px;margin-left:auto;flex-wrap:wrap}
+.graph-toolbar .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--g-500);font-weight:500}
+.graph-toolbar .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.graph-svg{width:100%;height:auto;display:block;cursor:grab}
+.graph-svg:active{cursor:grabbing}
+.graph-svg .node{cursor:pointer;transition:transform .2s ease}
+.graph-svg .node:hover{transform:scale(1.08)}
+.graph-svg .node-circle{stroke-width:2.5;transition:all .2s ease}
+.graph-svg .node:hover .node-circle{stroke-width:3.5;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+.graph-svg .node-label{font-family:Inter,system-ui,sans-serif;font-size:11px;font-weight:600;fill:var(--g-800);pointer-events:none;text-anchor:middle}
+.graph-svg .node-level{font-family:Inter,system-ui,sans-serif;font-size:9px;font-weight:500;fill:var(--g-400);pointer-events:none;text-anchor:middle}
+.graph-svg .node-icon{font-size:16px;pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.graph-svg .edge{stroke:var(--g-200);stroke-width:1.5;fill:none;marker-end:url(#arrowhead);transition:stroke .2s ease,stroke-width .2s ease}
+.graph-svg .edge.highlighted{stroke:var(--o-500);stroke-width:2.5}
+.graph-svg .edge.dimmed{stroke:var(--g-100);stroke-width:1}
+.graph-svg .node.dimmed{opacity:.25}
+.graph-svg .node.selected .node-circle{stroke:var(--o-500);stroke-width:3.5;filter:drop-shadow(0 0 12px rgba(255,107,0,.3))}
+.graph-svg .prereq-badge{font-family:Inter,system-ui,sans-serif;font-size:8px;font-weight:700;fill:#fff;pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.graph-detail{position:absolute;top:16px;right:16px;width:280px;background:var(--w);border:1px solid var(--g-200);border-radius:var(--radius-lg);padding:0;box-shadow:var(--shadow-lg);opacity:0;transform:translateX(10px);transition:all .25s ease;pointer-events:none;z-index:10}
+.graph-detail.visible{opacity:1;transform:translateX(0);pointer-events:auto}
+.graph-detail-header{padding:16px;border-bottom:1px solid var(--g-100);display:flex;align-items:flex-start;justify-content:space-between}
+.graph-detail-header h3{font-size:15px;font-weight:700;color:var(--g-900);margin:0}
+.graph-detail-header .close-btn{width:24px;height:24px;border-radius:50%;border:none;background:var(--g-50);color:var(--g-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0}
+.graph-detail-header .close-btn:hover{background:var(--g-100);color:var(--g-700)}
+.graph-detail-body{padding:16px}
+.graph-detail-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid var(--g-50)}
+.graph-detail-row:last-child{border-bottom:none}
+.graph-detail-row .label{color:var(--g-400)}
+.graph-detail-row .val{font-weight:600;color:var(--g-800)}
+.graph-detail-section{margin-top:12px}
+.graph-detail-section h4{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--g-400);margin-bottom:8px}
+.graph-detail-dep{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;margin:2px;border:1px solid var(--g-200);background:var(--g-50);color:var(--g-600);cursor:pointer;transition:var(--transition)}
+.graph-detail-dep:hover{border-color:var(--o-300);background:var(--o-50);color:var(--o-700)}
+.graph-detail-dep.prereq{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
+.graph-detail-course{display:block;margin-top:8px;padding:10px;border-radius:var(--radius);background:var(--o-50);border:1px solid var(--o-200);font-size:12px;color:var(--o-700);font-weight:600;text-decoration:none;transition:var(--transition)}
+.graph-detail-course:hover{background:var(--o-100);border-color:var(--o-300)}
+
+/* ========== SIDEBAR STREAK ========== */
+.sidebar-streak{padding:12px 16px;border-top:1px solid var(--g-100);display:flex;align-items:center;justify-content:space-between}
+.sidebar-streak .streak-info{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#92400e}
+.sidebar-streak .credits-info{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#065f46}
+
+/* ========== INTEREST CHIPS ========== */
+.interest-chip{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:1.5px solid var(--g-200);border-radius:var(--radius-full);background:var(--w);font-family:inherit;font-size:13px;font-weight:500;color:var(--g-600);cursor:pointer;transition:var(--transition);user-select:none}
+.interest-chip:hover{border-color:var(--o-300);background:var(--o-50);color:var(--o-700)}
+.interest-chip.selected{border-color:var(--o-500);background:var(--o-50);color:var(--o-700);font-weight:600;box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.interest-chip span{font-size:16px}
+.tag-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:var(--radius-full);background:var(--o-50);color:var(--o-700);font-size:12px;font-weight:600;border:1px solid var(--o-200)}
+
+@media(max-width:1024px){
+  .sidebar{display:none}.main-area{margin-left:0}
+  .stats-row{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}
+  .admin-row{grid-template-columns:repeat(2,1fr)}.course-grid{grid-template-columns:1fr}
+  .login-left{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN ========== -->
+<div class="page active" id="p-login">
+  <div class="login-wrap">
+    <div class="login-left">
+      <div class="inner">
+        <div class="logo-mark">
+          <svg width="32" height="32" viewBox="0 0 40 40"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff8c40"/><stop offset="100%" stop-color="#fff" stop-opacity=".2"/></linearGradient></defs><path d="M8 30 Q8 10 20 10 Q32 10 32 30" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M13 30 Q13 16 20 16 Q27 16 27 30" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity=".65"/><path d="M17 30 Q17 22 20 22 Q23 22 23 30" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".35"/></svg>
+        </div>
+        <h1>Tunnel</h1>
+        <p class="sub">AI-powered competency intelligence for India's Official Statistical System. Personalized learning pathways driven by skill-gap analysis.</p>
+        <div class="feats">
+          <div class="feat"><div class="feat-dot"></div>AI-based competency assessment</div>
+          <div class="feat"><div class="feat-dot"></div>Automated skill-gap analysis</div>
+          <div class="feat"><div class="feat-dot"></div>Personalized iGOT Karmayogi recommendations</div>
+          <div class="feat"><div class="feat-dot"></div>AI-powered quiz generation from uploaded content</div>
+          <div class="feat"><div class="feat-dot"></div>Predictive workforce analytics</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-form">
+        <h2>Welcome back</h2>
+        <p class="sub">Sign in to access your learning dashboard</p>
+        <button class="sso-btn" onclick="goApp()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Sign in with Government SSO
+        </button>
+        <div class="divider">or sign in with email</div>
+        <div class="field"><label>Email address</label><input class="input" type="email" placeholder="you@gov.in" /></div>
+        <div class="field"><label>Password</label><input class="input" type="password" placeholder="••••••••" /></div>
+        <button class="btn btn-o login-btn btn-o-lg" onclick="goApp()">Sign in →</button>
+        <p class="footer">Don't have an account? <a href="#">Contact administrator</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== APP ========== -->
+<div class="page" id="p-app">
+<div class="app-shell">
+  <nav class="sidebar">
+    <div class="sidebar-brand"><div class="mark" style="background:linear-gradient(135deg,#ff6b00,#ff8c40);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 40 40"><path d="M8 30 Q8 10 20 10 Q32 10 32 30" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/><path d="M14 30 Q14 16 20 16 Q26 16 26 30" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity=".55"/><path d="M18 30 Q18 22 20 22 Q22 22 22 30" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".3"/></svg></div><span class="name">Tunnel</span></div>
+    <div class="sidebar-nav">
+      <div class="section-label">Main</div>
+      <a href="#" data-pg="home"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+      <a href="#" class="active" data-pg="dashboard"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>Dashboard</a>
+      <a href="#" data-pg="competencies"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>Competencies</a>
+      <a href="#" data-pg="learning"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Learning Paths</a>
+      <a href="#" data-pg="assessments"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>Assessments</a>
+      <div class="section-label">Insights</div>
+      <a href="#" data-pg="analytics"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>Analytics</a>
+      <a href="#" data-pg="credits"><span class="ico">🪙</span>Credits & Streak</a>
+      <div class="section-label">Engagement</div>
+      <a href="#" data-pg="gamification"><span class="ico">🏆</span>Badges & Ranks</a>
+      <a href="#" data-pg="sparrow"><span class="ico">🏛️</span>SPARROW / APAR</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-streak">
+        <div class="streak-info"><span class="fire">🔥</span><span id="sidebar-streak">7 day streak</span></div>
+        <div class="credits-info"><span class="coin">🪙</span><span id="sidebar-credits">1,240</span></div>
+      </div>
+      <div class="sidebar-user"><div class="av">RK</div><div class="info"><div class="nm">Rajesh Kumar</div><div class="em">rajesh@gov.in</div></div></div>
+    </div>
+  </nav>
+
+  <div class="main-area">
+    <div class="topbar"><div style="display:flex;align-items:center;gap:12px"><div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="navTo('home')"><div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#ff6b00,#ff8c40);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(255,107,0,.25)"><svg width="18" height="18" viewBox="0 0 40 40"><path d="M8 30 Q8 10 20 10 Q32 10 32 30" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/><path d="M14 30 Q14 16 20 16 Q26 16 26 30" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity=".55"/><path d="M18 30 Q18 22 20 22 Q22 22 22 30" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".3"/></svg></div><span style="font-size:16px;font-weight:800;color:var(--g-900);letter-spacing:-.02em">Tunnel</span></div><button class="back-btn" id="back-btn" onclick="goBack()" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button><div class="topbar-title" id="tb-title">Dashboard</div></div><div class="topbar-right"><div class="signout" onclick="goLogin()">Sign out</div></div></div>
+    <div class="content">
+
+<!-- ===== HOME / PROGRESS ===== -->
+<div class="page" id="pg-home">
+  <!-- Hero -->
+  <div class="home-hero">
+    <h1>Welcome back, Rajesh Kumar 👋</h1>
+    <p>Senior Statistician · National Statistical Office · Employee ID: EMP-NSO-2024-1847</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val" style="color:#fff">1,240</div><div class="lbl">Total XP</div></div>
+      <div class="hero-stat"><div class="val" style="color:#fff">Level 8</div><div class="lbl">Advanced Learner</div></div>
+      <div class="hero-stat"><div class="val" style="color:#fff">🔥 7</div><div class="lbl">Day Streak</div></div>
+      <div class="hero-stat"><div class="val" style="color:#fff">72%</div><div class="lbl">Competency Score</div></div>
+    </div>
+  </div>
+
+  <!-- Progress Rings + Quick Nav -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+    <!-- Progress Rings -->
+    <div class="card">
+      <div class="card-header"><h2>Overall Progress</h2></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center">
+          <div>
+            <div class="home-progress-ring">
+              <svg width="80" height="80"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--g-100)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--o-500)" stroke-width="6" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="60"/></svg>
+              <div class="ring-text">72%</div>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--g-700)">Competency</div>
+            <div style="font-size:10px;color:var(--g-400)">+4.2% this quarter</div>
+          </div>
+          <div>
+            <div class="home-progress-ring">
+              <svg width="80" height="80"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--g-100)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--b)" stroke-width="6" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="149"/></svg>
+              <div class="ring-text" style="color:var(--b)">30%</div>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--g-700)">Courses</div>
+            <div style="font-size:10px;color:var(--g-400)">7 of 24 completed</div>
+          </div>
+          <div>
+            <div class="home-progress-ring">
+              <svg width="80" height="80"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--g-100)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--p)" stroke-width="6" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="86"/></svg>
+              <div class="ring-text" style="color:var(--p)">60%</div>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:var(--g-700)">Credits</div>
+            <div style="font-size:10px;color:var(--g-400)">1,240 / 2,000 XP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="card">
+      <div class="card-header"><h2>Quick Navigation</h2></div>
+      <div class="card-body">
+        <div class="quick-nav">
+          <div class="quick-nav-item" onclick="navTo('dashboard')"><div class="q-icon">📊</div><div class="q-label">Dashboard</div><div class="q-count">AI Summary + Radar</div></div>
+          <div class="quick-nav-item" onclick="navTo('competencies')"><div class="q-icon">🎯</div><div class="q-label">Competencies</div><div class="q-count">18 skills mapped</div></div>
+          <div class="quick-nav-item" onclick="navTo('learning')"><div class="q-icon">📚</div><div class="q-label">Learning</div><div class="q-count">3 in progress</div></div>
+          <div class="quick-nav-item" onclick="navTo('assessments')"><div class="q-icon">✅</div><div class="q-label">Assessments</div><div class="q-count">7 passed</div></div>
+          <div class="quick-nav-item" onclick="navTo('gamification')"><div class="q-icon">🏆</div><div class="q-label">Badges</div><div class="q-count">7 of 15 earned</div></div>
+          <div class="quick-nav-item" onclick="navTo('credits')"><div class="q-icon">🪙</div><div class="q-label">Credits</div><div class="q-count">1,240 XP</div></div>
+          <div class="quick-nav-item" onclick="navTo('sparrow')"><div class="q-icon">🏛️</div><div class="q-label">APAR Export</div><div class="q-count">SPARROW report</div></div>
+          <div class="quick-nav-item" onclick="navTo('analytics')"><div class="q-icon">📈</div><div class="q-label">Analytics</div><div class="q-count">Org insights</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain Progress -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Domain Progress</h2><span style="font-size:13px;color:var(--g-400)">Your competency across all domains</span></div>
+    <div class="card-body" style="padding:8px 20px">
+      <div class="domain-progress-row"><div class="dp-icon">📈</div><div class="dp-info"><div class="dp-name">Statistical Methods</div><div class="dp-sub">6 competencies · Survey Design, Sampling, National Accounts</div></div><div class="dp-bar"><div class="dp-fill" style="width:78%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div><div class="dp-pct" style="color:#f97316">78%</div></div>
+      <div class="domain-progress-row"><div class="dp-icon">💻</div><div class="dp-info"><div class="dp-name">Technical Skills</div><div class="dp-sub">5 competencies · Python, SQL, R, Data Viz, AI/ML</div></div><div class="dp-bar"><div class="dp-fill" style="width:42%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div><div class="dp-pct" style="color:#3b82f6">42%</div></div>
+      <div class="domain-progress-row"><div class="dp-icon">🛡️</div><div class="dp-info"><div class="dp-name">Digital Governance</div><div class="dp-sub">3 competencies · Cybersecurity, Data Privacy, DPI</div></div><div class="dp-bar"><div class="dp-fill" style="width:60%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div><div class="dp-pct" style="color:#10b981">60%</div></div>
+      <div class="domain-progress-row"><div class="dp-icon">🤝</div><div class="dp-info"><div class="dp-name">Behavioural & Managerial</div><div class="dp-sub">4 competencies · Leadership, Communication, PM, Ethics</div></div><div class="dp-bar"><div class="dp-fill" style="width:75%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div><div class="dp-pct" style="color:#8b5cf6">75%</div></div>
+    </div>
+  </div>
+
+  <!-- Two column: Activity + Goals -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card-header"><h2>Recent Activity</h2></div>
+      <div class="card-body" style="padding:4px 20px">
+        <div class="activity-item"><div class="a-icon" style="background:var(--g-bg)">📚</div><div class="a-text"><div class="a-title">Completed "Data Driven Decision Making"</div><div class="a-sub">iGOT Karmayogi · 8 hours · Score: 85%</div></div><div class="a-time">2h ago</div></div>
+        <div class="activity-item"><div class="a-icon" style="background:var(--b-bg)">✅</div><div class="a-text"><div class="a-title">Passed Self-Assessment — 85%</div><div class="a-sub">Statistical Methods domain</div></div><div class="a-time">5h ago</div></div>
+        <div class="activity-item"><div class="a-icon" style="background:#fef3c7">🔥</div><div class="a-text"><div class="a-title">7-day streak bonus earned</div><div class="a-sub">+70 credits for consistent learning</div></div><div class="a-time">Yesterday</div></div>
+        <div class="activity-item"><div class="a-icon" style="background:var(--g-bg)">📚</div><div class="a-text"><div class="a-title">Completed "AI Using Google Bard & ChatGPT"</div><div class="a-sub">iGOT Karmayogi · 6 hours · Score: 78%</div></div><div class="a-time">2 days ago</div></div>
+        <div class="activity-item"><div class="a-icon" style="background:var(--p-bg)">🎯</div><div class="a-text"><div class="a-title">Closed "Python" skill gap</div><div class="a-sub">Beginner → Intermediate path started</div></div><div class="a-time">3 days ago</div></div>
+        <div class="activity-item"><div class="a-icon" style="background:var(--o-50)">🏆</div><div class="a-text"><div class="a-title">Earned "Perfect Score" badge</div><div class="a-sub">Scored 100% on assessment quiz</div></div><div class="a-time">5 days ago</div></div>
+      </div>
+    </div>
+
+    <!-- Goals & Next Steps -->
+    <div class="card">
+      <div class="card-header"><h2>Goals & Next Steps</h2></div>
+      <div class="card-body">
+        <div style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Close Data Visualization gap</span><span style="font-size:12px;color:var(--o-600);font-weight:600">~6h remaining</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:35%"></div></div>
+          <div style="font-size:11px;color:var(--g-400);margin-top:4px">Complete Python basics first (prerequisite)</div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Unlock World Bank opportunity</span><span style="font-size:12px;color:var(--o-600);font-weight:600">760 XP away</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
+          <div style="font-size:11px;color:var(--g-400);margin-top:4px">Need 2,000 credits total (currently 1,240)</div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600;color:var(--g-800)">30-day learning streak</span><span style="font-size:12px;color:var(--o-600);font-weight:600">23 days to go</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:23%"></div></div>
+          <div style="font-size:11px;color:var(--g-400);margin-top:4px">Currently on 7-day streak · Best: 14 days</div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Level 9: Expert Scholar</span><span style="font-size:12px;color:var(--o-600);font-weight:600">760 XP away</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
+          <div style="font-size:11px;color:var(--g-400);margin-top:4px">1,240 / 2,000 XP needed for next level</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill Gap Summary -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Critical Skill Gaps</h2><a href="#" onclick="navTo('competencies');return false" style="font-size:13px;font-weight:600;color:var(--o-600)">View graph →</a></div>
+    <div class="card-body" style="padding:0">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--g-50);border-right:1px solid var(--g-50)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Data Visualization</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fef2f2;color:#dc2626">Critical</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (42%) · Prereq: Python · ~6h to close</div></div>
+        <div style="padding:14px 20px;border-bottom:1px solid var(--g-50)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">AI/ML for Statistics</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fef2f2;color:#dc2626">Critical</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (35%) · Prereq: Python + R · ~20h to close</div></div>
+        <div style="padding:14px 20px;border-bottom:1px solid var(--g-50);border-right:1px solid var(--g-50)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Python</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fff7ed;color:#ea580c">High</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (45%) · Unlocks 3 pathways · ~12h to close</div></div>
+        <div style="padding:14px 20px;border-bottom:1px solid var(--g-50)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">SQL</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fff7ed;color:#ea580c">High</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (52%) · Enables Data Viz + National Accounts · ~8h</div></div>
+        <div style="padding:14px 20px;border-right:1px solid var(--g-50)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">R Programming</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fefce8;color:#ca8a04">Medium</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (38%) · Prereq for AI/ML · ~10h to close</div></div>
+        <div style="padding:14px 20px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--g-800)">Digital Public Infra</span><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);background:#fefce8;color:#ca8a04">Medium</span></div><div style="font-size:11px;color:var(--g-400);margin-top:4px">Beginner (48%) · India Stack, UPI, Aadhaar · ~4h to close</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="page active" id="pg-dashboard">
+  <div class="page-header"><h1>Welcome back, Rajesh Kumar</h1><p>Senior Statistician · National Statistical Office</p></div>
+
+  <div class="ai-banner">
+    <div class="ai-avatar">AI</div>
+    <div><h3>AI Summary</h3><p>Your statistical foundations are strong at <strong>82%</strong>. You've completed <strong>7 courses</strong> this quarter with <strong>48.5 hours</strong> of learning. Focus on <strong>Python</strong> to unlock Data Visualization and AI/ML pathways. Your top priority gap — <strong>Data Visualization</strong> — can be closed in approximately <strong>6 hours</strong>. Keep going!</p></div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-top"><div><div class="stat-label">Competency Score</div><div class="stat-val">72%</div></div><div class="stat-icon" style="background:var(--o-50);color:var(--o-500)">🎯</div></div><div class="stat-trend"><span>+4.2%</span> from last quarter</div></div>
+    <div class="stat"><div class="stat-top"><div><div class="stat-label">Courses Completed</div><div class="stat-val">7</div></div><div class="stat-icon" style="background:var(--g-bg);color:var(--g-c)">📚</div></div><div class="stat-trend">3 in progress</div></div>
+    <div class="stat"><div class="stat-top"><div><div class="stat-label">Learning Hours</div><div class="stat-val">48.5h</div></div><div class="stat-icon" style="background:var(--b-bg);color:var(--b)">⏱</div></div><div class="stat-trend">16.2h this month</div></div>
+    <div class="stat"><div class="stat-top"><div><div class="stat-label">Skills Acquired</div><div class="stat-val">11</div></div><div class="stat-icon" style="background:var(--p-bg);color:var(--p)">✅</div></div><div class="stat-trend">4 critical gaps closed</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-header"><h2>Competency Overview</h2><a href="#" onclick="navTo('competencies');return false" style="font-size:13px;font-weight:600">View all →</a></div>
+      <div class="card-body">
+        <div class="radar-wrap">
+          <svg viewBox="0 0 320 300" width="300" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff6b00" stop-opacity=".15"/><stop offset="100%" stop-color="#ff6b00" stop-opacity=".05"/></linearGradient></defs>
+            <polygon points="160,30 265,85 265,215 160,270 55,215 55,85" fill="none" stroke="var(--g-200)" stroke-width="1"/>
+            <polygon points="160,65 230,105 230,195 160,235 90,195 90,105" fill="none" stroke="var(--g-200)" stroke-width="1"/>
+            <polygon points="160,100 195,125 195,175 160,200 125,175 125,125" fill="none" stroke="var(--g-200)" stroke-width="1"/>
+            <text x="160" y="18" text-anchor="middle" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Statistical</text>
+            <text x="280" y="88" text-anchor="start" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Technical</text>
+            <text x="280" y="220" text-anchor="start" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Digital Gov</text>
+            <text x="160" y="290" text-anchor="middle" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Behavioural</text>
+            <text x="40" y="220" text-anchor="end" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Data Quality</text>
+            <text x="40" y="88" text-anchor="end" font-size="11" fill="var(--g-600)" font-weight="500" font-family="Inter">Leadership</text>
+            <polygon points="160,48 248,100 235,205 160,250 80,190 68,100" fill="url(#rg)" stroke="var(--o-500)" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="160" cy="48" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+            <circle cx="248" cy="100" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+            <circle cx="235" cy="205" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+            <circle cx="160" cy="250" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+            <circle cx="80" cy="190" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+            <circle cx="68" cy="100" r="5" fill="var(--o-500)" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Top Skill Gaps</h2><a href="#" onclick="navTo('competencies');return false" style="font-size:13px;font-weight:600">View all →</a></div>
+      <div class="card-body">
+        <div class="gap-list">
+          <div class="gap-item"><div class="gap-left"><div class="gap-dot" style="background:var(--r-bg)">🔴</div><div><div class="gap-name">AI/ML for Statistics</div><div class="gap-meta"><span>Beginner → Intermediate</span><span>·</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 10h</div><span class="badge badge-r">critical</span></div></div>
+          <div class="gap-item"><div class="gap-left"><div class="gap-dot" style="background:var(--o-50)">⚠️</div><div><div class="gap-name">Python</div><div class="gap-meta"><span>Beginner → Intermediate</span><span>·</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 12h</div><span class="badge badge-o">high</span></div></div>
+          <div class="gap-item"><div class="gap-left"><div class="gap-dot" style="background:#fefce8">🟡</div><div><div class="gap-name">Data Visualization</div><div class="gap-meta"><span>Beginner → Intermediate</span><span>·</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 6h</div><span class="badge badge-w">medium</span></div></div>
+          <div class="gap-item"><div class="gap-left"><div class="gap-dot" style="background:var(--g-bg)">🟢</div><div><div class="gap-name">Cloud Computing</div><div class="gap-meta"><span>None → Beginner</span><span>·</span><span>Technical</span></div></div></div><div class="gap-right"><div class="gap-hours">⏱ 4h</div><span class="badge badge-g">low</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Your Learning Path</h2><a href="#" onclick="navTo('learning');return false" style="font-size:13px;font-weight:600">View all →</a></div>
+    <div class="card-body">
+      <div class="path-card">
+        <div class="path-top">
+          <div class="path-info"><div class="path-icon">📚</div><div><div class="path-title">Personalized Learning Path — 2025</div><div class="path-sub">5 courses · 34 hours estimated</div></div></div>
+          <div class="path-link" onclick="navTo('learning')">View details →</div>
+        </div>
+        <div style="margin-top:16px"><div class="progress-info"><span>2 of 5 courses completed</span><span class="pct">40%</span></div><div class="progress-track"><div class="progress-fill" style="width:40%"></div></div></div>
+        <div class="path-stats"><span>✅ 2 completed</span><span>⏱ 14/34 hours</span><span><span class="dot" style="background:var(--o-400)"></span>1 in progress</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Learning Progress</h2></div>
+    <div class="card-body"><div class="g3">
+      <div style="background:var(--g-50);border-radius:var(--radius-lg);padding:20px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px"><span style="font-weight:500;color:var(--g-500)">This Month</span><span style="font-weight:700;color:var(--g-900)">12.5h</span></div><div class="progress-track"><div class="progress-fill" style="width:62.5%"></div></div><div style="text-align:right;font-size:11px;color:var(--g-400);margin-top:6px">62% of 20h goal</div></div>
+      <div style="background:var(--g-50);border-radius:var(--radius-lg);padding:20px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px"><span style="font-weight:500;color:var(--g-500)">This Quarter</span><span style="font-weight:700;color:var(--g-900)">34h</span></div><div class="progress-track"><div class="progress-fill blue" style="width:56.7%"></div></div><div style="text-align:right;font-size:11px;color:var(--g-400);margin-top:6px">57% of 60h goal</div></div>
+      <div style="background:var(--g-50);border-radius:var(--radius-lg);padding:20px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px"><span style="font-weight:500;color:var(--g-500)">This Year</span><span style="font-weight:700;color:var(--g-900)">89h</span></div><div class="progress-track"><div class="progress-fill purple" style="width:44.5%"></div></div><div style="text-align:right;font-size:11px;color:var(--g-400);margin-top:6px">45% of 200h goal</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ===== COMPETENCIES ===== -->
+<div class="page" id="pg-competencies">
+  <div class="page-header"><h1>Competency Framework</h1><p>India's Official Statistical System — competency matrix with prerequisite graph</p></div>
+
+  <!-- View Toggle -->
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+    <div class="view-toggle" style="display:flex;border:1px solid var(--g-200);border-radius:var(--radius);overflow:hidden">
+      <button class="view-btn active" onclick="setCompView('list')" id="v-list">📋 List View</button>
+      <button class="view-btn" onclick="setCompView('graph')" id="v-graph">🔗 Graph View</button>
+    </div>
+    <div class="search-row" style="flex:1;display:flex;gap:8px;align-items:center"><input class="input" placeholder="Search competencies..." style="max-width:360px" id="comp-search" oninput="filterComps(this.value)" /><select class="input select" style="max-width:200px" onchange="filterComps(this.value)" id="comp-domain"><option value="">All Domains</option><option>Statistical Methods</option><option>Technical Skills</option><option>Digital Governance</option><option>Behavioural & Managerial</option></select></div>
+  </div>
+
+  <!-- Graph View (hidden by default) -->
+  <div class="graph-container" id="comp-graph" style="display:none;margin-bottom:24px">
+    <div class="graph-toolbar">
+      <div style="font-size:13px;font-weight:600;color:var(--g-800)">Prerequisite Graph</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>Statistical</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Technical</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Digital Gov</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Behavioural</div>
+        <div class="legend-item"><div class="legend-dot" style="background:transparent;border:2px dashed var(--g-300)"></div>Prerequisite</div>
+      </div>
+    </div>
+    <svg id="comp-svg" class="graph-svg" viewBox="0 0 1060 640"></svg>
+    <div class="graph-detail" id="graph-detail">
+      <div class="graph-detail-header"><h3 id="gd-name"></h3><button class="close-btn" onclick="closeDetail()">×</button></div>
+      <div class="graph-detail-body" id="gd-body"></div>
+    </div>
+  </div>
+
+  <!-- List View (default) -->
+  <div id="comp-list">
+
+  <div class="domain-group"><div class="domain-header" onclick="toggle(this)">▼<span style="margin-left:8px">Statistical Methods</span><span class="domain-count" style="margin-left:8px">6</span></div><div class="domain-comps">
+    <div class="comp-row"><div><div class="comp-name">Survey Design</div><div class="comp-desc">Designing statistical surveys including sampling frames, questionnaire design, and data collection methodologies</div></div><span class="level-pill level-advanced">advanced</span></div>
+    <div class="comp-row"><div><div class="comp-name">Sampling Methods</div><div class="comp-desc">Probability and non-probability sampling techniques, sample size determination, stratification, and clustering</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">National Accounts</div><div class="comp-desc">GDP estimation, input-output tables, national income accounting, and SNA methodology</div></div><span class="level-pill level-advanced">advanced</span></div>
+    <div class="comp-row"><div><div class="comp-name">Price Statistics</div><div class="comp-desc">CPI, WPI, price deflators, and basket revision methodologies</div></div><span class="level-pill level-advanced">advanced</span></div>
+    <div class="comp-row"><div><div class="comp-name">SDG Indicators</div><div class="comp-desc">UN SDG indicator framework, data sources, and reporting requirements</div></div><span class="level-pill level-advanced">advanced</span></div>
+    <div class="comp-row"><div><div class="comp-name">Data Quality Frameworks</div><div class="comp-desc">Statistical quality dimensions, quality indicators, ESS quality assurance framework</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+  </div></div>
+
+  <div class="domain-group"><div class="domain-header" onclick="toggle(this)">▼<span style="margin-left:8px">Technical Skills</span><span class="domain-count" style="margin-left:8px">5</span></div><div class="domain-comps">
+    <div class="comp-row"><div><div class="comp-name">Python</div><div class="comp-desc">Python programming for data analysis, pandas, numpy, scipy, and statistical computing</div></div><span class="level-pill level-beginner">beginner</span></div>
+    <div class="comp-row"><div><div class="comp-name">R Programming</div><div class="comp-desc">R statistical computing, tidyverse, ggplot2, and statistical modeling</div></div><span class="level-pill level-beginner">beginner</span></div>
+    <div class="comp-row"><div><div class="comp-name">SQL</div><div class="comp-desc">Database querying, data manipulation, joins, aggregations, and query optimization</div></div><span class="level-pill level-beginner">beginner</span></div>
+    <div class="comp-row"><div><div class="comp-name">Data Visualization</div><div class="comp-desc">Creating effective statistical graphics, dashboards, interactive visualizations</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">AI/ML for Statistics</div><div class="comp-desc">Machine learning applications in official statistics, automated data processing</div></div><span class="level-pill level-advanced">advanced</span></div>
+  </div></div>
+
+  <div class="domain-group"><div class="domain-header" onclick="toggle(this)">▶<span style="margin-left:8px">Digital Governance</span><span class="domain-count" style="margin-left:8px">3</span></div><div class="domain-comps" style="display:none">
+    <div class="comp-row"><div><div class="comp-name">Cybersecurity</div><div class="comp-desc">Information security management, data protection, threat assessment</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">Data Privacy</div><div class="comp-desc">Personal data protection, DPDP Act compliance, anonymization techniques</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">Digital Public Infrastructure</div><div class="comp-desc">India Stack, UPI, Aadhaar integration, DigiLocker</div></div><span class="level-pill level-beginner">beginner</span></div>
+  </div></div>
+
+  <div class="domain-group"><div class="domain-header" onclick="toggle(this)">▶<span style="margin-left:8px">Behavioural & Managerial</span><span class="domain-count" style="margin-left:8px">4</span></div><div class="domain-comps" style="display:none">
+    <div class="comp-row"><div><div class="comp-name">Leadership</div><div class="comp-desc">Organizational leadership, team management, strategic planning</div></div><span class="level-pill level-advanced">advanced</span></div>
+    <div class="comp-row"><div><div class="comp-name">Communication</div><div class="comp-desc">Technical writing, data presentation, stakeholder communication</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">Project Management</div><div class="comp-desc">Statistical project planning, resource allocation, timeline management</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+    <div class="comp-row"><div><div class="comp-name">Statistics Ethics</div><div class="comp-desc">Professional ethics, data confidentiality, integrity in statistical practices</div></div><span class="level-pill level-intermediate">intermediate</span></div>
+  </div></div>
+</div>
+</div> <!-- end comp-list -->
+
+<!-- ===== LEARNING ===== -->
+<div class="page" id="pg-learning">
+  <div class="page-header"><h1>Learning Paths</h1><p>Personalized learning journey powered by AI recommendations</p></div>
+  <div class="tabs"><div class="tab active" onclick="ltab(this,'lp')">My Learning Paths</div><div class="tab" onclick="ltab(this,'lc')">Recommended Courses</div></div>
+  <div id="lp"><div class="path-card"><div class="path-top"><div class="path-info"><div class="path-icon">📚</div><div><div class="path-title">Personalized Learning Path — 2025</div><div class="path-sub">5 courses · 34 hours</div></div></div><div class="path-link">View details →</div></div><div style="margin-top:16px"><div class="progress-info"><span>2 of 5 courses completed</span><span class="pct">40%</span></div><div class="progress-track"><div class="progress-fill" style="width:40%"></div></div></div><div class="path-stats"><span>✅ 2 completed</span><span>⏱ 14/34 hours</span><span><span class="dot" style="background:var(--o-400)"></span>1 in progress</span></div></div></div>
+  <div id="lc" style="display:none">
+    <div id="onboard-box" style="display:none">
+      <div style="border:1px solid var(--o-200);border-radius:var(--radius-xl);padding:40px;text-align:center;background:linear-gradient(135deg,var(--o-50) 0%,#fff 100%);margin-bottom:24px">
+        <div style="font-size:48px;margin-bottom:16px">👋</div>
+        <h2 style="font-size:22px;font-weight:800;color:var(--g-900);margin-bottom:8px">Tell us what you're interested in</h2>
+        <p style="font-size:14px;color:var(--g-500);max-width:480px;margin:0 auto 24px">Select your areas of interest and we'll recommend the most relevant iGOT Karmayogi courses for your role.</p>
+        <div id="interest-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:640px;margin:0 auto 24px">
+          <button class="interest-chip" data-cat="data-science" onclick="toggleInterest(this)"><span>📊</span> Data Science & Analytics</button>
+          <button class="interest-chip" data-cat="ai-ml" onclick="toggleInterest(this)"><span>🤖</span> AI & Machine Learning</button>
+          <button class="interest-chip" data-cat="python" onclick="toggleInterest(this)"><span>🐍</span> Python Programming</button>
+          <button class="interest-chip" data-cat="statistics" onclick="toggleInterest(this)"><span>📈</span> Statistical Methods</button>
+          <button class="interest-chip" data-cat="cybersecurity" onclick="toggleInterest(this)"><span>🔒</span> Cybersecurity</button>
+          <button class="interest-chip" data-cat="data-privacy" onclick="toggleInterest(this)"><span>🛡️</span> Data Privacy & DPDP</button>
+          <button class="interest-chip" data-cat="governance" onclick="toggleInterest(this)"><span>🏛️</span> Digital Governance</button>
+          <button class="interest-chip" data-cat="leadership" onclick="toggleInterest(this)"><span>🎯</span> Leadership & Management</button>
+          <button class="interest-chip" data-cat="communication" onclick="toggleInterest(this)"><span>💬</span> Communication Skills</button>
+          <button class="interest-chip" data-cat="cloud" onclick="toggleInterest(this)"><span>☁️</span> Cloud Computing</button>
+          <button class="interest-chip" data-cat="sql" onclick="toggleInterest(this)"><span>🗄️</span> SQL & Databases</button>
+          <button class="interest-chip" data-cat="viz" onclick="toggleInterest(this)"><span>📉</span> Data Visualization</button>
+        </div>
+        <button class="btn btn-o btn-o-lg" onclick="showRecommendations()" id="interest-submit" style="opacity:.5;pointer-events:none">Show My Recommendations →</button>
+      </div>
+    </div>
+    <div id="rec-box" style="display:none">
+    <div class="ai-rec">✨ <strong>AI Recommended:</strong> Based on your interests, these courses are prioritized for your learning path.</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center"><span style="font-size:13px;color:var(--g-500);font-weight:500">Your interests:</span><div id="selected-tags"></div><button class="btn btn-ghost btn-sm" onclick="resetInterests()" style="font-size:12px;padding:4px 10px;color:var(--g-400)">Change</button></div>
+    <div style="margin-bottom:16px"><a href="https://igotkarmayogi.gov.in/" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Browse all 4,400+ courses on iGOT Karmayogi →</a></div>
+    <div class="course-grid">
+      <a href="https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit"><div class="course-top"><div class="course-title">Data Driven Decision Making</div><span class="badge badge-g">iGOT</span></div><div class="course-desc">Core concepts of data science, analytics, and practical use of visualization tools to uncover patterns for government decision-making</div><div class="course-footer"><div class="course-meta"><span>⏱ 8h</span><span>Intermediate</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>
+      <a href="https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit"><div class="course-top"><div class="course-title">AI Using Google Bard & ChatGPT</div><span class="badge badge-g">iGOT</span></div><div class="course-desc">Comprehensive beginner course on AI tools for government officials — prompt engineering, practical applications, and ethical use</div><div class="course-footer"><div class="course-meta"><span>⏱ 6h</span><span>Beginner</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>
+      <a href="https://portal.igotkarmayogi.gov.in/app/toc/do_1145242891094835201284/overview" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit"><div class="course-top"><div class="course-title">Securing India's Digital Governance</div><span class="badge badge-g">iGOT</span></div><div class="course-desc">Cybersecurity, trusted digital systems, Zero Trust Architecture, and digital infrastructure protection for government</div><div class="course-footer"><div class="course-meta"><span>⏱ 4h</span><span>Intermediate</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>
+      <a href="https://portal.igotkarmayogi.gov.in/public/toc/do_113569878939262976132/overview" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit"><div class="course-top"><div class="course-title">Digital Personal Data Protection</div><span class="badge badge-g">iGOT</span></div><div class="course-desc">DPDP Act compliance, personal data protection principles, obligations, and practical implementation for government</div><div class="course-footer"><div class="course-meta"><span>⏱ 3h</span><span>Beginner</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>
+      <a href="https://portal.igotkarmayogi.gov.in/app/toc/do_1138093093777899521174/overview" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit"><div class="course-top"><div class="course-title">Basic Cybersecurity Awareness</div><span class="badge badge-g">iGOT</span></div><div class="course-desc">Foundational knowledge about common cyber threats and essential practices to protect digital information and infrastructure</div><div class="course-footer"><div class="course-meta"><span>⏱ 16h</span><span>Beginner</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>
+      <a href="https://igotkarmayogi.gov.in/" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit;border-style:dashed;border-color:var(--o-300);background:var(--o-50)"><div class="course-top"><div class="course-title">Browse 4,400+ Courses</div><span class="badge badge-o">Portal</span></div><div class="course-desc">Explore the full iGOT Karmayogi course catalog — domain, functional, and behavioural competencies for all government officials</div><div class="course-footer"><div class="course-meta"><span>All levels</span></div><span class="course-enroll">Open iGOT Portal →</span></div></a>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ASSESSMENTS ===== -->
+<div class="page" id="pg-assessments">
+  <div class="page-header"><h1>Assessments</h1><p>Test knowledge and track competency progress</p></div>
+  <div class="tabs"><div class="tab active" onclick="atab(this,'as')">Self Assessment</div><div class="tab" onclick="atab(this,'aa')">AI Generated Quiz</div><div class="tab" onclick="atab(this,'ah')">History</div></div>
+
+  <div id="as">
+    <div id="a-hero" class="assess-hero">
+      <div class="big-ico">🎯</div><h2>Start Self Assessment</h2>
+      <p>Test your knowledge across statistical, technical, and behavioural competencies. Results update your competency profile and learning recommendations.</p>
+      <button class="btn btn-o btn-o-lg" style="margin-top:24px" onclick="startQuiz()">▶ Start Assessment</button>
+      <div class="meta-row"><span>3 questions</span><span>~5 minutes</span><span>Results update your profile</span></div>
+    </div>
+    <div id="a-quiz" style="display:none"><div class="q-card">
+      <div class="q-progress"><span id="qc">Question 1 of 3</span><span id="qp">33%</span></div>
+      <div class="progress-track" style="margin-bottom:4px"><div class="progress-fill" id="qf" style="width:33%"></div></div>
+      <div class="q-text" id="qt"></div><div class="q-options" id="qo"></div>
+      <div class="q-nav"><button class="btn btn-ghost" id="qpv" onclick="pQ()" disabled>← Previous</button><button class="btn btn-o" id="qnx" onclick="nQ()">Next →</button></div>
+    </div></div>
+    <div id="a-res" style="display:none"><div class="result-card">
+      <div class="ico" id="ri" style="background:var(--g-bg)">✅</div><h2>Assessment Complete!</h2>
+      <div class="score" id="rs" style="color:var(--o-500)">100%</div>
+      <p class="msg" id="rm">Great job! You've demonstrated strong knowledge.</p>
+      <button class="btn btn-o btn-o-lg" onclick="rQuiz()">Take Again</button>
+    </div></div>
+  </div>
+
+  <div id="aa" style="display:none">
+    <div class="card"><div class="card-body">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">AI-Powered Quiz Generator</h2>
+      <p style="color:var(--g-500);font-size:14px;margin-bottom:24px">Upload learning materials and let AI generate personalized assessment questions from your content.</p>
+      <div class="upload-zone"><div class="ico">📤</div><p>Drag and drop files here, or <span style="color:var(--o-500);font-weight:600">browse</span></p><div class="hint">Supports PDF, PPTX, DOCX, TXT (max 10MB)</div></div>
+    </div></div>
+  </div>
+
+  <div id="ah" style="display:none">
+    <div class="card"><div class="card-body">
+      <h2 style="font-size:18px;font-weight:700;margin-bottom:20px">Assessment History</h2>
+      <div class="hist-item"><div class="hist-left"><div class="hist-score good">85%</div><div><div style="font-weight:600;font-size:14px">Self Assessment</div><div style="font-size:13px;color:var(--g-400)">Jan 15, 2025</div></div></div><div style="font-size:13px;color:var(--g-400)">⏱ 8 min</div></div>
+      <div class="hist-item"><div class="hist-left"><div class="hist-score good">72%</div><div><div style="font-weight:600;font-size:14px">AI Generated Quiz</div><div style="font-size:13px;color:var(--g-400)">Jan 10, 2025</div></div></div><div style="font-size:13px;color:var(--g-400)">⏱ 12 min</div></div>
+      <div class="hist-item"><div class="hist-left"><div class="hist-score good">90%</div><div><div style="font-weight:600;font-size:14px">Self Assessment</div><div style="font-size:13px;color:var(--g-400)">Jan 5, 2025</div></div></div><div style="font-size:13px;color:var(--g-400)">⏱ 10 min</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ===== ANALYTICS ===== -->
+<div class="page" id="pg-analytics">
+  <div class="page-header"><h1>Analytics Dashboard</h1><p>Organization-wide insights, predictive analytics, and training effectiveness</p></div>
+
+  <div class="ai-banner" style="margin-bottom:24px">
+    <div class="ai-avatar" style="background:linear-gradient(135deg,var(--p),var(--b))">✨</div>
+    <div><h3>AI Insights Summary</h3><p>The organization has <strong>2,450 officials</strong> with <strong>1,820 active learners</strong>. Average competency score is <strong>68%</strong>. <strong>AI/ML for Statistics</strong> is the most critical gap with 45 officials affected. Training effectiveness shows a <strong>+23% average score improvement</strong> with 74% course completion rate.</p></div>
+  </div>
+
+  <div class="admin-row">
+    <div class="admin-stat"><div class="ico">👥</div><div class="val">2,450</div><div class="lbl">Total Officials</div></div>
+    <div class="admin-stat"><div class="ico">🎯</div><div class="val">1,847</div><div class="lbl">Active Learners (75%)</div></div>
+    <div class="admin-stat"><div class="ico">📊</div><div class="val">71.3%</div><div class="lbl">Avg Competency Score</div></div>
+    <div class="admin-stat"><div class="ico">📈</div><div class="val">38,640</div><div class="lbl">Total Training Hours</div></div>
+    <div class="admin-stat"><div class="ico">📚</div><div class="val">4,428</div><div class="lbl">Courses on iGOT</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card"><div class="card-header"><h2>Department Performance</h2></div><div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+      <div class="dept-card"><div class="dept-top"><div><div class="dept-name">National Statistical Office</div><div class="dept-sub">850 officials · 682 active (80%)</div></div><div class="dept-score"><div class="num">74.6%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-hdr"><span>Top gap: AI/ML for Statistics</span><span>76% course completion</span></div><div class="progress-track"><div class="progress-fill" style="width:76%"></div></div></div></div>
+      <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Price Statistics Division</div><div class="dept-sub">320 officials · 256 active (80%)</div></div><div class="dept-score"><div class="num">71.2%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-hdr"><span>Top gap: Python for Data Analysis</span><span>73% course completion</span></div><div class="progress-track"><div class="progress-fill" style="width:73%"></div></div></div></div>
+      <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Labour Statistics Bureau</div><div class="dept-sub">280 officials · 210 active (75%)</div></div><div class="dept-score"><div class="num">69.8%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-hdr"><span>Top gap: SDG Indicators Reporting</span><span>71% course completion</span></div><div class="progress-track"><div class="progress-fill" style="width:71%"></div></div></div></div>
+      <div class="dept-card"><div class="dept-top"><div><div class="dept-name">Agricultural Statistics Wing</div><div class="dept-sub">420 officials · 315 active (75%)</div></div><div class="dept-score"><div class="num">67.4%</div><div class="lbl">avg score</div></div></div><div class="dept-bar"><div class="dept-bar-hdr"><span>Top gap: Data Visualization</span><span>68% course completion</span></div><div class="progress-track"><div class="progress-fill" style="width:68%"></div></div></div></div>
+    </div></div>
+
+    <div class="card"><div class="card-header"><h2>Critical Skill Gaps</h2></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+      <div class="gap-rank"><div style="display:flex;align-items:center;gap:14px"><div class="rank">1</div><div><div class="comp-name">AI/ML for Statistics</div><span class="badge badge-g" style="margin-top:4px">technical</span></div></div><div style="text-align:right"><div class="cnt">68</div><div class="cnt-lbl">officials (2.8%)</div></div></div>
+      <div class="gap-rank"><div style="display:flex;align-items:center;gap:14px"><div class="rank">2</div><div><div class="comp-name">Python Programming</div><span class="badge badge-g" style="margin-top:4px">technical</span></div></div><div style="text-align:right"><div class="cnt">54</div><div class="cnt-lbl">officials (2.2%)</div></div></div>
+      <div class="gap-rank"><div style="display:flex;align-items:center;gap:14px"><div class="rank">3</div><div><div class="comp-name">Data Visualization</div><span class="badge badge-g" style="margin-top:4px">technical</span></div></div><div style="text-align:right"><div class="cnt">47</div><div class="cnt-lbl">officials (1.9%)</div></div></div>
+      <div class="gap-rank"><div style="display:flex;align-items:center;gap:14px"><div class="rank">4</div><div><div class="comp-name">Cloud Computing</div><span class="badge badge-g" style="margin-top:4px">technical</span></div></div><div style="text-align:right"><div class="cnt">39</div><div class="cnt-lbl">officials (1.6%)</div></div></div>
+      <div class="gap-rank"><div style="display:flex;align-items:center;gap:14px"><div class="rank">5</div><div><div class="comp-name">SDG Indicators Reporting</div><span class="badge badge-b" style="margin-top:4px">statistical</span></div></div><div style="text-align:right"><div class="cnt">31</div><div class="cnt-lbl">officials (1.3%)</div></div></div>
+    </div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px"><div class="card-header"><h2>🔮 Predictive Insights</h2></div><div class="card-body"><div class="g2">
+    <div class="predict-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="predict-title">AI/ML Skills Demand</div><div class="predict-sub">Current: 32% proficient → Projected: 58% by Q4 2026</div></div><span class="badge badge-p">87% confidence</span></div><div style="margin-top:12px"><div class="progress-track"><div class="progress-fill purple" style="width:58%"></div></div></div><div class="predict-rec">💡 Recommend: Enroll 120 officials in AI/ML courses before Q3</div></div>
+    <div class="predict-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="predict-title">Python Proficiency Gap</div><div class="predict-sub">Current: 41% proficient → Projected: 67% by Q1 2027</div></div><span class="badge badge-p">82% confidence</span></div><div style="margin-top:12px"><div class="progress-track"><div class="progress-fill purple" style="width:67%"></div></div></div><div class="predict-rec">💡 Recommend: Prioritize Python for Data Analysis course enrollment</div></div>
+  </div></div></div>
+
+  <div class="card"><div class="card-header"><h2>📈 Training Effectiveness</h2></div><div class="card-body">
+    <div class="g3">
+      <div class="eff-card" style="background:var(--g-bg)"><div class="num" style="color:#059669">+18.6%</div><div class="lbl">Avg Competency Improvement</div></div>
+      <div class="eff-card" style="background:var(--b-bg)"><div class="num" style="color:var(--b)">78.3%</div><div class="lbl">Course Completion Rate</div></div>
+      <div class="eff-card" style="background:var(--p-bg)"><div class="num" style="color:var(--p)">6.2h</div><div class="lbl">Avg Time per Course</div></div>
+    </div>
+    <div style="margin-top:16px;padding:14px 20px;border-radius:var(--radius);background:var(--g-50);font-size:13px;color:var(--g-600)"><strong style="color:var(--g-800)">Most Effective:</strong> Data Driven Decision Making — 89% satisfaction, +24.3% avg score improvement, 82% completion rate</div>
+  </div></div>
+</div></div>
+
+<!-- ===== CREDITS & STREAK ===== -->
+<div class="page" id="pg-credits">
+  <div class="page-header"><h1>Credits & Streak</h1><p>Earn credits for consistent learning, unlock opportunities, and bridge to companies</p></div>
+
+  <!-- Streak + Credits Overview -->
+  <div class="g2" style="margin-bottom:24px">
+    <div class="streak-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div><h3 style="font-size:16px;font-weight:700;color:var(--g-900)">Learning Streak</h3><p style="font-size:13px;color:var(--g-500);margin-top:2px">Stay consistent to earn bonus credits</p></div>
+        <div class="streak-badge"><span class="fire">🔥</span><span id="streak-count">7 days</span></div>
+      </div>
+      <div style="display:flex;gap:20px;margin-bottom:16px">
+        <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:var(--g-900)" id="longest-streak">14</div><div style="font-size:11px;color:var(--g-400)">Longest Streak</div></div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:var(--g-900)" id="total-days">42</div><div style="font-size:11px;color:var(--g-400)">Total Active Days</div></div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:var(--o-600)" id="streak-bonus">+350</div><div style="font-size:11px;color:var(--g-400)">Streak Bonus Credits</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--g-600);margin-bottom:8px">This Week</div>
+      <div class="streak-calendar" id="streak-calendar"></div>
+      <div style="margin-top:12px;display:flex;gap:12px;font-size:11px;color:var(--g-400)"><span>🟧 Active day</span><span>⬜ Inactive</span><span>🟧 Today</span></div>
+      <div class="milestone-row">
+        <div class="milestone achieved">3-day streak</div>
+        <div class="milestone achieved">7-day streak</div>
+        <div class="milestone achieved">14-day streak</div>
+        <div class="milestone">30-day streak</div>
+        <div class="milestone">60-day streak</div>
+        <div class="milestone">100-day streak</div>
+      </div>
+    </div>
+
+    <div class="credit-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div><h3 style="font-size:16px;font-weight:700;color:var(--g-900)">Your Credits</h3><p style="font-size:13px;color:var(--g-500);margin-top:2px">Earn more to unlock company opportunities</p></div>
+        <div class="credits-badge"><span class="coin">🪙</span><span id="credit-level-badge">Advanced</span></div>
+      </div>
+      <div class="credit-balance" id="credit-balance">1,240</div>
+      <div class="credit-label">Total Credits Earned</div>
+      <div class="credit-progress" style="margin-top:20px">
+        <div class="credit-level"><span class="current" id="current-level">Advanced</span><span id="next-level">Expert (2,000)</span></div>
+        <div class="progress-track"><div class="progress-fill" id="credit-progress-bar" style="width:62%"></div></div>
+        <div style="text-align:right;font-size:11px;color:var(--g-400);margin-top:4px"><span id="credits-remaining">760</span> credits to next level</div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px">
+        <div style="flex:1;padding:12px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:20px;font-weight:800;color:var(--g-c)">+180</div><div style="font-size:11px;color:var(--g-400)">This Week</div></div>
+        <div style="flex:1;padding:12px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:20px;font-weight:800;color:var(--b)">+520</div><div style="font-size:11px;color:var(--g-400)">This Month</div></div>
+        <div style="flex:1;padding:12px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:20px;font-weight:800;color:var(--p)">+1,240</div><div style="font-size:11px;color:var(--g-400)">All Time</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Earn -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>How to Earn Credits</h2></div>
+    <div class="card-body">
+      <div class="g3">
+        <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;margin-bottom:8px">📚</div><div style="font-weight:700;font-size:14px;color:var(--g-900)">Complete a Course</div><div style="font-size:24px;font-weight:800;color:var(--o-600);margin:8px 0">+50–200</div><div style="font-size:12px;color:var(--g-400)">Based on course duration</div></div>
+        <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;margin-bottom:8px">✅</div><div style="font-weight:700;font-size:14px;color:var(--g-900)">Pass an Assessment</div><div style="font-size:24px;font-weight:800;color:var(--o-600);margin:8px 0">+30–100</div><div style="font-size:12px;color:var(--g-400)">Based on score and difficulty</div></div>
+        <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;margin-bottom:8px">🔥</div><div style="font-weight:700;font-size:14px;color:var(--g-900)">Maintain Streak</div><div style="font-size:24px;font-weight:800;color:var(--o-600);margin:8px 0">+10/day</div><div style="font-size:12px;color:var(--g-400)">Bonus for consecutive days</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Recent Credit Activity</h2></div>
+    <div class="card-body" style="padding:0">
+      <div class="credit-history">
+        <div class="credit-row"><div class="left"><div class="icon" style="background:var(--g-bg)">📚</div><div><div class="desc">Completed "Data Driven Decision Making"</div><div class="time">2 hours ago</div></div></div><div class="amount">+120</div></div>
+        <div class="credit-row"><div class="left"><div class="icon" style="background:var(--b-bg)">✅</div><div><div class="desc">Passed Self Assessment — 85%</div><div class="time">5 hours ago</div></div></div><div class="amount">+80</div></div>
+        <div class="credit-row"><div class="left"><div class="icon" style="background:#fef3c7">🔥</div><div><div class="desc">7-day streak bonus</div><div class="time">Yesterday</div></div></div><div class="amount">+70</div></div>
+        <div class="credit-row"><div class="left"><div class="icon" style="background:var(--g-bg)">📚</div><div><div class="desc">Completed "AI Using Google Bard & ChatGPT"</div><div class="time">2 days ago</div></div></div><div class="amount">+90</div></div>
+        <div class="credit-row"><div class="left"><div class="icon" style="background:var(--p-bg)">🎯</div><div><div class="desc">Closed "Python" skill gap</div><div class="time">3 days ago</div></div></div><div class="amount">+150</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Bridge -->
+  <div style="margin-bottom:8px"><h2 style="font-size:18px;font-weight:700;color:var(--g-900)">Company Bridge — Unlock Opportunities</h2><p style="font-size:13px;color:var(--g-500);margin-top:4px">Earn enough credits to qualify for partnerships with leading organizations</p></div>
+  <div class="g2" id="bridge-grid">
+    <div class="bridge-card qualified">
+      <div class="bridge-header"><div class="bridge-logo">🏢</div><div><div class="bridge-name">National Statistical Office</div><div class="bridge-type">Government of India</div></div></div>
+      <p style="font-size:13px;color:var(--g-600);line-height:1.6">Internship and project opportunities for officials with strong statistical and data analysis skills. Work on real census and survey data.</p>
+      <div class="bridge-tags"><span class="bridge-tag">Statistics</span><span class="bridge-tag">Data Analysis</span><span class="bridge-tag">Survey Design</span></div>
+      <div class="bridge-req">✅ <strong>Qualified</strong> — You need 1,000 credits (you have 1,240)</div>
+      <div class="bridge-apply"><button class="btn btn-o btn-sm">Apply Now →</button></div>
+    </div>
+
+    <div class="bridge-card qualified">
+      <div class="bridge-header"><div class="bridge-logo">💻</div><div><div class="bridge-name">NASSCOM</div><div class="bridge-type">IT Industry Association</div></div></div>
+      <p style="font-size:13px;color:var(--g-600);line-height:1.6">Data science and AI/ML project placements for government officials with verified technical skills. Short-term consulting assignments.</p>
+      <div class="bridge-tags"><span class="bridge-tag">AI/ML</span><span class="bridge-tag">Python</span><span class="bridge-tag">Data Science</span></div>
+      <div class="bridge-req">✅ <strong>Qualified</strong> — You need 1,000 credits (you have 1,240)</div>
+      <div class="bridge-apply"><button class="btn btn-o btn-sm">Apply Now →</button></div>
+    </div>
+
+    <div class="bridge-card locked">
+      <div class="lock-overlay"><div class="lock">🔒</div><div class="msg">Earn 2,000 credits to unlock<br><strong>760 credits remaining</strong></div></div>
+      <div class="bridge-header"><div class="bridge-logo">🌍</div><div><div class="bridge-name">World Bank — Data Group</div><div class="bridge-type">International Organization</div></div></div>
+      <p style="font-size:13px;color:var(--g-600);line-height:1.6">Short-term technical assistance and data modernization projects with the World Bank's Development Data Group.</p>
+      <div class="bridge-tags"><span class="bridge-tag">SDG Indicators</span><span class="bridge-tag">Data Quality</span><span class="bridge-tag">Cloud</span></div>
+      <div class="bridge-req">🔒 Requires 2,000 credits</div>
+    </div>
+
+    <div class="bridge-card locked">
+      <div class="lock-overlay"><div class="lock">🔒</div><div class="msg">Earn 3,000 credits to unlock<br><strong>1,760 credits remaining</strong></div></div>
+      <div class="bridge-header"><div class="bridge-logo">🎓</div><div><div class="bridge-name">IIM/IIT Faculty Exchange</div><div class="bridge-type">Academic Partnership</div></div></div>
+      <p style="font-size:13px;color:var(--g-600);line-height:1.6">Guest lectures, workshop facilitation, and co-teaching opportunities at premier Indian institutions for top-performing officials.</p>
+      <div class="bridge-tags"><span class="bridge-tag">Leadership</span><span class="bridge-tag">Communication</span><span class="bridge-tag">Statistics</span></div>
+      <div class="bridge-req">🔒 Requires 3,000 credits</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BADGES & RANKS ===== -->
+<div class="page" id="pg-gamification">
+  <div class="page-header"><h1>Badges & Department Rankings</h1><p>Earn achievement badges, climb department leaderboards, and showcase your learning journey</p></div>
+
+  <!-- User Rank Card -->
+  <div style="display:flex;gap:20px;margin-bottom:24px;align-items:stretch">
+    <div style="flex:0 0 280px;padding:24px;border-radius:var(--radius-lg);background:linear-gradient(135deg,#ff6b00,#ff8c40);color:#fff;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;margin-bottom:6px">Your Department Rank</div>
+      <div style="font-size:48px;font-weight:900;line-height:1" id="my-rank-number">#3</div>
+      <div style="font-size:14px;opacity:.9;margin-top:4px">National Statistical Office</div>
+      <div style="margin-top:12px;font-size:13px;opacity:.85">Top <strong>12%</strong> of 342 officials in your department</div>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;font-weight:900;color:var(--g-900)">1,240</div><div style="font-size:11px;color:var(--g-400);margin-top:2px">Total XP</div></div>
+      <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;font-weight:900;color:var(--o-600)">7</div><div style="font-size:11px;color:var(--g-400);margin-top:2px">Badges Earned</div></div>
+      <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;font-weight:900;color:var(--b)">7</div><div style="font-size:11px;color:var(--g-400);margin-top:2px">Courses Done</div></div>
+      <div style="padding:16px;border-radius:var(--radius);background:var(--g-50);text-align:center"><div style="font-size:28px;font-weight:900;color:var(--p)">14d</div><div style="font-size:11px;color:var(--g-400);margin-top:2px">Best Streak</div></div>
+    </div>
+  </div>
+
+  <!-- XP Level Progress -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Level Progress</h2><span style="font-size:13px;color:var(--o-600);font-weight:600">Level 8 — Advanced Learner</span></div>
+    <div class="card-body">
+      <div class="xp-wrap">
+        <div class="xp-label"><span>1,240 / 2,000 XP to next level</span><span>Level 9: Expert Scholar</span></div>
+        <div class="xp-bar"><div class="xp-fill" style="width:62%"></div></div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:16px">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--radius-full);background:#fef3c7;border:1px solid #fde68a"><span style="font-size:11px;font-weight:700;color:#92400e">Level 1-3: Beginner</span><span style="font-size:10px;color:#b45309">0–300 XP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--radius-full);background:#dbeafe;border:1px solid #93c5fd"><span style="font-size:11px;font-weight:700;color:#1e40af">Level 4-6: Intermediate</span><span style="font-size:10px;color:#2563eb">300–900 XP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--radius-full);background:#fce7f3;border:1px solid #f9a8d4"><span style="font-size:11px;font-weight:700;color:#9d174d">Level 7-9: Advanced</span><span style="font-size:10px;color:#db2777">900–2,000 XP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--radius-full);background:linear-gradient(135deg,#fef3c7,#fed7aa);border:1px solid #f59e0b"><span style="font-size:11px;font-weight:700;color:#92400e">Level 10: Expert</span><span style="font-size:10px;color:#b45309">2,000+ XP</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Achievement Badges -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Achievement Badges</h2><span style="font-size:13px;color:var(--g-400)">7 of 15 unlocked</span></div>
+    <div class="card-body">
+      <div class="category-header">📚 Learning Milestones</div>
+      <div class="badge-grid">
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">🌟</span><div class="badge-name">First Steps</div><div class="badge-desc">Complete your first course</div><div class="badge-date">Earned 12 Jun 2025</div></div>
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">📚</span><div class="badge-name">Bookworm</div><div class="badge-desc">Complete 5 courses</div><div class="badge-date">Earned 28 Jul 2025</div></div>
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">🎓</span><div class="badge-name">Knowledge Seeker</div><div class="badge-desc">Complete 10 courses</div><div class="badge-desc" style="color:var(--g-300)">3 more to unlock</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🏆</span><div class="badge-name">Master Learner</div><div class="badge-desc">Complete 25 courses</div></div>
+      </div>
+
+      <div class="category-header">🔥 Consistency Champions</div>
+      <div class="badge-grid">
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">🔥</span><div class="badge-name">On Fire</div><div class="badge-desc">Maintain a 3-day streak</div><div class="badge-date">Earned 15 Jun 2025</div></div>
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">⚡</span><div class="badge-name">Unstoppable</div><div class="badge-desc">Maintain a 7-day streak</div><div class="badge-date">Earned 22 Jun 2025</div></div>
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">💎</span><div class="badge-name">Diamond Focus</div><div class="badge-desc">Maintain a 14-day streak</div><div class="badge-date">Earned 6 Jul 2025</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">👑</span><div class="badge-name">Royal Dedication</div><div class="badge-desc">Maintain a 30-day streak</div></div>
+      </div>
+
+      <div class="category-header">🎯 Assessment Masters</div>
+      <div class="badge-grid">
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">✅</span><div class="badge-name">First Pass</div><div class="badge-desc">Pass your first assessment</div><div class="badge-date">Earned 14 Jun 2025</div></div>
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">💯</span><div class="badge-name">Perfect Score</div><div class="badge-desc">Score 100% on any quiz</div><div class="badge-date">Earned 18 Jul 2025</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🧠</span><div class="badge-name">Assessment Pro</div><div class="badge-desc">Pass 20 assessments</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🏅</span><div class="badge-name">Top Scorer</div><div class="badge-desc">Score 90%+ on 10 quizzes</div></div>
+      </div>
+
+      <div class="category-header">🌟 Domain Champions</div>
+      <div class="badge-grid">
+        <div class="ach-badge unlocked"><div class="unlocked-check">✓</div><span class="badge-icon">📊</span><div class="badge-name">Stats Guru</div><div class="badge-desc">Master 3 statistical skills</div><div class="badge-date">Earned 1 Aug 2025</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🤖</span><div class="badge-name">AI Pioneer</div><div class="badge-desc">Complete AI/ML pathway</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🔒</span><div class="badge-name" style="color:var(--g-300)">Cyber Guardian</div><div class="badge-desc">Complete cybersecurity track</div></div>
+        <div class="ach-badge locked"><div class="lock-icon">🔒</div><span class="badge-icon">🔒</span><div class="badge-name" style="color:var(--g-300)">Data Wizard</div><div class="badge-desc">Master all data skills</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Department Leaderboard -->
+  <div class="g2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-header"><h2>Department Leaderboard</h2><span style="font-size:13px;color:var(--g-400)">All India rankings</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="lb-card">
+          <div class="lb-row lb-my-row">
+            <div class="lb-rank">3</div>
+            <div class="lb-dept"><div class="dept-name">National Statistical Office</div><div class="dept-members">342 officials · 75% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:71%;background:linear-gradient(90deg,var(--o-400),var(--o-500))"></div></div></div>
+            <div class="lb-score"><div class="score-val">71.3</div><div class="score-label">avg score</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank gold">1</div>
+            <div class="lb-dept"><div class="dept-name">Ministry of Electronics & IT</div><div class="dept-members">187 officials · 82% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:78%;background:linear-gradient(90deg,#f59e0b,#f97316)"></div></div></div>
+            <div class="lb-score"><div class="score-val">78.2</div><div class="score-label">avg score</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank silver">2</div>
+            <div class="lb-dept"><div class="dept-name">NITI Aayog</div><div class="dept-members">156 officials · 79% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:75.6%;background:linear-gradient(90deg,#94a3b8,#64748b)"></div></div></div>
+            <div class="lb-score"><div class="score-val">75.6</div><div class="score-label">avg score</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank bronze">4</div>
+            <div class="lb-dept"><div class="dept-name">Central Statistics Office</div><div class="dept-members">214 officials · 71% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:69%;background:linear-gradient(90deg,#fb923c,#ea580c)"></div></div></div>
+            <div class="lb-score"><div class="score-val">69.1</div><div class="score-label">avg score</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank normal">5</div>
+            <div class="lb-dept"><div class="dept-name">Ministry of Statistics & PI</div><div class="dept-members">298 officials · 68% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:67%;background:linear-gradient(90deg,var(--g-300),var(--g-400))"></div></div></div>
+            <div class="lb-score"><div class="score-val">67.4</div><div class="score-label">avg score</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank normal">6</div>
+            <div class="lb-dept"><div class="dept-name">Reserve Bank of India</div><div class="dept-members">124 officials · 85% active</div></div>
+            <div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-bar-fill" style="width:76.8%;background:linear-gradient(90deg,var(--g-300),var(--g-400))"></div></div></div>
+            <div class="lb-score"><div class="score-val">76.8</div><div class="score-label">avg score</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Top Learners — Your Department</h2><span style="font-size:13px;color:var(--g-400)">NSO officials</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="lb-card">
+          <div class="lb-row">
+            <div class="lb-rank gold">1</div>
+            <div class="lb-dept"><div class="dept-name">Priya Sharma</div><div class="dept-members">Joint Director · 12 courses</div></div>
+            <div class="lb-score"><div class="score-val" style="color:var(--o-600)">1,680</div><div class="score-label">XP</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank silver">2</div>
+            <div class="lb-dept"><div class="dept-name">Amit Patel</div><div class="dept-members">Deputy Director · 10 courses</div></div>
+            <div class="lb-score"><div class="score-val" style="color:var(--o-600)">1,420</div><div class="score-label">XP</div></div>
+          </div>
+          <div class="lb-row lb-my-row">
+            <div class="lb-rank">3</div>
+            <div class="lb-dept"><div class="dept-name">Rajesh Kumar (You)</div><div class="dept-members">Senior Statistician · 7 courses</div></div>
+            <div class="lb-score"><div class="score-val" style="color:var(--o-600)">1,240</div><div class="score-label">XP</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank normal">4</div>
+            <div class="lb-dept"><div class="dept-name">Sunita Reddy</div><div class="dept-members">Statistical Officer · 6 courses</div></div>
+            <div class="lb-score"><div class="score-val" style="color:var(--o-600)">980</div><div class="score-label">XP</div></div>
+          </div>
+          <div class="lb-row">
+            <div class="lb-rank normal">5</div>
+            <div class="lb-dept"><div class="dept-name">Vikram Singh</div><div class="dept-members">Assistant Director · 5 courses</div></div>
+            <div class="lb-score"><div class="score-val" style="color:var(--o-600)">820</div><div class="score-label">XP</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Badge Earners -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-header"><h2>Recent Badge Earners Across Government</h2></div>
+    <div class="card-body" style="padding:0">
+      <div class="lb-card">
+        <div class="lb-row">
+          <div style="font-size:28px;margin-right:12px">🏆</div>
+          <div class="lb-dept"><div class="dept-name">Rakesh Mehta <span style="font-size:11px;color:var(--g-400);font-weight:400">— MeitY</span></div><div class="dept-members">Earned "AI Pioneer" badge · Completed AI/ML pathway</div></div>
+          <div style="font-size:11px;color:var(--g-400);white-space:nowrap">2h ago</div>
+        </div>
+        <div class="lb-row">
+          <div style="font-size:28px;margin-right:12px">⚡</div>
+          <div class="lb-dept"><div class="dept-name">Anjali Gupta <span style="font-size:11px;color:var(--g-400);font-weight:400">— NITI Aayog</span></div><div class="dept-members">Earned "Unstoppable" badge · 7-day learning streak</div></div>
+          <div style="font-size:11px;color:var(--g-400);white-space:nowrap">5h ago</div>
+        </div>
+        <div class="lb-row">
+          <div style="font-size:28px;margin-right:12px">💯</div>
+          <div class="lb-dept"><div class="dept-name">Suresh Nair <span style="font-size:11px;color:var(--g-400);font-weight:400">— RBI</span></div><div class="dept-members">Earned "Perfect Score" badge · Scored 100% on assessment</div></div>
+          <div style="font-size:11px;color:var(--g-400);white-space:nowrap">Yesterday</div>
+        </div>
+        <div class="lb-row">
+          <div style="font-size:28px;margin-right:12px">🎓</div>
+          <div class="lb-dept"><div class="dept-name">Deepa Joshi <span style="font-size:11px;color:var(--g-400);font-weight:400">— CSO</span></div><div class="dept-members">Earned "Knowledge Seeker" badge · Completed 10 courses</div></div>
+          <div style="font-size:11px;color:var(--g-400);white-space:nowrap">2 days ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SPARROW / APAR ===== -->
+<div class="page" id="pg-sparrow">
+  <div class="page-header"><h1>SPARROW / APAR Integration</h1><p>Export your competency profile and training record for Annual Performance Assessment Report</p></div>
+
+  <div class="sparrow-header">
+    <div class="govt">🏛️</div>
+    <div><h2>Smart Performance Appraisal Report Recording Online Window</h2><p>Generate a print-ready competency and training report for your APAR submission. Data is sourced from your Tunnel profile.</p></div>
+  </div>
+
+  <!-- Export Options -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+    <div class="export-card" onclick="exportReport('pdf')">
+      <div class="ico" style="background:var(--r-bg)">📄</div>
+      <h3>Export as PDF</h3>
+      <p>Download a formatted PDF report with your competency profile, training record, and achievements.</p>
+    </div>
+    <div class="export-card" onclick="exportReport('print')">
+      <div class="ico" style="background:var(--b-bg)">🖨️</div>
+      <h3>Print Report</h3>
+      <p>Open print dialog with a clean, formatted layout suitable for official submission.</p>
+    </div>
+    <div class="export-card" onclick="exportReport('copy')">
+      <div class="ico" style="background:var(--g-bg)">📋</div>
+      <h3>Copy to Clipboard</h3>
+      <p>Copy the report text to paste into your APAR form or email to your reporting officer.</p>
+    </div>
+  </div>
+
+  <!-- Report Preview -->
+  <div class="report-preview" id="report-preview">
+    <div class="rp-header">
+      <div><h3>Competency & Training Report</h3><div style="font-size:12px;opacity:.8;margin-top:2px">Generated via Tunnel — AI Skill Intelligence Platform</div></div>
+      <div style="text-align:right"><div style="font-size:12px;opacity:.8">Report Date</div><div style="font-weight:700;font-size:14px" id="report-date"></div></div>
+    </div>
+    <div class="rp-body">
+      <!-- Official Details -->
+      <div class="rp-section">
+        <h4>Official Details</h4>
+        <div class="rp-row"><span class="label">Name</span><span class="value">Rajesh Kumar</span></div>
+        <div class="rp-row"><span class="label">Employee ID</span><span class="value">EMP-NSO-2024-1847</span></div>
+        <div class="rp-row"><span class="label">Designation</span><span class="value">Senior Statistician</span></div>
+        <div class="rp-row"><span class="label">Department</span><span class="value">National Statistical Office</span></div>
+        <div class="rp-row"><span class="label">Reporting Period</span><span class="value">April 2024 — March 2025</span></div>
+      </div>
+
+      <!-- Competency Assessment -->
+      <div class="rp-section">
+        <h4>Competency Assessment Summary</h4>
+        <table class="competency-table">
+          <thead><tr><th>Competency</th><th>Domain</th><th>Level</th><th>Score</th></tr></thead>
+          <tbody id="competency-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Training Record -->
+      <div class="rp-section">
+        <h4>Training Record — iGOT Karmayogi</h4>
+        <div id="training-list">
+          <div class="rp-training"><div class="dot" style="background:var(--g-c)"></div><div><div class="t-title">Data Driven Decision Making</div><div class="t-meta">Completed · 8 hours · Score: 85%</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--g-c)"></div><div><div class="t-title">AI Using Google Bard & ChatGPT</div><div class="t-meta">Completed · 6 hours · Score: 78%</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--g-c)"></div><div><div class="t-title">Securing India's Digital Governance</div><div class="t-meta">Completed · 4 hours · Score: 92%</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--g-c)"></div><div><div class="t-title">Digital Personal Data Protection</div><div class="t-meta">Completed · 3 hours · Score: 88%</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--b)"></div><div><div class="t-title">Python for Data Analysis</div><div class="t-meta">In Progress · 12 hours · 60% complete</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--b)"></div><div><div class="t-title">Machine Learning for Statistics</div><div class="t-meta">In Progress · 10 hours · 35% complete</div></div></div>
+          <div class="rp-training"><div class="dot" style="background:var(--g-300)"></div><div><div class="t-title">Basic Cybersecurity Awareness</div><div class="t-meta">Enrolled · 16 hours</div></div></div>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="rp-section">
+        <h4>Achievements & Credits</h4>
+        <div class="rp-row"><span class="label">Total Credits Earned</span><span class="value" id="rp-credits">1,240</span></div>
+        <div class="rp-row"><span class="label">Credit Level</span><span class="value">Advanced</span></div>
+        <div class="rp-row"><span class="label">Longest Learning Streak</span><span class="value">14 days</span></div>
+        <div class="rp-row"><span class="label">Total Active Learning Days</span><span class="value">42 days</span></div>
+        <div class="rp-row"><span class="label">Assessments Passed</span><span class="value">7 (avg score: 83%)</span></div>
+        <div class="rp-row"><span class="label">Skill Gaps Closed</span><span class="value">4 (Python, SQL, Cybersecurity, DPDP)</span></div>
+      </div>
+
+      <!-- Company Bridge -->
+      <div class="rp-section">
+        <h4>Company Bridge Qualification</h4>
+        <div class="rp-row"><span class="label">NSO Internship</span><span class="value" style="color:var(--g-c)">✅ Qualified</span></div>
+        <div class="rp-row"><span class="label">NASSCOM Data Science</span><span class="value" style="color:var(--g-c)">✅ Qualified</span></div>
+        <div class="rp-row"><span class="label">World Bank Data Group</span><span class="value" style="color:var(--g-400)">🔒 760 credits remaining</span></div>
+      </div>
+
+      <!-- Stamp -->
+      <div class="rp-stamp">
+        <div class="qr">📊</div>
+        <div>This report is auto-generated by <strong>Tunnel — AI Skill Intelligence Platform</strong></div>
+        <div style="margin-top:4px">Data sourced from iGOT Karmayogi & Tunnel assessment records</div>
+        <div style="margin-top:4px">Report ID: SP-2025-RK-<span id="report-id"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== AI CHATBOT ========== -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()">
+  <span class="fab-icon">💬</span>
+  <span class="fab-badge" id="chat-badge" style="display:none">1</span>
+</button>
+
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <div class="left">
+      <div class="avatar">AI</div>
+      <div><div class="name">Tunnel Assistant</div><div class="status">Online</div></div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-input" placeholder="Ask about courses, skills, learning tips..." onkeydown="if(event.key==='Enter')sendChat()" />
+    <button class="chat-send" id="chat-send" onclick="sendChat()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+  </div>
+</div>
+
+<script>
+/* Navigation */
+function goLogin(){document.getElementById('p-login').classList.add('active');document.getElementById('p-app').classList.remove('active')}
+function goApp(){document.getElementById('p-login').classList.remove('active');document.getElementById('p-app').classList.add('active');navTo('dashboard')}
+let navHistory = [];
+let navCurrent = 'home';
+
+function navTo(pg, skipHistory) {
+  if (!skipHistory && pg !== navCurrent) {
+    navHistory.push(navCurrent);
+    if (navHistory.length > 20) navHistory.shift();
+  }
+  navCurrent = pg;
+  
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.toggle('active', a.dataset.pg === pg));
+  document.querySelectorAll('#p-app .content .page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('pg-' + pg);
+  if (el) el.classList.add('active');
+  
+  const t = {home:'Home',dashboard:'Dashboard',competencies:'Competency Framework',learning:'Learning Paths',assessments:'Assessments',analytics:'Analytics Dashboard',gamification:'Badges & Ranks',credits:'Credits & Streak',sparrow:'SPARROW / APAR'};
+  document.getElementById('tb-title').textContent = t[pg] || pg;
+  
+  // Update back button
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.disabled = navHistory.length === 0;
+  
+  // Page-specific init
+  if (pg === 'learning') checkReturningUser();
+  if (pg === 'credits') { renderStreakCalendar(); renderCredits(); }
+  if (pg === 'sparrow') renderSparrow();
+  if (pg === 'gamification') renderGamification();
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  if (navHistory.length === 0) return;
+  const prev = navHistory.pop();
+  navCurrent = prev;
+  navTo(prev, true);
+}
+
+document.querySelectorAll('.sidebar-nav a').forEach(a => { a.addEventListener('click', e => { e.preventDefault(); navTo(a.dataset.pg); }); });
+
+/* Domain toggle */
+function toggle(h){const c=h.nextElementSibling;const open=c.style.display!=='none';c.style.display=open?'none':'block';h.querySelector('.domain-chevron,span:first-child').textContent=(open?'▶':'▼')}
+
+/* Learning tabs */
+function ltab(t,s){t.parentElement.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('lp').style.display=s==='lp'?'block':'none';document.getElementById('lc').style.display=s==='lc'?'block':'none'}
+
+/* Assessment tabs */
+function atab(t,s){t.parentElement.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');['as','aa','ah'].forEach(x=>{const e=document.getElementById(x);if(e)e.style.display=x===s?'block':'none'});if(s==='as')rQuiz()}
+
+/* Quiz */
+const Q=[
+  {q:"What is the primary purpose of stratified sampling?",o:["To reduce sampling error","To ensure representation of subgroups","To simplify data collection","To eliminate bias entirely"],a:1,e:"Stratified sampling divides the population into subgroups and samples from each to ensure all subgroups are represented."},
+  {q:"Which Python library is commonly used for data manipulation in official statistics?",o:["NumPy","Pandas","Matplotlib","Scikit-learn"],a:1,e:"Pandas provides DataFrames for structured data manipulation, making it ideal for statistical data processing."},
+  {q:"The Consumer Price Index (CPI) measures changes in prices of a basket of goods and services over time.",o:["True","False"],a:0,e:"CPI measures the average change over time in prices paid by consumers for a market basket of goods and services."}
+];
+let qi=0,qa={};
+function startQuiz(){document.getElementById('a-hero').style.display='none';document.getElementById('a-res').style.display='none';document.getElementById('a-quiz').style.display='block';renderQ()}
+function renderQ(){const q=Q[qi];document.getElementById('qc').textContent='Question '+(qi+1)+' of '+Q.length;document.getElementById('qp').textContent=Math.round((qi+1)/Q.length*100)+'%';document.getElementById('qf').style.width=Math.round((qi+1)/Q.length*100)+'%';document.getElementById('qt').textContent=q.q;const c=document.getElementById('qo');c.innerHTML='';q.o.forEach((o,i)=>{const d=document.createElement('div');d.className='q-opt'+(qa[qi]===i?' sel':'');d.textContent=o;d.onclick=()=>{qa[qi]=i;renderQ()};c.appendChild(d)});document.getElementById('qpv').disabled=qi===0;document.getElementById('qnx').textContent=qi===Q.length-1?'Submit':'Next →'}
+function nQ(){if(qi<Q.length-1){qi++;renderQ()}else{let c=0;Q.forEach((q,i)=>{if(qa[i]===q.a)c++});const p=Math.round(c/Q.length*100);document.getElementById('a-quiz').style.display='none';document.getElementById('a-res').style.display='block';document.getElementById('ri').textContent=p>=70?'✅':'📝';document.getElementById('ri').style.background=p>=70?'var(--g-bg)':'var(--o-50)';document.getElementById('rs').textContent=p+'%';document.getElementById('rm').textContent=p>=70?'Great job! You\'ve demonstrated strong knowledge.':'Keep learning! Your recommended path has been updated.'}}
+function pQ(){if(qi>0){qi--;renderQ()}}
+function rQuiz(){qi=0;qa={};document.getElementById('a-hero').style.display='block';document.getElementById('a-quiz').style.display='none';document.getElementById('a-res').style.display='none'}
+
+/* ========== INTEREST SELECTION ========== */
+const selectedInterests = new Set();
+
+function toggleInterest(btn) {
+  const cat = btn.dataset.cat;
+  if (selectedInterests.has(cat)) {
+    selectedInterests.delete(cat);
+    btn.classList.remove('selected');
+  } else {
+    selectedInterests.add(cat);
+    btn.classList.add('selected');
+  }
+  const submit = document.getElementById('interest-submit');
+  if (selectedInterests.size > 0) {
+    submit.style.opacity = '1';
+    submit.style.pointerEvents = 'auto';
+  } else {
+    submit.style.opacity = '.5';
+    submit.style.pointerEvents = 'none';
+  }
+}
+
+const courseData = [
+  {title:'Data Driven Decision Making',desc:'Core concepts of data science, analytics, and practical use of visualization tools to uncover patterns for government decision-making',dur:'8h',level:'Intermediate',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview',tags:['data-science','statistics','viz']},
+  {title:'AI Using Google Bard & ChatGPT',desc:'Comprehensive beginner course on AI tools for government officials — prompt engineering, practical applications, and ethical use',dur:'6h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview',tags:['ai-ml','python']},
+  {title:'Securing India\'s Digital Governance',desc:'Cybersecurity, trusted digital systems, Zero Trust Architecture, and digital infrastructure protection for government',dur:'4h',level:'Intermediate',url:'https://portal.igotkarmayogi.gov.in/app/toc/do_1145242891094835201284/overview',tags:['cybersecurity','governance']},
+  {title:'Digital Personal Data Protection',desc:'DPDP Act compliance, personal data protection principles, obligations, and practical implementation for government',dur:'3h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113569878939262976132/overview',tags:['data-privacy','governance']},
+  {title:'Basic Cybersecurity Awareness',desc:'Foundational knowledge about common cyber threats and essential practices to protect digital information and infrastructure',dur:'16h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/app/toc/do_1138093093777899521174/overview',tags:['cybersecurity']},
+  {title:'Python for Data Analysis',desc:'Learn Python programming with focus on pandas, numpy, and scipy for statistical data analysis and automation',dur:'12h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview',tags:['python','data-science']},
+  {title:'SQL for Government Databases',desc:'Database querying, data manipulation, joins, aggregations, and query optimization for official statistical databases',dur:'8h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview',tags:['sql','data-science']},
+  {title:'Data Visualization Fundamentals',desc:'Creating effective statistical graphics, dashboards, and interactive visualizations for data storytelling',dur:'6h',level:'Intermediate',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview',tags:['viz','data-science']},
+  {title:'Leadership in Government',desc:'Organizational leadership, team management, strategic planning, and change management for statistical organizations',dur:'4h',level:'Advanced',url:'https://igotkarmayogi.gov.in/',tags:['leadership','communication']},
+  {title:'Cloud Computing for Government',desc:'Government cloud infrastructure, cloud-native development, containerization, and scalable data processing',dur:'6h',level:'Intermediate',url:'https://igotkarmayogi.gov.in/',tags:['cloud','governance']},
+  {title:'Technical Writing & Communication',desc:'Technical writing, data presentation, stakeholder communication, and public dissemination of statistics',dur:'4h',level:'Intermediate',url:'https://igotkarmayogi.gov.in/',tags:['communication','leadership']},
+  {title:'Machine Learning for Statistics',desc:'ML applications in official statistics, automated data processing, anomaly detection, and predictive analytics',dur:'10h',level:'Advanced',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview',tags:['ai-ml','python','statistics']},
+];
+
+function showRecommendations() {
+  const matched = [];
+  const unmatched = [];
+  courseData.forEach(c => {
+    const hasMatch = c.tags.some(t => selectedInterests.has(t));
+    if (hasMatch) matched.push(c); else unmatched.push(c);
+  });
+  // Sort: matched first, then by number of tag overlaps
+  matched.sort((a,b) => {
+    const aScore = a.tags.filter(t => selectedInterests.has(t)).length;
+    const bScore = b.tags.filter(t => selectedInterests.has(t)).length;
+    return bScore - aScore;
+  });
+  const sorted = [...matched, ...unmatched.slice(0,3)];
+  // Render tags
+  const tagsEl = document.getElementById('selected-tags');
+  const catNames = {'data-science':'Data Science','ai-ml':'AI & ML','python':'Python','statistics':'Statistics','cybersecurity':'Cybersecurity','data-privacy':'Data Privacy','governance':'Digital Gov','leadership':'Leadership','communication':'Communication','cloud':'Cloud','sql':'SQL','viz':'Visualization'};
+  tagsEl.innerHTML = Array.from(selectedInterests).map(i => `<span class="tag-pill">${catNames[i]||i}</span>`).join('');
+  // Render courses
+  const grid = document.querySelector('#rec-box .course-grid');
+  grid.innerHTML = sorted.map(c => {
+    const isMatch = c.tags.some(t => selectedInterests.has(t));
+    return `<a href="${c.url}" target="_blank" rel="noopener" class="course-card" style="text-decoration:none;color:inherit;${isMatch?'':'opacity:.6;border-style:dashed'}"><div class="course-top"><div class="course-title">${c.title}</div><span class="badge ${isMatch?'badge-o':'badge-w'}">${isMatch?'Recommended':'iGOT'}</span></div><div class="course-desc">${c.desc}</div><div class="course-footer"><div class="course-meta"><span>⏱ ${c.dur}</span><span>${c.level}</span></div><span class="course-enroll">Enroll on iGOT →</span></div></a>`;
+  }).join('');
+  document.getElementById('onboard-box').style.display = 'none';
+  document.getElementById('rec-box').style.display = 'block';
+  // Save to localStorage
+  localStorage.setItem('tunnel_interests', JSON.stringify(Array.from(selectedInterests)));
+}
+
+function resetInterests() {
+  selectedInterests.clear();
+  document.querySelectorAll('.interest-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('onboard-box').style.display = 'block';
+  document.getElementById('rec-box').style.display = 'none';
+  localStorage.removeItem('tunnel_interests');
+}
+
+/* ========== STREAK & CREDITS SYSTEM ========== */
+const STREAK_DATA_KEY = 'tunnel_streak';
+const CREDITS_KEY = 'tunnel_credits';
+
+// Default streak data
+function getDefaultStreak() {
+  const today = new Date();
+  const days = [];
+  // Generate last 30 days of activity (simulated: active most days)
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dayStr = d.toISOString().split('T')[0];
+    // Simulate: active on most days, gap on some
+    const isActive = i > 2 || (i !== 5 && i !== 12 && i !== 18);
+    days.push({ date: dayStr, active: isActive });
+  }
+  return {
+    currentStreak: 7,
+    longestStreak: 14,
+    totalDays: 42,
+    streakBonus: 350,
+    days: days
+  };
+}
+
+function getDefaultCredits() {
+  return {
+    balance: 1240,
+    thisWeek: 180,
+    thisMonth: 520,
+    level: 'Advanced',
+    history: [
+      { icon: '📚', desc: 'Completed "Data Driven Decision Making"', time: '2 hours ago', amount: 120, iconBg: 'var(--g-bg)' },
+      { icon: '✅', desc: 'Passed Self Assessment — 85%', time: '5 hours ago', amount: 80, iconBg: 'var(--b-bg)' },
+      { icon: '🔥', desc: '7-day streak bonus', time: 'Yesterday', amount: 70, iconBg: '#fef3c7' },
+      { icon: '📚', desc: 'Completed "AI Using Google Bard & ChatGPT"', time: '2 days ago', amount: 90, iconBg: 'var(--g-bg)' },
+      { icon: '🎯', desc: 'Closed "Python" skill gap', time: '3 days ago', amount: 150, iconBg: 'var(--p-bg)' }
+    ]
+  };
+}
+
+function getStreakData() {
+  const saved = localStorage.getItem(STREAK_DATA_KEY);
+  if (saved) return JSON.parse(saved);
+  const data = getDefaultStreak();
+  localStorage.setItem(STREAK_DATA_KEY, JSON.stringify(data));
+  return data;
+}
+
+function getCreditsData() {
+  const saved = localStorage.getItem(CREDITS_KEY);
+  if (saved) return JSON.parse(saved);
+  const data = getDefaultCredits();
+  localStorage.setItem(CREDITS_KEY, JSON.stringify(data));
+  return data;
+}
+
+function renderStreakCalendar() {
+  const data = getStreakData();
+  const cal = document.getElementById('streak-calendar');
+  if (!cal) return;
+  const today = new Date();
+  const dayNames = ['S','M','T','W','T','F','S'];
+  let html = dayNames.map(d => `<div style="text-align:center;font-size:10px;color:var(--g-400);font-weight:500">${d}</div>`).join('');
+  // Get start of week (Sunday)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+  // Render 4 weeks
+  for (let w = 0; w < 4; w++) {
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + (w * 7) + d);
+      const dateStr = date.toISOString().split('T')[0];
+      const dayData = data.days.find(day => day.date === dateStr);
+      const isToday = dateStr === today.toISOString().split('T')[0];
+      const isFuture = date > today;
+      const isActive = dayData?.active && !isFuture;
+      let cls = 'streak-day';
+      if (isToday) cls += ' today';
+      if (isActive) cls += ' active';
+      if (isFuture) cls += ' future';
+      html += `<div class="${cls}">${date.getDate()}</div>`;
+    }
+  }
+  cal.innerHTML = html;
+  // Update streak stats
+  document.getElementById('streak-count').textContent = data.currentStreak + ' days';
+  document.getElementById('longest-streak').textContent = data.longestStreak;
+  document.getElementById('total-days').textContent = data.totalDays;
+  document.getElementById('streak-bonus').textContent = '+' + data.streakBonus;
+  document.getElementById('sidebar-streak').textContent = data.currentStreak + ' day streak';
+}
+
+function renderCredits() {
+  const data = getCreditsData();
+  document.getElementById('credit-balance').textContent = data.balance.toLocaleString();
+  document.getElementById('sidebar-credits').textContent = data.balance.toLocaleString();
+  document.getElementById('credit-level-badge').textContent = data.level;
+  document.getElementById('current-level').textContent = data.level;
+  // Calculate progress to next level
+  const levels = { 'Beginner': 0, 'Intermediate': 100, 'Advanced': 500, 'Expert': 2000 };
+  const levelNames = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+  const currentIdx = levelNames.indexOf(data.level);
+  const nextLevel = currentIdx < levelNames.length - 1 ? levelNames[currentIdx + 1] : null;
+  if (nextLevel) {
+    const currentMin = levels[data.level];
+    const nextMin = levels[nextLevel];
+    const progress = ((data.balance - currentMin) / (nextMin - currentMin)) * 100;
+    document.getElementById('next-level').textContent = nextLevel + ' (' + nextMin.toLocaleString() + ')';
+    document.getElementById('credit-progress-bar').style.width = Math.min(progress, 100) + '%';
+    document.getElementById('credits-remaining').textContent = (nextMin - data.balance).toLocaleString();
+  } else {
+    document.getElementById('next-level').textContent = 'Max Level!';
+    document.getElementById('credit-progress-bar').style.width = '100%';
+    document.getElementById('credits-remaining').textContent = '0';
+  }
+  // Render history
+  const histEl = document.querySelector('.credit-history');
+  if (histEl && data.history) {
+    histEl.innerHTML = data.history.map(h => `
+      <div class="credit-row"><div class="left"><div class="icon" style="background:${h.iconBg}">${h.icon}</div><div><div class="desc">${h.desc}</div><div class="time">${h.time}</div></div></div><div class="amount">+${h.amount}</div></div>
+    `).join('');
+  }
+  // Update bridge qualification
+  updateBridgeQualification(data.balance);
+}
+
+function updateBridgeQualification(balance) {
+  const cards = document.querySelectorAll('.bridge-card');
+  const thresholds = [1000, 1000, 2000, 3000];
+  cards.forEach((card, i) => {
+    const threshold = thresholds[i];
+    if (balance >= threshold) {
+      card.classList.remove('locked');
+      card.classList.add('qualified');
+      const overlay = card.querySelector('.lock-overlay');
+      if (overlay) overlay.style.display = 'none';
+      const req = card.querySelector('.bridge-req');
+      if (req) req.innerHTML = '✅ <strong>Qualified</strong> — You need ' + threshold.toLocaleString() + ' credits (you have ' + balance.toLocaleString() + ')';
+      const apply = card.querySelector('.bridge-apply');
+      if (apply) apply.innerHTML = '<button class="btn btn-o btn-sm">Apply Now →</button>';
+    } else {
+      card.classList.add('locked');
+      card.classList.remove('qualified');
+      const overlay = card.querySelector('.lock-overlay');
+      if (overlay) {
+        overlay.style.display = 'flex';
+        overlay.innerHTML = '<div class="lock">🔒</div><div class="msg">Earn ' + threshold.toLocaleString() + ' credits to unlock<br><strong>' + (threshold - balance).toLocaleString() + ' credits remaining</strong></div>';
+      }
+      const req = card.querySelector('.bridge-req');
+      if (req) req.innerHTML = '🔒 Requires ' + threshold.toLocaleString() + ' credits';
+    }
+  });
+}
+
+// Check if returning user
+function checkReturningUser() {
+  const saved = localStorage.getItem('tunnel_interests');
+  if (saved) {
+    const interests = JSON.parse(saved);
+    interests.forEach(i => selectedInterests.add(i));
+    document.querySelectorAll('.interest-chip').forEach(c => {
+      if (selectedInterests.has(c.dataset.cat)) c.classList.add('selected');
+    });
+    showRecommendations();
+  } else {
+    document.getElementById('onboard-box').style.display = 'block';
+    document.getElementById('rec-box').style.display = 'none';
+  }
+}
+
+// ========== AI CHATBOT ==========
+let chatOpen = false;
+let chatInitialized = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  document.getElementById('chat-badge').style.display = 'none';
+  if (chatOpen && !chatInitialized) {
+    chatInitialized = true;
+    initChat();
+  }
+  if (chatOpen) {
+    document.getElementById('chat-input').focus();
+  }
+}
+
+function initChat() {
+  const interests = JSON.parse(localStorage.getItem('tunnel_interests') || '[]');
+  const streak = JSON.parse(localStorage.getItem('tunnel_streak') || '{}');
+  const userName = 'Rajesh';
+  let greeting = `Hi ${userName}! 👋 I'm your Tunnel learning assistant.`;
+  if (interests.length > 0) {
+    const iNames = interests.slice(0,3).map(i => ({'data-science':'Data Science','ai-ml':'AI/ML','python':'Python','statistics':'Statistics','cybersecurity':'Cybersecurity','data-privacy':'Data Privacy','governance':'Digital Governance','leadership':'Leadership','communication':'Communication','cloud':'Cloud Computing','sql':'SQL','viz':'Data Visualization'}[i]||i));
+    greeting += ` I see you're interested in **${iNames.join(', ')}**.`;
+  }
+  if (streak.currentStreak) greeting += ` 🔥 Great ${streak.currentStreak}-day streak!`;
+  greeting += ` How can I help you today?`;
+  addBotMessage(greeting, [
+    {text: '📚 Suggest courses', action: 'suggest'},
+    {text: '📊 Check my gaps', action: 'gaps'},
+    {text: '🎯 Learning tips', action: 'tips'},
+    {text: '🏢 Company bridge', action: 'bridge'}
+  ]);
+}
+
+function addBotMessage(text, quickActions) {
+  const container = document.getElementById('chat-messages');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.innerHTML = '<div class="msg-avatar">AI</div><div class="chat-typing"><span></span><span></span><span></span></div>';
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+  setTimeout(() => {
+    typing.remove();
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg bot';
+    let html = '<div class="msg-avatar">AI</div><div><div class="bubble">' + text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</div>';
+    if (quickActions && quickActions.length > 0) {
+      html += '<div class="chat-quick-actions">' + quickActions.map(a => `<button class="chat-quick-btn" onclick="handleQuickAction('${a.action}')">${a.text}</button>`).join('') + '</div>';
+    }
+    html += '</div>';
+    msg.innerHTML = html;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  }, 600);
+}
+
+function addBotCourseMessage(text, courses) {
+  const container = document.getElementById('chat-messages');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.innerHTML = '<div class="msg-avatar">AI</div><div class="chat-typing"><span></span><span></span><span></span></div>';
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+  setTimeout(() => {
+    typing.remove();
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg bot';
+    let html = '<div class="msg-avatar">AI</div><div><div class="bubble">' + text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</div>';
+    courses.forEach(c => {
+      html += `<div class="chat-course-card"><div class="title">${c.title}</div><div class="meta"><span>⏱ ${c.dur}</span><span>${c.level}</span></div><a href="${c.url}" target="_blank" rel="noopener" class="enroll">Enroll on iGOT →</a></div>`;
+    });
+    html += '</div>';
+    msg.innerHTML = html;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  }, 800);
+}
+
+function addUserMessage(text) {
+  const container = document.getElementById('chat-messages');
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg user';
+  msg.innerHTML = '<div class="msg-avatar">RK</div><div class="bubble">' + text + '</div>';
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMessage(text);
+  input.value = '';
+  processUserInput(text.toLowerCase());
+}
+
+function handleQuickAction(action) {
+  const actions = {
+    suggest: () => {
+      const interests = JSON.parse(localStorage.getItem('tunnel_interests') || '[]');
+      let matched = interests.length > 0 ? courseData.filter(c => c.tags.some(t => interests.includes(t))).slice(0,3) : courseData.slice(0,3);
+      addBotCourseMessage(`Based on your profile, I recommend these courses:`, matched);
+    },
+    gaps: () => {
+      addBotMessage(`Your top skill gaps:\n\n🔴 **AI/ML for Statistics** — Beginner → Intermediate (10h)\n⚠️ **Python** — Beginner → Intermediate (12h)\n🟡 **Data Visualization** — Beginner → Intermediate (6h)\n🟢 **Cloud Computing** — None → Beginner (4h)\n\nI recommend starting with **Python** — it unlocks both Data Viz and AI/ML pathways!`, [
+        {text: '🐍 Start Python course', action: 'python'},
+        {text: '📊 Start Data Viz course', action: 'dataviz'}
+      ]);
+    },
+    tips: () => {
+      addBotMessage(`Here are personalized learning tips:\n\n1. **Consistency over intensity** — 30 min/day beats 4 hours on weekends\n2. **Apply what you learn** — Practice with real statistical data\n3. **Use the streak system** — Earn bonus credits for daily learning\n4. **Focus on prerequisites** — Python before AI/ML, SQL before Data Science\n5. **Track your gaps** — Regularly check your competency radar\n\nYou're on a **7-day streak** — keep it up! 🔥`, [
+        {text: '📚 Suggest courses', action: 'suggest'},
+        {text: '📊 Check my gaps', action: 'gaps'}
+      ]);
+    },
+    bridge: () => {
+      const credits = JSON.parse(localStorage.getItem('tunnel_credits') || '{}').balance || 1240;
+      let msg = `You currently have **${credits.toLocaleString()} credits**.\n\n`;
+      if (credits >= 1000) {
+        msg += `✅ You qualify for:\n• **National Statistical Office** — Internship opportunities\n• **NASSCOM** — Data science placements\n\n🔒 Locked (need more credits):\n• **World Bank Data Group** — 2,000 credits needed\n• **IIM/IIT Faculty Exchange** — 3,000 credits needed`;
+      } else {
+        msg += `You need **${(1000-credits).toLocaleString()} more credits** to qualify for company partnerships.`;
+      }
+      addBotMessage(msg, [{text: '📚 Earn more credits', action: 'suggest'}]);
+    },
+    python: () => { addBotCourseMessage(`Great choice! Python is the foundation for Data Viz and AI/ML:`, [{title:'Python for Data Analysis',dur:'12h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview'}]); },
+    dataviz: () => { addBotCourseMessage(`Data Visualization will make your statistical work more impactful:`, [{title:'Data Driven Decision Making',dur:'8h',level:'Intermediate',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview'}]); },
+    goto_assess: () => { navTo('assessments'); toggleChat(); }
+  };
+  if (actions[action]) actions[action]();
+}
+
+function processUserInput(text) {
+  if (text.match(/course|suggest|recommend|learn/)) handleQuickAction('suggest');
+  else if (text.match(/gap|weak|improve|skill/)) handleQuickAction('gaps');
+  else if (text.match(/tip|advice|how|strategy/)) handleQuickAction('tips');
+  else if (text.match(/company|bridge|job|opportunity|internship/)) handleQuickAction('bridge');
+  else if (text.match(/python/)) handleQuickAction('python');
+  else if (text.match(/ai|ml|machine|artificial/)) addBotCourseMessage(`AI/ML is transforming official statistics!`, [{title:'AI Using Google Bard & ChatGPT',dur:'6h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview'},{title:'Machine Learning for Statistics',dur:'10h',level:'Advanced',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview'}]);
+  else if (text.match(/cyber|security|privacy/)) addBotCourseMessage(`Cybersecurity is essential for government officials:`, [{title:'Securing India\'s Digital Governance',dur:'4h',level:'Intermediate',url:'https://portal.igotkarmayogi.gov.in/app/toc/do_1145242891094835201284/overview'},{title:'Digital Personal Data Protection',dur:'3h',level:'Beginner',url:'https://portal.igotkarmayogi.gov.in/public/toc/do_113569878939262976132/overview'}]);
+  else if (text.match(/streak|credit|points/)) { const cr=JSON.parse(localStorage.getItem('tunnel_credits')||'{}').balance||1240; const st=JSON.parse(localStorage.getItem('tunnel_streak')||'{}').currentStreak||7; addBotMessage(`Your stats:\n\n🔥 **Streak:** ${st} days\n🪙 **Credits:** ${cr.toLocaleString()}\n📊 **Level:** Advanced\n\nKeep learning daily to maintain your streak!`, [{text:'📚 Earn more credits',action:'suggest'},{text:'🏢 View company bridge',action:'bridge'}]); }
+  else if (text.match(/assess|quiz|test/)) addBotMessage(`Ready to test your knowledge? Head to the **Assessments** page! Passing assessments earns you **30-100 credits**.`, [{text:'📝 Go to Assessments',action:'goto_assess'}]);
+  else if (text.match(/hello|hi|hey|help/)) addBotMessage(`Hey! 👋 I can help with:\n\n• Course recommendations\n• Skill gap analysis\n• Learning tips\n• Company opportunities\n• Streak & credits status`, [{text:'📚 Suggest courses',action:'suggest'},{text:'📊 Check my gaps',action:'gaps'},{text:'🎯 Learning tips',action:'tips'},{text:'🏢 Company bridge',action:'bridge'}]);
+  else addBotMessage(`I'm not sure I understand. Try asking about courses, skill gaps, learning tips, company opportunities, or your streak.`, [{text:'📚 Suggest courses',action:'suggest'},{text:'📊 Check my gaps',action:'gaps'}]);
+}
+
+// ========== COMPETENCY GRAPH ==========
+const compNodes = [
+  // Technical (blue #3b82f6)
+  {id:'python',label:'Python',icon:'🐍',domain:'Technical Skills',level:'Beginner',score:45,x:90,y:160,color:'#3b82f6',desc:'Python for data analysis, pandas, numpy, scipy',course:'https://portal.igotkarmayogi.gov.in/public/toc/do_113923174474121216195/overview',courseName:'Python for Data Analysis'},
+  {id:'sql',label:'SQL',icon:'🗄️',domain:'Technical Skills',level:'Beginner',score:52,x:90,y:300,color:'#3b82f6',desc:'Database querying, data manipulation, joins, aggregations',course:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview',courseName:'SQL for Government Databases'},
+  {id:'r',label:'R Programming',icon:'📊',domain:'Technical Skills',level:'Beginner',score:38,x:90,y:440,color:'#3b82f6',desc:'R statistical computing, tidyverse, ggplot2',course:null,courseName:null},
+  {id:'dataviz',label:'Data Visualization',icon:'📈',domain:'Technical Skills',level:'Intermediate',score:42,x:310,y:230,color:'#3b82f6',desc:'Statistical graphics, dashboards, interactive viz',course:'https://portal.igotkarmayogi.gov.in/public/toc/do_1137349858229288961285/overview',courseName:'Data Driven Decision Making'},
+  {id:'aiml',label:'AI/ML',icon:'🤖',domain:'Technical Skills',level:'Advanced',score:35,x:310,y:380,color:'#3b82f6',desc:'Machine learning in official statistics',course:null,courseName:null},
+
+  // Statistical (orange #f97316)
+  {id:'sampling',label:'Sampling',icon:'🎯',domain:'Statistical Methods',level:'Intermediate',score:75,x:530,y:80,color:'#f97316',desc:'Probability/non-probability sampling, sample size, stratification',course:null,courseName:null},
+  {id:'dataquality',label:'Data Quality',icon:'✅',domain:'Statistical Methods',level:'Intermediate',score:72,x:530,y:210,color:'#f97316',desc:'Quality dimensions, ESS framework, quality indicators',course:null,courseName:null},
+  {id:'survey',label:'Survey Design',icon:'📋',domain:'Statistical Methods',level:'Advanced',score:82,x:750,y:80,color:'#f97316',desc:'Survey frames, questionnaire design, data collection',course:null,courseName:null},
+  {id:'price',label:'Price Stats',icon:'💰',domain:'Statistical Methods',level:'Advanced',score:71,x:750,y:210,color:'#f97316',desc:'CPI, WPI, price deflators, basket revision',course:null,courseName:null},
+  {id:'national',label:'National Accounts',icon:'🏛️',domain:'Statistical Methods',level:'Advanced',score:88,x:750,y:340,color:'#f97316',desc:'GDP estimation, input-output tables, SNA methodology',course:null,courseName:null},
+  {id:'sdg',label:'SDG Indicators',icon:'🌍',domain:'Statistical Methods',level:'Intermediate',score:68,x:750,y:470,color:'#f97316',desc:'UN SDG framework, data sources, reporting',course:null,courseName:null},
+
+  // Digital (green #10b981)
+  {id:'privacy',label:'Data Privacy',icon:'🛡️',domain:'Digital Governance',level:'Intermediate',score:68,x:530,y:440,color:'#10b981',desc:'DPDP Act, anonymization, privacy techniques',course:'https://portal.igotkarmayogi.gov.in/public/toc/do_113569878939262976132/overview',courseName:'Digital Personal Data Protection'},
+  {id:'cyber',label:'Cybersecurity',icon:'🔒',domain:'Digital Governance',level:'Intermediate',score:65,x:530,y:560,color:'#10b981',desc:'Infosec management, threat assessment, Zero Trust',course:'https://portal.igotkarmayogi.gov.in/app/toc/do_1145242891094835201284/overview',courseName:'Securing Digital Governance'},
+  {id:'dpi',label:'Digital Infra',icon:'🌐',domain:'Digital Governance',level:'Beginner',score:48,x:750,y:560,color:'#10b981',desc:'India Stack, UPI, Aadhaar, DigiLocker',course:null,courseName:null},
+
+  // Behavioural (purple #8b5cf6)
+  {id:'comm',label:'Communication',icon:'💬',domain:'Behavioural',level:'Intermediate',score:74,x:920,y:160,color:'#8b5cf6',desc:'Technical writing, data presentation, stakeholder comms',course:null,courseName:null},
+  {id:'lead',label:'Leadership',icon:'👑',domain:'Behavioural',level:'Advanced',score:80,x:920,y:300,color:'#8b5cf6',desc:'Organizational leadership, team management, strategy',course:null,courseName:null},
+  {id:'pm',label:'Project Mgmt',icon:'📐',domain:'Behavioural',level:'Intermediate',score:70,x:920,y:440,color:'#8b5cf6',desc:'Statistical project planning, resources, timelines',course:null,courseName:null},
+  {id:'ethics',label:'Ethics',icon:'⚖️',domain:'Behavioural',level:'Intermediate',score:76,x:920,y:560,color:'#8b5cf6',desc:'Professional ethics, confidentiality, integrity',course:null,courseName:null},
+];
+
+const compEdges = [
+  // Technical prerequisites
+  {from:'python',to:'dataviz',label:'prerequisite'},
+  {from:'sql',to:'dataviz',label:'prerequisite'},
+  {from:'python',to:'aiml',label:'prerequisite'},
+  {from:'r',to:'aiml',label:'prerequisite'},
+  {from:'dataviz',to:'aiml',label:'enhances'},
+  {from:'sql',to:'national',label:'enables'},
+  // Statistical prerequisites
+  {from:'sampling',to:'survey',label:'prerequisite'},
+  {from:'dataquality',to:'survey',label:'prerequisite'},
+  {from:'sampling',to:'dataquality',label:'prerequisite'},
+  {from:'price',to:'national',label:'prerequisite'},
+  {from:'dataquality',to:'national',label:'enhances'},
+  {from:'dataquality',to:'sdg',label:'enables'},
+  // Digital prerequisites
+  {from:'privacy',to:'cyber',label:'prerequisite'},
+  {from:'privacy',to:'dpi',label:'enables'},
+  // Behavioural prerequisites
+  {from:'comm',to:'lead',label:'prerequisite'},
+  {from:'pm',to:'lead',label:'enhances'},
+  // Cross-domain
+  {from:'ethics',to:'dataquality',label:'informs'},
+  {from:'dataviz',to:'sdg',label:'enables'},
+];
+
+let selectedNode = null;
+
+function renderGraph() {
+  const svg = document.getElementById('comp-svg');
+  if (!svg || svg.children.length > 0) return;
+
+  // Defs: arrowhead marker
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const marker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  marker.setAttribute('id','arrowhead');
+  marker.setAttribute('markerWidth','8');
+  marker.setAttribute('markerHeight','6');
+  marker.setAttribute('refX','8');
+  marker.setAttribute('refY','3');
+  marker.setAttribute('orient','auto');
+  const poly = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  poly.setAttribute('points','0 0, 8 3, 0 6');
+  poly.setAttribute('fill','var(--g-300)');
+  marker.appendChild(poly);
+  defs.appendChild(marker);
+  
+  // Highlighted arrowhead
+  const marker2 = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  marker2.setAttribute('id','arrowhead-hl');
+  marker2.setAttribute('markerWidth','8');
+  marker2.setAttribute('markerHeight','6');
+  marker2.setAttribute('refX','8');
+  marker2.setAttribute('refY','3');
+  marker2.setAttribute('orient','auto');
+  const poly2 = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  poly2.setAttribute('points','0 0, 8 3, 0 6');
+  poly2.setAttribute('fill','var(--o-500)');
+  marker2.appendChild(poly2);
+  defs.appendChild(marker2);
+  svg.appendChild(defs);
+
+  // Render edges
+  const edgeGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+  edgeGroup.setAttribute('id','edges');
+  compEdges.forEach((e,i) => {
+    const from = compNodes.find(n=>n.id===e.from);
+    const to = compNodes.find(n=>n.id===e.to);
+    if(!from||!to) return;
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    const nx = dx/dist, ny = dy/dist;
+    const sx = from.x + nx*38, sy = from.y + ny*18;
+    const ex = to.x - nx*38, ey = to.y - ny*18;
+    const mx = (sx+ex)/2, my = (sy+ey)/2;
+    const cx = mx + ny*20, cy = my - nx*20;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${sx},${sy} Q${cx},${cy} ${ex},${ey}`);
+    path.setAttribute('class','edge');
+    path.setAttribute('data-from',e.from);
+    path.setAttribute('data-to',e.to);
+    path.setAttribute('data-idx',i);
+    
+    // Edge type label
+    if(e.label === 'prerequisite') {
+      path.setAttribute('stroke-dasharray','none');
+    } else {
+      path.setAttribute('stroke-dasharray','5,3');
+    }
+    edgeGroup.appendChild(path);
+  });
+  svg.appendChild(edgeGroup);
+
+  // Render nodes
+  const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+  nodeGroup.setAttribute('id','nodes');
+  compNodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','node');
+    g.setAttribute('data-id',n.id);
+    g.setAttribute('transform',`translate(${n.x},${n.y})`);
+    
+    // Count prerequisites
+    const prereqCount = compEdges.filter(e => e.to === n.id && e.label === 'prerequisite').length;
+    
+    // Outer glow
+    const glow = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    glow.setAttribute('r','30');
+    glow.setAttribute('fill',n.color);
+    glow.setAttribute('opacity','0.08');
+    g.appendChild(glow);
+    
+    // Main circle
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('r','26');
+    circle.setAttribute('fill','#fff');
+    circle.setAttribute('stroke',n.color);
+    circle.setAttribute('class','node-circle');
+    g.appendChild(circle);
+    
+    // Icon
+    const icon = document.createElementNS('http://www.w3.org/2000/svg','text');
+    icon.setAttribute('y','1');
+    icon.setAttribute('class','node-icon');
+    icon.textContent = n.icon;
+    g.appendChild(icon);
+    
+    // Label
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('y','40');
+    label.setAttribute('class','node-label');
+    label.textContent = n.label;
+    g.appendChild(label);
+    
+    // Level
+    const level = document.createElementNS('http://www.w3.org/2000/svg','text');
+    level.setAttribute('y','52');
+    level.setAttribute('class','node-level');
+    level.textContent = n.level + ' · ' + n.score + '%';
+    g.appendChild(level);
+    
+    // Prereq count badge
+    if(prereqCount > 0) {
+      const bx = 18, by = -18;
+      const bg = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      bg.setAttribute('cx',bx); bg.setAttribute('cy',by); bg.setAttribute('r','9');
+      bg.setAttribute('fill',n.color); bg.setAttribute('stroke','#fff'); bg.setAttribute('stroke-width','2');
+      g.appendChild(bg);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x',bx); txt.setAttribute('y',by); txt.setAttribute('class','prereq-badge');
+      txt.textContent = prereqCount;
+      g.appendChild(txt);
+    }
+    
+    g.addEventListener('click', () => selectNode(n.id));
+    g.addEventListener('mouseenter', () => highlightConnected(n.id));
+    g.addEventListener('mouseleave', () => clearHighlight());
+    nodeGroup.appendChild(g);
+  });
+  svg.appendChild(nodeGroup);
+}
+
+function highlightConnected(id) {
+  const connected = new Set([id]);
+  compEdges.forEach(e => {
+    if(e.from===id || e.to===id) { connected.add(e.from); connected.add(e.to); }
+  });
+  document.querySelectorAll('#nodes .node').forEach(n => {
+    n.classList.toggle('dimmed', !connected.has(n.dataset.id));
+  });
+  document.querySelectorAll('#edges .edge').forEach(e => {
+    const hl = e.dataset.from===id || e.dataset.to===id;
+    e.classList.toggle('highlighted', hl);
+    e.classList.toggle('dimmed', !hl);
+    if(hl) e.setAttribute('marker-end','url(#arrowhead-hl)');
+    else e.removeAttribute('marker-end');
+  });
+}
+
+function clearHighlight() {
+  if(selectedNode) return;
+  document.querySelectorAll('#nodes .node').forEach(n => n.classList.remove('dimmed'));
+  document.querySelectorAll('#edges .edge').forEach(e => {
+    e.classList.remove('highlighted','dimmed');
+    e.removeAttribute('marker-end');
+  });
+}
+
+function selectNode(id) {
+  const node = compNodes.find(n=>n.id===id);
+  if(!node) return;
+  selectedNode = id;
+  
+  // Highlight selection
+  document.querySelectorAll('#nodes .node').forEach(n => {
+    n.classList.toggle('selected', n.dataset.id===id);
+  });
+  highlightConnected(id);
+  
+  // Build detail panel
+  const prereqs = compEdges.filter(e => e.to===id).map(e => compNodes.find(n=>n.id===e.from)).filter(Boolean);
+  const dependents = compEdges.filter(e => e.from===id).map(e => compNodes.find(n=>n.id===e.to)).filter(Boolean);
+  
+  const levelColors = {'Beginner':'var(--o-600)','Intermediate':'var(--b)','Advanced':'var(--p)'};
+  const domainColors = {'Statistical Methods':'#f97316','Technical Skills':'#3b82f6','Digital Governance':'#10b981','Behavioural':'#8b5cf6'};
+  
+  let html = `
+    <div class="graph-detail-row"><span class="label">Domain</span><span class="val" style="color:${domainColors[node.domain]||'var(--g-800)'}">${node.domain}</span></div>
+    <div class="graph-detail-row"><span class="label">Level</span><span class="val" style="color:${levelColors[node.level]||'var(--g-800)'}">${node.level}</span></div>
+    <div class="graph-detail-row"><span class="label">Score</span><span class="val">${node.score}%</span></div>
+    <p style="font-size:12px;color:var(--g-500);line-height:1.5;margin:12px 0 0">${node.desc}</p>`;
+  
+  if(prereqs.length) {
+    html += `<div class="graph-detail-section"><h4>Prerequisites</h4><div>${prereqs.map(p=>`<span class="graph-detail-dep prereq" onclick="selectNode('${p.id}')">${p.icon} ${p.label}</span>`).join('')}</div></div>`;
+  }
+  if(dependents.length) {
+    html += `<div class="graph-detail-section"><h4>Unlocks / Enhances</h4><div>${dependents.map(d=>`<span class="graph-detail-dep" onclick="selectNode('${d.id}')">${d.icon} ${d.label}</span>`).join('')}</div></div>`;
+  }
+  if(node.course) {
+    html += `<a href="${node.course}" target="_blank" rel="noopener" class="graph-detail-course">📚 ${node.courseName} → Enroll on iGOT</a>`;
+  }
+  
+  document.getElementById('gd-name').textContent = node.icon + ' ' + node.label;
+  document.getElementById('gd-body').innerHTML = html;
+  document.getElementById('graph-detail').classList.add('visible');
+}
+
+function closeDetail() {
+  selectedNode = null;
+  document.getElementById('graph-detail').classList.remove('visible');
+  document.querySelectorAll('#nodes .node').forEach(n => n.classList.remove('selected'));
+  clearHighlight();
+}
+
+function setCompView(view) {
+  document.getElementById('v-list').classList.toggle('active', view==='list');
+  document.getElementById('v-graph').classList.toggle('active', view==='graph');
+  document.getElementById('comp-list').style.display = view==='list' ? 'block' : 'none';
+  document.getElementById('comp-graph').style.display = view==='graph' ? 'block' : 'none';
+  if(view==='graph') renderGraph();
+  closeDetail();
+}
+
+function filterComps(query) {
+  // Simple filter for list view
+  const q = query.toLowerCase();
+  document.querySelectorAll('.comp-row').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? 'flex' : 'none';
+  });
+}
+
+// ========== GAMIFICATION ==========
+function renderGamification() {
+  // Animate XP bar
+  const xpFill = document.querySelector('.xp-fill');
+  if (xpFill) { xpFill.style.width = '0%'; setTimeout(() => xpFill.style.width = '62%', 100); }
+  
+  // Animate leaderboard bars
+  document.querySelectorAll('.lb-bar-fill').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => bar.style.width = w, 200);
+  });
+  
+  // Stagger badge animations
+  document.querySelectorAll('#pg-gamification .ach-badge').forEach((b, i) => {
+    b.style.opacity = '0';
+    b.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+      b.style.transition = 'all .3s ease';
+      b.style.opacity = b.classList.contains('unlocked') ? '1' : '.5';
+      b.style.transform = 'translateY(0)';
+    }, 80 * i);
+  });
+}
+
+// ========== SPARROW/APAR ==========
+function renderSparrow() {
+  // Set report date
+  const now = new Date();
+  document.getElementById('report-date').textContent = now.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('report-id').textContent = Math.random().toString(36).substr(2,8).toUpperCase();
+  
+  // Populate competency table
+  const comps = [
+    {name:'Survey Design',domain:'Statistical',level:'Advanced',score:82},
+    {name:'Sampling Methods',domain:'Statistical',level:'Intermediate',score:75},
+    {name:'National Accounts',domain:'Statistical',level:'Advanced',score:88},
+    {name:'Price Statistics',domain:'Statistical',level:'Intermediate',score:71},
+    {name:'SDG Indicators',domain:'Statistical',level:'Intermediate',score:68},
+    {name:'Data Quality Frameworks',domain:'Statistical',level:'Intermediate',score:72},
+    {name:'Python',domain:'Technical',level:'Beginner',score:45},
+    {name:'R Programming',domain:'Technical',level:'Beginner',score:38},
+    {name:'SQL',domain:'Technical',level:'Beginner',score:52},
+    {name:'Data Visualization',domain:'Technical',level:'Beginner',score:42},
+    {name:'AI/ML for Statistics',domain:'Technical',level:'Beginner',score:35},
+    {name:'Cybersecurity',domain:'Digital Governance',level:'Intermediate',score:65},
+    {name:'Data Privacy',domain:'Digital Governance',level:'Intermediate',score:68},
+    {name:'Leadership',domain:'Behavioural',level:'Advanced',score:80},
+    {name:'Communication',domain:'Behavioural',level:'Intermediate',score:74},
+    {name:'Project Management',domain:'Behavioural',level:'Intermediate',score:70},
+  ];
+  const tbody = document.getElementById('competency-tbody');
+  tbody.innerHTML = comps.map(c => {
+    const levelClass = c.level === 'Advanced' ? 'color:var(--p)' : c.level === 'Intermediate' ? 'color:var(--b)' : 'color:var(--o-600)';
+    return `<tr><td class="domain-col">${c.name}</td><td>${c.domain}</td><td class="level-col" style="${levelClass}">${c.level}</td><td class="score-col">${c.score}%</td></tr>`;
+  }).join('');
+}
+
+function exportReport(type) {
+  const preview = document.getElementById('report-preview');
+  if (type === 'print') {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>SPARROW Report - Rajesh Kumar</title><style>body{font-family:Inter,system-ui,sans-serif;padding:40px;color:#1d2939;line-height:1.6}h1{font-size:20px;margin-bottom:4px}h2{font-size:14px;color:#667085;font-weight:400;margin-bottom:24px}h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:#475467;border-bottom:2px solid #eaecf0;padding-bottom:6px;margin:20px 0 8px}.row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}.label{color:#667085}.val{font-weight:600}table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}th{text-align:left;padding:6px 12px;background:#f9fafb;border-bottom:2px solid #eaecf0;font-size:11px;text-transform:uppercase}td{padding:6px 12px;border-bottom:1px solid #f2f4f7}.stamp{text-align:center;margin-top:24px;padding:16px;border-top:1px solid #eaecf0;font-size:11px;color:#98a2b3}</style></head><body>' + preview.querySelector('.rp-body').innerHTML + '</body></html>');
+    printWindow.document.close();
+    setTimeout(() => { printWindow.print(); }, 500);
+  } else if (type === 'copy') {
+    const text = extractReportText();
+    navigator.clipboard.writeText(text).then(() => showToast('Report copied to clipboard!')).catch(() => showToast('Failed to copy'));
+  } else if (type === 'pdf') {
+    showToast('PDF export — use Ctrl+P → Save as PDF from the print dialog');
+    setTimeout(() => exportReport('print'), 300);
+  }
+}
+
+function extractReportText() {
+  let text = 'COMPETENCY & TRAINING REPORT\n';
+  text += 'Generated via Tunnel — AI Skill Intelligence Platform\n';
+  text += 'Date: ' + new Date().toLocaleDateString('en-IN') + '\n\n';
+  text += 'OFFICIAL DETAILS\n';
+  text += 'Name: Rajesh Kumar\n';
+  text += 'Employee ID: EMP-NSO-2024-1847\n';
+  text += 'Designation: Senior Statistician\n';
+  text += 'Department: National Statistical Office\n';
+  text += 'Reporting Period: April 2024 — March 2025\n\n';
+  text += 'COMPETENCY ASSESSMENT\n';
+  text += 'Competency | Domain | Level | Score\n';
+  text += '--- | --- | --- | ---\n';
+  const rows = document.querySelectorAll('#competency-tbody tr');
+  rows.forEach(r => { const cells = r.querySelectorAll('td'); text += cells[0].textContent + ' | ' + cells[1].textContent + ' | ' + cells[2].textContent + ' | ' + cells[3].textContent + '\n'; });
+  text += '\nTRAINING RECORD\n';
+  const trainings = document.querySelectorAll('#training-list .t-title');
+  const metas = document.querySelectorAll('#training-list .t-meta');
+  trainings.forEach((t, i) => { text += '• ' + t.textContent + ' — ' + (metas[i]?.textContent || '') + '\n'; });
+  text += '\nACHIEVEMENTS\n';
+  text += 'Credits: 1,240 (Advanced Level)\n';
+  text += 'Longest Streak: 14 days\n';
+  text += 'Total Active Days: 42\n';
+  text += 'Assessments Passed: 7 (avg 83%)\n';
+  text += 'Skill Gaps Closed: 4\n\n';
+  text += 'COMPANY BRIDGE QUALIFICATION\n';
+  text += 'NSO Internship: Qualified\n';
+  text += 'NASSCOM Data Science: Qualified\n';
+  text += 'World Bank Data Group: 760 credits remaining\n';
+  text += '\n---\nAuto-generated by Tunnel AI Skill Intelligence Platform';
+  return text;
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.toast-msg');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast-msg';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+setTimeout(() => { if (!chatOpen) document.getElementById('chat-badge').style.display = 'flex'; }, 2000);
+</script>
+</body>
+</html>
