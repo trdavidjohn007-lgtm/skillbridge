@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/modules/core/db";
-import { resources, tutorProfiles } from "@/modules/p2p/schema";
+import { db } from "@/modules/core/db/sqlite";
+import { resources, tutorProfiles } from "@/modules/core/db/sqlite-schema";
 import { eq, and, sql } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp, sanitizeText, MAX_SIZES } from "@/lib/sanitize";

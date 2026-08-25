@@ -165,7 +165,7 @@ export default function LeaderboardPage() {
                       </div>
                       {tab === "tutors" && user.subjects && (
                         <div className="flex gap-1 mt-1">
-                          {user.subjects.slice(0, 3).map((s: string) => (
+                          {(typeof user.subjects === 'string' ? JSON.parse(user.subjects) : user.subjects || []).slice(0, 3).map((s: string) => (
                             <span key={s} className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px]">{s}</span>
                           ))}
                         </div>

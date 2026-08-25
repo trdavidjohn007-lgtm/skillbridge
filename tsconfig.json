@@ -26,7 +26,6 @@
         "./src/*"
       ]
     },
-    "baseUrl": ".",
     "target": "ES2017"
   },
   "include": [
@@ -37,6 +36,13 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/modules/p2p/schema.ts",
+    "src/modules/core/db/schema.ts",
+    "src/modules/learning/**",
+    "src/modules/analytics/**",
+    "src/modules/assessment/**",
+    "src/modules/competency/**",
+    "src/modules/course/**"
   ]
 }

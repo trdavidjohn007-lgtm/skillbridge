@@ -10,7 +10,7 @@ import {
   tutorProfiles,
   p2pLearnerProfiles,
   helpRequests,
-} from "@/modules/p2p/schema";
+} from "@/modules/core/db/sqlite-schema";
 import { eq, and, asc, sql } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp, isValidUUID, sanitizeText, MAX_SIZES } from "@/lib/sanitize";
@@ -122,7 +122,7 @@ export async function POST(
       if (action === "report") {
         const { reason } = body;
         const cleanReason = typeof reason === "string" ? sanitizeText(reason).slice(0, MAX_SIZES.reason) : "No reason provided";
-        const { reports } = await import("@/modules/p2p/schema");
+        const { reports } = await import("@/modules/core/db/sqlite-schema");
         await db.insert(reports).values({ sessionId, reporterId: userId, reason: cleanReason, status: "pending" });
         await db.update(sessions).set({ status: "reported", endedAt: new Date() }).where(eq(sessions.id, sessionId));
         return NextResponse.json({ success: true, reported: true });

@@ -111,7 +111,7 @@ export default function RequestsPage() {
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:border-orange-200 transition-all duration-300 flex flex-col">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-2xl flex-shrink-0">
-                      {TOPIC_ICONS[req.tags?.[0]] || "📚"}
+                      {TOPIC_ICONS[(typeof req.tags === 'string' ? JSON.parse(req.tags) : req.tags || [])[0]] || "📚"}
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-bold text-slate-900 truncate">{req.topic}</h3>
@@ -129,7 +129,7 @@ export default function RequestsPage() {
                   )}
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
-                    {(req.tags || []).slice(0, 3).map((tag: string) => (
+                    {(typeof req.tags === 'string' ? JSON.parse(req.tags) : req.tags || []).slice(0, 3).map((tag: string) => (
                       <span key={tag} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-xs font-medium">
                         #{tag}
                       </span>

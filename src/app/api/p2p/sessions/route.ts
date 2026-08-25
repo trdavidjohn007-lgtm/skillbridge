@@ -10,7 +10,7 @@ import {
   ratings,
   tutorProfiles,
   p2pLearnerProfiles,
-} from "@/modules/p2p/schema";
+} from "@/modules/core/db/sqlite-schema";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp, isValidUUID } from "@/lib/sanitize";

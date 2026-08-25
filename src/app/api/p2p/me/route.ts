@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/modules/core/auth";
-import { db } from "@/modules/core/db";
+import { db } from "@/modules/core/db/sqlite";
 import {
   tutorProfiles,
   p2pLearnerProfiles,
-} from "@/modules/p2p/schema";
-import { users } from "@/modules/core/db/schema";
+  creditLedger,
+  users,
+} from "@/modules/core/db/sqlite-schema";
 import { eq } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp, sanitizeStringArray, MAX_SIZES } from "@/lib/sanitize";
@@ -79,8 +80,7 @@ export async function GET(request?: Request) {
         .where(eq(users.id, userId))
         .limit(1);
 
-      const { creditLedger } = await import("@/modules/p2p/schema");
-      const { desc } = await import("drizzle-orm");
+    const { desc } = await import("drizzle-orm");
       const [lastCredit] = await db
         .select()
         .from(creditLedger)
@@ -168,7 +168,7 @@ export async function POST(request: Request) {
           verifiedBadge: true,
         });
 
-        const { creditLedger } = await import("@/modules/p2p/schema");
+        const { creditLedger } = await import("@/modules/core/db/sqlite-schema");
         await db.insert(creditLedger).values({
           userId,
           amount: 100,
@@ -189,7 +189,7 @@ export async function POST(request: Request) {
         });
 
         if (!(role === "tutor" || role === "both") || existingTutor) {
-          const { creditLedger } = await import("@/modules/p2p/schema");
+          const { creditLedger } = await import("@/modules/core/db/sqlite-schema");
           const existing = existingTutor
             ? await db
                 .select()

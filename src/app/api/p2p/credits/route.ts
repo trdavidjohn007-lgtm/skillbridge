@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/modules/core/auth";
 import { db } from "@/modules/core/db";
-import { creditLedger } from "@/modules/p2p/schema";
+import { creditLedger } from "@/modules/core/db/sqlite-schema";
 import { eq, desc } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/sanitize";

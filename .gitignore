@@ -28,3 +28,11 @@ Thumbs.db
 
 # Docker volumes
 docker/data/
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Freebuff workspace
+.freebuff/

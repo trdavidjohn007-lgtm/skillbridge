@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/modules/core/db";
-import { tutorProfiles, p2pLearnerProfiles } from "@/modules/p2p/schema";
+import { db } from "@/modules/core/db/sqlite";
+import { tutorProfiles, p2pLearnerProfiles } from "@/modules/core/db/sqlite-schema";
 import { desc, sql } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/sanitize";
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
   try {
     // Top tutors by rating + sessions
-    const topTutors = await db
+    const topTutors = db
       .select({
         userId: tutorProfiles.userId,
         anonymousName: tutorProfiles.anonymousName,
@@ -23,18 +23,19 @@ export async function GET(request: Request) {
         avgRating: tutorProfiles.avgRating,
         trustScore: tutorProfiles.trustScore,
         verifiedBadge: tutorProfiles.verifiedBadge,
-        score: sql<number>`
-          (${tutorProfiles.avgRating}::float * 10) + 
-          (${tutorProfiles.totalSessions}::float * 2) + 
-          (${tutorProfiles.totalHours}::float)
-        `,
       })
       .from(tutorProfiles)
-      .orderBy(desc(sql`(${tutorProfiles.avgRating}::float * 10) + (${tutorProfiles.totalSessions}::float * 2) + (${tutorProfiles.totalHours}::float)`))
-      .limit(10);
+      .all();
+
+    // Sort by score in JS (SQLite doesn't support complex SQL expressions as easily)
+    topTutors.sort((a: any, b: any) => {
+      const scoreA = (Number(a.avgRating) || 0) * 10 + (Number(a.totalSessions) || 0) * 2 + (Number(a.totalHours) || 0);
+      const scoreB = (Number(b.avgRating) || 0) * 10 + (Number(b.totalSessions) || 0) * 2 + (Number(b.totalHours) || 0);
+      return scoreB - scoreA;
+    });
 
     // Top learners by sessions + hours
-    const topLearners = await db
+    const topLearners = db
       .select({
         userId: p2pLearnerProfiles.userId,
         anonymousName: p2pLearnerProfiles.anonymousName,
@@ -42,14 +43,15 @@ export async function GET(request: Request) {
         interests: p2pLearnerProfiles.interests,
         totalHours: p2pLearnerProfiles.totalHours,
         totalSessions: p2pLearnerProfiles.totalSessions,
-        score: sql<number>`
-          (${p2pLearnerProfiles.totalSessions}::float * 5) + 
-          (${p2pLearnerProfiles.totalHours}::float * 2)
-        `,
       })
       .from(p2pLearnerProfiles)
-      .orderBy(desc(sql`(${p2pLearnerProfiles.totalSessions}::float * 5) + (${p2pLearnerProfiles.totalHours}::float * 2)`))
-      .limit(10);
+      .all();
+
+    topLearners.sort((a: any, b: any) => {
+      const scoreA = (Number(a.totalSessions) || 0) * 5 + (Number(a.totalHours) || 0) * 2;
+      const scoreB = (Number(b.totalSessions) || 0) * 5 + (Number(b.totalHours) || 0) * 2;
+      return scoreB - scoreA;
+    });
 
     return NextResponse.json({
       tutors: topTutors,

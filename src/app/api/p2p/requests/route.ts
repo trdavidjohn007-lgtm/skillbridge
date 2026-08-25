@@ -7,7 +7,7 @@ import {
   tutorProfiles,
   users,
   p2pLearnerProfiles,
-} from "@/modules/p2p/schema";
+} from "@/modules/core/db/sqlite-schema";
 import { eq, desc, and } from "drizzle-orm";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import {
@@ -147,7 +147,7 @@ export async function POST(request: Request) {
 
     // Try database operations; fall back to mock if DB unavailable
     try {
-      const { creditLedger } = await import("@/modules/p2p/schema");
+      const { creditLedger } = await import("@/modules/core/db/sqlite-schema");
       const { desc: descFn } = await import("drizzle-orm");
       const [lastTx] = await db
         .select()
