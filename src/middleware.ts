@@ -1,24 +1,19 @@
-import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default withAuth({
-  pages: {
-    signIn: "/auth/login",
-  },
-});
+// Lightweight middleware — no auth redirect on Netlify (JWT-only mode)
+export function middleware(request: NextRequest) {
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
     "/dashboard/:path*",
-    "/competencies/:path*",
-    "/learning/:path*",
-    "/assessments/:path*",
-    "/analytics/:path*",
-    "/settings/:path*",
-    "/api/competencies/:path*",
-    "/api/learners/:path*",
-    "/api/learning-paths/:path*",
-    "/api/assessments/:path*",
-    "/api/analytics/:path*",
-    "/api/courses/:path*",
+    "/requests/:path*",
+    "/resources/:path*",
+    "/leaderboard/:path*",
+    "/progress/:path*",
+    "/session/:path*",
+    "/study-motivation/:path*",
   ],
 };
